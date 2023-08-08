@@ -1,0 +1,88 @@
+include: package:very_good_analysis/analysis_options.4.0.0.yaml
+analyzer:
+  exclude:
+    # General generated files
+    - '**/*.g.dart'
+    - '**/*.gr.dart'
+    - '**/*.gen.dart'
+
+    # Flutter
+    - 'lib/generated_plugin_registrant.dart'
+
+    # mockito
+    - '*.mocks.dart'
+    - '**/*.mocks.dart'
+
+    # freezed
+    - '**/*.freezed.dart'
+
+    # protobuf
+    - '**/*.pb.dart'
+
+    # test_coverage
+    - test/.test_coverage.dart
+
+    # get_it
+    - '**/*.config.dart'
+
+  # Dart Code Metrics plugin (https://dartcodemetrics.dev/) provides many additional rules
+  # that helped to automate some pieces of our internal team code style based on the best
+  # industry practices.
+  plugins:
+    - dart_code_metrics
+
+  errors:
+    missing_required_param: error
+    missing_return: error
+    parameter_assignments: error
+  language:
+    strict-casts: true
+    strict-raw-types: true
+
+dart_code_metrics:
+  metrics:
+    # NIST 500-235 item 2.5
+    cyclomatic-complexity: 10
+
+    # McConnell, S. (2004), Chapter 7.5: High-Quality Routines: How To Use Routine Parameters. Code Complete, Second Edition, Redmond, WA, USA: Microsoft Press. 174-180
+    number-of-parameters: 7
+
+    # McConnell, S. (2004), Chapter 7.4: High-Quality Routines: How Long Can a Routine Be?. Code Complete, Second Edition, Redmond, WA, USA: Microsoft Press. 173-174
+    source-lines-of-code: 200
+
+    # We use source-lines-of-code instead of this as we don't want to count comment or blank lines.
+    # lines-of-code: 50
+  rules:
+    - avoid-global-state
+    - avoid-non-null-assertion
+    - avoid-returning-widgets
+    - avoid-unnecessary-setstate
+    - avoid-unnecessary-type-assertions
+    - avoid-unnecessary-type-casts
+    - avoid-unrelated-type-assertions
+    - avoid-unused-parameters
+    - double-literal-format
+    - member-ordering-extended:
+        order:
+          - constructors
+          - fields
+          - getters-setters
+          - methods
+    - no-empty-block
+    - no-equal-then-else
+    - prefer-conditional-expressions
+    - prefer-first
+    - prefer-last
+    # This improves navigation by matching file content and file name.
+    - prefer-match-file-name
+  anti-patterns:
+    - long-method
+    - long-parameter-list
+
+linter:
+  rules:
+    public_member_api_docs: false
+    avoid_relative_lib_imports: false
+    always_use_package_imports: false
+    prefer_relative_imports: true
+    one_member_abstracts: false
