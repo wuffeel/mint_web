@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primaryBlueColor">#007AFF</color>
+    <color name="scaffold">#F5F6F8</color>
     <color name="disabledButtonColor">#9BCAFF</color>
     <color name="gradientDark">#005BEA</color>
     <color name="gradientLight">#00C6FB</color>
+    <color name="hintColor">#3C3C43</color>
+    <color name="errorColor">#FF3B30</color>
+    <color name="brandBlue4">#C7D5FB</color>
+    <color name="stepperBlue">#3269E1</color>
 </resources>
