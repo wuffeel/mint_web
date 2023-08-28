@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../backbone/environment_type.dart';
@@ -17,6 +20,21 @@ class FirebaseInitializer {
   }
 
   final _firebaseCompleter = Completer<FirebaseApp>();
+
+  Future<FirebaseAuth> get firebaseAuth async {
+    await _firebaseCompleter.future;
+    return FirebaseAuth.instance;
+  }
+
+  Future<FirebaseFirestore> get firestore async {
+    await _firebaseCompleter.future;
+    return FirebaseFirestore.instance;
+  }
+
+  Future<FirebaseStorage> get storage async {
+    await _firebaseCompleter.future;
+    return FirebaseStorage.instance;
+  }
 
   Future<void> _init() async {
     try {
