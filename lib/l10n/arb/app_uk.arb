@@ -1,3 +1,12 @@
 {
-  "@@locale": "uk"
+  "@@locale": "uk",
+  "signUp": "Зареєструватися",
+  "signIn": "Увійти",
+  "phoneNumber": "Номер телефону",
+  "alreadyHaveAnAccount": "Вже маєте обліковий запис",
+  "byTappingSignUpYouAgree": "Натиснувши \"Зареєструватися\", ви прочитали та погоджуєтеся з",
+  "mintTermsAndConditions": "Положеннями, умовами та політикою конфіденційності Mint",
+  "signUpToManageAndConsult": "Зареєструйтесь щоб керувати\nта консольтувати пацієнтів\nонлайн",
+  "enterCode": "Введіть код",
+  "codeWasSentTo": "Код було надіслано на"
 }

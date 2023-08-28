@@ -1,3 +1,12 @@
 {
-    "@@locale": "en"
+  "@@locale": "en",
+  "signUp": "Sign up",
+  "signIn": "Sign in",
+  "phoneNumber": "Phone number",
+  "alreadyHaveAnAccount": "Already have an account",
+  "byTappingSignUpYouAgree": "By tapping \"Sign up\", you have read and agree to the",
+  "mintTermsAndConditions": "Mint Terms & Conditions and Privacy Policy",
+  "signUpToManageAndConsult": "Sign up to manage\nand consult patients\nonline",
+  "enterCode": "Enter a code",
+  "codeWasSentTo": "The code was sent to"
 }
