@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../gen/colors.gen.dart';
 import '../../../gen/fonts.gen.dart';
 import '../../../l10n/l10n.dart';
 import '../../../router/app_router.dart';
@@ -13,20 +13,18 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(1440, 1024),
-      builder: (context, _) {
-        return MaterialApp.router(
-          theme: ThemeData(
-            fontFamily: MintFontFamily.inter,
-            elevatedButtonTheme: MintThemeData.elevatedButton,
-            inputDecorationTheme: MintThemeData.inputDecoration,
-          ),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          routerConfig: _appRouter.config(),
-          supportedLocales: AppLocalizations.supportedLocales,
-        );
-      },
+    return MaterialApp.router(
+      theme: ThemeData(
+        colorScheme: MintThemeData.colorScheme,
+        elevatedButtonTheme: MintThemeData.elevatedButton,
+        fontFamily: MintFontFamily.inter,
+        inputDecorationTheme: MintThemeData.inputDecoration,
+        hintColor: MintColors.hintColor,
+        scaffoldBackgroundColor: MintColors.scaffold,
+      ),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      routerConfig: _appRouter.config(),
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }
