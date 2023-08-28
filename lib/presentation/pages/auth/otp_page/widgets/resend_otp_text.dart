@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../gen/colors.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../bloc/auth/auth_bloc.dart';
 import '../../../../bloc/resend_timer/resend_timer_bloc.dart';
@@ -63,6 +64,7 @@ class ResendOtpText extends StatelessWidget {
                   fontSize: 13,
                   height: 1.3,
                   fontWeight: FontWeight.w500,
+                  color: MintColors.primaryBlueColor,
                 ),
               ),
             ),
