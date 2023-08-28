@@ -5,3 +5,13 @@ targets:
         generate_for:
           - lib/presentation/pages/**_page.dart
           - lib/router/app_router.dart
+      freezed:freezed:
+        enabled: true
+        generate_for:
+          include:
+            - lib/data/model/**.dart
+            - lib/domain/entity/**.dart
+      json_serializable:
+        options:
+          explicit_to_json: true
+          any_map: true
