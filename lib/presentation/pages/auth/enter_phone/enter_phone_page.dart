@@ -7,7 +7,7 @@ import '../../../../router/app_router.gr.dart';
 import '../../../../theme/mint_text_styles.dart';
 import '../../../bloc/auth/auth_bloc.dart';
 import '../widgets/auth_left_panel_with_logo.dart';
-import '../widgets/auth_right_panel.dart';
+import '../widgets/auth_page_body.dart';
 import 'widgets/conditions_agree_text.dart';
 import 'widgets/sign_in_text.dart';
 
@@ -55,42 +55,37 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
         }
       },
       child: Scaffold(
-        body: Row(
-          children: <Widget>[
-            Expanded(
-              child: AuthLeftPanelWithLogo(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(l10n.signUp, style: MintTextStyles.title),
-                    const SizedBox(height: 58),
-                    TextField(
-                      controller: _phoneController,
-                      decoration: InputDecoration(hintText: l10n.phoneNumber),
-                      onChanged: (phone) {
-                        setState(() {
-                          _isPhoneValid = _validatePhoneNumber(phone);
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 18),
-                    ElevatedButton(
-                      onPressed: _isPhoneValid ? () => _verifyPhone(
-                        context,
-                        _phoneController.text.trim(),
-                      ) : null,
-                      child: Text(l10n.signUp),
-                    ),
-                    const SizedBox(height: 8),
-                    const ConditionsAgreeText(),
-                    const SizedBox(height: 70),
-                    const Align(child: SignInText()),
-                  ],
+        body: AuthPageBody(
+          child: AuthLeftPanelWithLogo(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(l10n.signUp, style: MintTextStyles.title),
+                const SizedBox(height: 58),
+                TextField(
+                  controller: _phoneController,
+                  decoration: InputDecoration(hintText: l10n.phoneNumber),
+                  onChanged: (phone) {
+                    setState(() {
+                      _isPhoneValid = _validatePhoneNumber(phone);
+                    });
+                  },
                 ),
-              ),
+                const SizedBox(height: 18),
+                ElevatedButton(
+                  onPressed: _isPhoneValid ? () => _verifyPhone(
+                    context,
+                    _phoneController.text.trim(),
+                  ) : null,
+                  child: Text(l10n.signUp),
+                ),
+                const SizedBox(height: 8),
+                const ConditionsAgreeText(),
+                const SizedBox(height: 70),
+                const Align(child: SignInText()),
+              ],
             ),
-            const Expanded(child: AuthRightPanel()),
-          ],
+          ),
         ),
       ),
     );
