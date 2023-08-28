@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../backbone/environment_type.dart';
@@ -41,7 +41,7 @@ class FirebaseInitializer {
       final app = await Firebase.initializeApp(options: _getFirebaseOptions());
       _firebaseCompleter.complete(app);
     } catch (e, s) {
-      log('Firebase initialization error: $e');
+      if (kDebugMode) print('Firebase initialization error: $e');
       _firebaseCompleter.completeError(e, s);
     }
   }

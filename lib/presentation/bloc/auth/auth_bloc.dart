@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 
 import '../../../domain/usecase/verify_otp_use_case.dart';
 import '../../../domain/usecase/verify_phone_use_case.dart';
@@ -32,7 +30,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _verifyPhoneUseCase(phoneNumber: event.phoneNumber);
       emit(AuthVerifyPhoneSuccess(phoneNumber: event.phoneNumber));
     } catch (error) {
-      log('AuthVerifyPhoneFailure: $error');
+      if (kDebugMode) print('AuthVerifyPhoneFailure: $error');
       _handlePhoneVerificationFailure(error, emit);
     }
   }
@@ -48,7 +46,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _verifyOtpUseCase(otpCode: event.otpCode);
       emit(AuthVerifyOtpSuccess());
     } catch (error) {
-      log('AuthVerifyOtpFailure: $error');
+      if (kDebugMode) print('AuthVerifyOtpFailure: $error');
       _handleOtpVerificationFailure(error, emit, state);
     }
   }

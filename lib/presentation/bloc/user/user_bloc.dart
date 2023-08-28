@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 
 import '../../../domain/controller/user_controller.dart';
 import '../../../domain/entity/user_model/user_model.dart';
@@ -52,7 +51,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       final user = await _fetchUserUseCase();
       _userController.addToUserStream(user);
     } catch (error) {
-      log('UserFetchFailure: $error');
+      if (kDebugMode) print('UserFetchFailure: $error');
       emit(UserFetchFailure());
     }
   }
@@ -68,7 +67,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       await _logOutUseCase();
       _userController.addToUserStream(null);
     } catch (error) {
-      log('UserLogOutFailure: $error');
+      if (kDebugMode) print('UserLogOutFailure: $error');
       emit(UserLogOutFailure(state.user));
     }
   }
