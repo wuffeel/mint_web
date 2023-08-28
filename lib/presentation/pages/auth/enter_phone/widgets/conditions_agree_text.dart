@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../l10n/l10n.dart';
+
 class ConditionsAgreeText extends StatelessWidget {
   const ConditionsAgreeText({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Text.rich(
       TextSpan(
         children: [
           TextSpan(
-            text: 'By tapping “Sign up”, you have read and agree to the',
+            text: l10n.byTappingSignUpYouAgree,
             style: TextStyle(
               fontSize: 14,
               height: 1.2,
@@ -17,9 +20,9 @@ class ConditionsAgreeText extends StatelessWidget {
             ),
           ),
           const TextSpan(text: ' '),
-          const TextSpan(
-            text: 'Mint Terms & Conditions and Privacy Policy',
-            style: TextStyle(
+          TextSpan(
+            text: l10n.mintTermsAndConditions,
+            style: const TextStyle(
               fontSize: 14,
               height: 1.2,
             ),
