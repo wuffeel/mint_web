@@ -14,3 +14,5 @@ class AuthVerifyOtpRequested extends AuthEvent {
 
   final String otpCode;
 }
+
+class AuthOtpResendRequested extends AuthEvent {}

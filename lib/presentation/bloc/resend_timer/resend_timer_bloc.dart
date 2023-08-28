@@ -18,7 +18,7 @@ class ResendTimerBloc extends Bloc<ResendTimerEvent, ResendTimerState> {
   }
 
   final Ticker _ticker;
-  static const int _duration = 10;
+  static const int _duration = 60;
 
   StreamSubscription<int>? _tickerSubscription;
 

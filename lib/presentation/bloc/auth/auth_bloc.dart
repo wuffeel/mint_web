@@ -17,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) : super(AuthInitial()) {
     on<AuthVerifyPhoneRequested>(_onVerifyPhone);
     on<AuthVerifyOtpRequested>(_onVerifyOtp);
+    on<AuthOtpResendRequested>(_onOtpResend);
   }
 
   final VerifyPhoneUseCase _verifyPhoneUseCase;
@@ -48,6 +49,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } catch (error) {
       if (kDebugMode) print('AuthVerifyOtpFailure: $error');
       _handleOtpVerificationFailure(error, emit, state);
+    }
+  }
+
+  Future<void> _onOtpResend(
+    AuthOtpResendRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    final state = this.state;
+    if (state is! AuthVerifyPhoneSuccess) return;
+
+    try {
+      await _verifyPhoneUseCase(phoneNumber: state.phoneNumber);
+      emit(AuthOtpResendSuccess(phoneNumber: state.phoneNumber));
+    } catch (error) {
+      if (kDebugMode) print('AuthOtpResendFailure: $error');
+      emit(AuthOtpResendFailure(phoneNumber: state.phoneNumber));
     }
   }
 

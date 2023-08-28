@@ -8,5 +8,6 @@
   "mintTermsAndConditions": "Положеннями, умовами та політикою конфіденційності Mint",
   "signUpToManageAndConsult": "Зареєструйтесь щоб керувати\nта консольтувати пацієнтів\nонлайн",
   "enterCode": "Введіть код",
-  "codeWasSentTo": "Код було надіслано на"
+  "codeWasSentTo": "Код було надіслано на",
+  "resendCode": "Надіслати код повторно"
 }

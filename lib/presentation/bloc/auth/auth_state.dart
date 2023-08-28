@@ -17,12 +17,20 @@ class AuthVerifyPhoneSuccess extends AuthState {
   final String phoneNumber;
 }
 
+class AuthOtpResendSuccess extends AuthVerifyPhoneSuccess {
+  AuthOtpResendSuccess({required super.phoneNumber});
+}
+
 class AuthVerifyOtpFailure extends AuthVerifyPhoneSuccess {
   AuthVerifyOtpFailure({required super.phoneNumber});
 }
 
 class AuthVerifyOtpMismatch extends AuthVerifyPhoneSuccess {
   AuthVerifyOtpMismatch({required super.phoneNumber});
+}
+
+class AuthOtpResendFailure extends AuthVerifyPhoneSuccess {
+  AuthOtpResendFailure({required super.phoneNumber});
 }
 
 class AuthVerifyOtpSuccess extends AuthState {}

@@ -76,6 +76,7 @@ class _OtpPageState extends State<_OtpView> {
                             : null,
                         child: Text(l10n.signUp),
                       ),
+                      const SizedBox(height: 8),
                       const ResendOtpText(),
                     ],
                   ),

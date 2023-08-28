@@ -8,5 +8,6 @@
   "mintTermsAndConditions": "Mint Terms & Conditions and Privacy Policy",
   "signUpToManageAndConsult": "Sign up to manage\nand consult patients\nonline",
   "enterCode": "Enter a code",
-  "codeWasSentTo": "The code was sent to"
+  "codeWasSentTo": "The code was sent to",
+  "resendCode": "Resend code"
 }
