@@ -9,5 +9,6 @@
   "signUpToManageAndConsult": "Sign up to manage\nand consult patients\nonline",
   "enterCode": "Enter a code",
   "codeWasSentTo": "The code was sent to",
-  "resendCode": "Resend code"
+  "resendCode": "Resend code",
+  "youWillBeAbleToResendCodeIn": "You will able to re-send a code in"
 }

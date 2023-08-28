@@ -9,5 +9,6 @@
   "signUpToManageAndConsult": "Зареєструйтесь щоб керувати\nта консольтувати пацієнтів\nонлайн",
   "enterCode": "Введіть код",
   "codeWasSentTo": "Код було надіслано на",
-  "resendCode": "Надіслати код повторно"
+  "resendCode": "Надіслати код повторно",
+  "youWillBeAbleToResendCodeIn": "Ви зможете надіслати код повторно через"
 }

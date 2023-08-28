@@ -33,12 +33,26 @@ class ResendOtpText extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: _resendTimerListener,
       child: duration > 0
-          ? Text(
-              '$minutesStr:$secondsStr',
-              style: TextStyle(
-                fontSize: 14,
-                height: 1.1,
-                color: Theme.of(context).hintColor.withOpacity(0.6),
+          ? Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: context.l10n.youWillBeAbleToResendCodeIn,
+                    style: TextStyle(
+                      fontSize: 14,
+                      height: 1.1,
+                      color: Theme.of(context).hintColor.withOpacity(0.6),
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' $minutesStr:$secondsStr',
+                    style: TextStyle(
+                      fontSize: 14,
+                      height: 1.1,
+                      color: Theme.of(context).hintColor.withOpacity(0.6),
+                    ),
+                  ),
+                ],
               ),
             )
           : InkWell(
