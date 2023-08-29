@@ -1,12 +1,15 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../../widgets/mint_back_button.dart';
 import '../../../widgets/mint_logo.dart';
 import 'auth_left_panel_container.dart';
 
 class AuthLeftPanelWithLogo extends StatelessWidget {
-  const AuthLeftPanelWithLogo({required this.child, super.key});
+  const AuthLeftPanelWithLogo({required this.child, super.key, this.onBack});
 
   final Widget child;
+  final VoidCallback? onBack;
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +19,10 @@ class AuthLeftPanelWithLogo extends StatelessWidget {
         children: <Widget>[
           const SizedBox(height: 30),
           const MintLogo(),
+          if (context.router.canPop()) ...[
+            const SizedBox(height: 8),
+            MintBackButton(onBack: onBack),
+          ],
           const Spacer(flex: 3),
           child,
           const Spacer(flex: 5),

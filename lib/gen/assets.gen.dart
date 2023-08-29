@@ -14,6 +14,9 @@ import 'package:flutter/services.dart';
 class $AssetsSvgGen {
   const $AssetsSvgGen();
 
+  /// File path: assets/svg/back_button.svg
+  SvgGenImage get backButton => const SvgGenImage('assets/svg/back_button.svg');
+
   /// File path: assets/svg/mint_logo.svg
   SvgGenImage get mintLogo => const SvgGenImage('assets/svg/mint_logo.svg');
 
@@ -22,7 +25,7 @@ class $AssetsSvgGen {
       const SvgGenImage('assets/svg/refresh_icon.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [mintLogo, refreshIcon];
+  List<SvgGenImage> get values => [backButton, mintLogo, refreshIcon];
 }
 
 class Assets {

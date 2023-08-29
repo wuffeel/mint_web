@@ -38,6 +38,10 @@ class _OtpView extends StatefulWidget {
 class _OtpPageState extends State<_OtpView> {
   final _otpController = TextEditingController();
 
+  void _resetPhone() {
+    context.read<AuthBloc>().add(AuthPhoneChangeRequested());
+  }
+
   void _verifyOtp(String otpCode) {
     context.read<AuthBloc>().add(AuthVerifyOtpRequested(otpCode));
   }
@@ -56,6 +60,7 @@ class _OtpPageState extends State<_OtpView> {
         builder: (context, state) {
           return AuthPageBody(
             child: AuthLeftPanelWithLogo(
+              onBack: _resetPhone,
               child: BlocBuilder<UserBloc, UserState>(
                 builder: (context, userState) {
                   if (userState is UserFetchLoading) {

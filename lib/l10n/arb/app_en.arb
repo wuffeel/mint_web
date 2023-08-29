@@ -18,5 +18,6 @@
   "invalidPhoneNumber": "Invalid phone number",
   "somethingWentWrong": "Something went wrong",
   "invalidOtpCode": "Invalid verification code",
-  "couldNotResendCodeTryAgain": "Could not resend code. Try again"
+  "couldNotResendCodeTryAgain": "Could not resend code. Try again",
+  "back": "Back"
 }

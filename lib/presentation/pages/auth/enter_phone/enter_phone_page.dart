@@ -26,8 +26,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
 
   VoidCallback? _getVerifyCallback(BuildContext context) {
     return _isPhoneValid
-        ? () =>
-        _verifyPhone(context, _phoneController.text.trim())
+        ? () => _verifyPhone(context, _phoneController.text.trim())
         : null;
   }
 
@@ -62,45 +61,44 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
           context.router.navigate(const OtpRoute());
         }
       },
-      builder: (context, state) =>
-          Scaffold(
-            body: AuthPageBody(
-              child: AuthLeftPanelWithLogo(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(l10n.signUp, style: MintTextStyles.title),
-                    const SizedBox(height: 58),
-                    PhoneFieldErrorDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      child: TextField(
-                        controller: _phoneController,
-                        decoration: InputDecoration(hintText: l10n.phoneNumber),
-                        onChanged: (phone) {
-                          setState(() {
-                            _isPhoneValid = _validatePhoneNumber(phone);
-                          });
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 18),
-                    if (state is! AuthVerifyPhoneLoading &&
-                        state is! AuthVerifyPhoneSuccess)
-                      ElevatedButton(
-                        onPressed: _getVerifyCallback(context),
-                        child: Text(l10n.signUp),
-                      )
-                    else
-                      const Center(child: CircularProgressIndicator()),
-                    const SizedBox(height: 8),
-                    const ConditionsAgreeText(),
-                    const SizedBox(height: 70),
-                    const Align(child: SignInText()),
-                  ],
+      builder: (context, state) => Scaffold(
+        body: AuthPageBody(
+          child: AuthLeftPanelWithLogo(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(l10n.signUp, style: MintTextStyles.title),
+                const SizedBox(height: 58),
+                PhoneFieldErrorDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  child: TextField(
+                    controller: _phoneController,
+                    decoration: InputDecoration(hintText: l10n.phoneNumber),
+                    onChanged: (phone) {
+                      setState(() {
+                        _isPhoneValid = _validatePhoneNumber(phone);
+                      });
+                    },
+                  ),
                 ),
-              ),
+                const SizedBox(height: 18),
+                if (state is! AuthVerifyPhoneLoading &&
+                    state is! AuthVerifyPhoneSuccess)
+                  ElevatedButton(
+                    onPressed: _getVerifyCallback(context),
+                    child: Text(l10n.signUp),
+                  )
+                else
+                  const Center(child: CircularProgressIndicator()),
+                const SizedBox(height: 8),
+                const ConditionsAgreeText(),
+                const SizedBox(height: 70),
+                const Align(child: SignInText()),
+              ],
             ),
           ),
+        ),
+      ),
     );
   }
 }

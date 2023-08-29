@@ -16,6 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this._verifyOtpUseCase,
   ) : super(AuthInitial()) {
     on<AuthVerifyPhoneRequested>(_onVerifyPhone);
+    on<AuthPhoneChangeRequested>((event, emit) => emit(AuthInitial()));
     on<AuthVerifyOtpRequested>(_onVerifyOtp);
     on<AuthOtpResendRequested>(_onOtpResend);
   }

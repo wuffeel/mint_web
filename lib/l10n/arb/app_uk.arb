@@ -18,5 +18,6 @@
   "invalidPhoneNumber": "Недійсний номер телефону",
   "somethingWentWrong": "Щось пішло не так",
   "invalidOtpCode": "Недійсний код підтвердження",
-  "couldNotResendCodeTryAgain": "Не вдалося повторно надіслати код. Спробуйте знову"
+  "couldNotResendCodeTryAgain": "Не вдалося повторно надіслати код. Спробуйте знову",
+  "back": "Назад"
 }
