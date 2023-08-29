@@ -27,28 +27,40 @@ class ResendOtpText extends StatelessWidget {
         final duration = context.select(
           (ResendTimerBloc bloc) => bloc.state.duration,
         );
-        return duration > 0
-            ? _ResendCodeTimer(duration: duration)
-            : state is! AuthOtpResendLoading
-                ? InkWell(
-                    onTap: () => _resendCode(context),
-                    child: Text(
-                      context.l10n.resendCode,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        height: 1.3,
-                        fontWeight: FontWeight.w500,
-                        color: MintColors.primaryBlueColor,
+        return Column(
+          children: <Widget>[
+            if (duration > 0)
+              _ResendCodeTimer(duration: duration)
+            else
+              state is! AuthOtpResendLoading
+                  ? InkWell(
+                      onTap: () => _resendCode(context),
+                      child: Text(
+                        context.l10n.resendCode,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          height: 1.3,
+                          fontWeight: FontWeight.w500,
+                          color: MintColors.primaryBlueColor,
+                        ),
+                      ),
+                    )
+                  : const Center(
+                      child: SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(strokeWidth: 2),
                       ),
                     ),
-                  )
-                : const Center(
-                    child: SizedBox(
-                      height: 24,
-                      width: 24,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  );
+            if (state is AuthOtpResendFailure) ...[
+              const SizedBox(height: 8),
+              Text(
+                'Could not resend code. Try again',
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ]
+          ],
+        );
       },
     );
   }

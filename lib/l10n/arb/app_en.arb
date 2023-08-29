@@ -12,5 +12,10 @@
   "resendCode": "Resend code",
   "youWillBeAbleToResendCodeIn": "You will able to re-send a code in",
   "oopsSomethingWentWrong": "Oops, something went wrong",
-  "tryAgain": "Try again"
+  "tryAgain": "Try again",
+  "toTryAgain": "Try again",
+  "tooManyRequestsTryAgainLater": "Too many requests. Try again later",
+  "invalidPhoneNumber": "Invalid phone number",
+  "somethingWentWrong": "Something went wrong",
+  "invalidOtpCode": "Invalid verification code"
 }

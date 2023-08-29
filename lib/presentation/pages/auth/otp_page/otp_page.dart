@@ -10,6 +10,7 @@ import '../../../bloc/resend_timer/ticker.dart';
 import '../../../bloc/user/user_bloc.dart';
 import '../widgets/auth_left_panel_with_logo.dart';
 import '../widgets/auth_page_body.dart';
+import 'widgets/otp_field_error_decoration.dart';
 import 'widgets/otp_sent_text.dart';
 import 'widgets/resend_otp_text.dart';
 
@@ -68,10 +69,13 @@ class _OtpPageState extends State<_OtpView> {
                       if (state is AuthVerifyPhoneSuccess)
                         OtpSentText(phoneNumber: state.phoneNumber),
                       const SizedBox(height: 34),
-                      TextField(
-                        controller: _otpController,
-                        decoration: InputDecoration(hintText: l10n.enterCode),
-                        onChanged: (_) => setState(() {}),
+                      OtpFieldErrorDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        child: TextField(
+                          controller: _otpController,
+                          decoration: InputDecoration(hintText: l10n.enterCode),
+                          onChanged: (_) => setState(() {}),
+                        ),
                       ),
                       const SizedBox(height: 18),
                       if (state is! AuthVerifyOtpLoading)

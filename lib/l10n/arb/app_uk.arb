@@ -12,5 +12,10 @@
   "resendCode": "Надіслати код повторно",
   "youWillBeAbleToResendCodeIn": "Ви зможете надіслати код повторно через",
   "oopsSomethingWentWrong": "Упс, щось пішло не так",
-  "tryAgain": "Спробувати знову"
+  "toTryAgain": "Спробувати знову",
+  "tryAgain": "Спробуйте ще раз",
+  "tooManyRequestsTryAgainLater": "Забагато запитів. Спробуйте пізніше",
+  "invalidPhoneNumber": "Недійсний номер телефону",
+  "somethingWentWrong": "Щось пішло не так",
+  "invalidOtpCode": "Недійсний код підтвердження"
 }

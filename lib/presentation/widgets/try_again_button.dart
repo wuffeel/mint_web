@@ -22,7 +22,7 @@ class TryAgainButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            context.l10n.tryAgain,
+            context.l10n.toTryAgain,
             style: tryAgainStyle ?? TextStyle(
               fontSize: 20,
               color: Theme.of(context).hintColor.withOpacity(0.6),

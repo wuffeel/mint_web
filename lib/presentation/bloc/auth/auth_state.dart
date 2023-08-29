@@ -46,4 +46,3 @@ class AuthOtpResendSuccess extends AuthVerifyPhoneSuccess {
 class AuthOtpResendFailure extends AuthVerifyPhoneSuccess {
   AuthOtpResendFailure({required super.phoneNumber});
 }
-
