@@ -7,20 +7,22 @@ import '../../router/app_router.gr.dart';
 import '../bloc/user/user_bloc.dart';
 
 @RoutePage()
-class UserWrapperPage extends AutoRouter with AutoRouteWrapper {
-  const UserWrapperPage({super.key});
+class LoginWrapperPage extends AutoRouter with AutoRouteWrapper {
+  const LoginWrapperPage({super.key});
 
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<UserBloc>()..add(UserInitializeRequested()),
+      create: (context) => getIt<UserBloc>()
+        ..add(UserInitializeRequested())
+        ..add(UserFetchRequested()),
       child: BlocListener<UserBloc, UserState>(
         listener: (context, state) {
           if (state is UserAuthenticated) {
-            context.router.navigate(const HomePlaceholderRoute());
+            context.router.replace(const MainWrapperRoute());
           }
           if (state is UserUnauthenticated) {
-            context.router.navigate(const AuthWrapperRoute());
+            context.router.replace(const AuthWrapperRoute());
           }
         },
         child: this,

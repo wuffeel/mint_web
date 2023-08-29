@@ -34,7 +34,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     UserInitializeRequested event,
     Emitter<UserState> emit,
   ) {
-    add(UserFetchRequested());
     return emit.forEach(
       _userController.user,
       onData: (user) =>

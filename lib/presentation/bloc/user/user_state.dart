@@ -20,5 +20,3 @@ class UserAuthenticated extends UserState {
 class UserLogOutFailure extends UserAuthenticated {
   UserLogOutFailure(super.user);
 }
-
-class UserLogOutSuccess extends UserState {}
