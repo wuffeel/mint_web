@@ -17,5 +17,6 @@
   "tooManyRequestsTryAgainLater": "Too many requests. Try again later",
   "invalidPhoneNumber": "Invalid phone number",
   "somethingWentWrong": "Something went wrong",
-  "invalidOtpCode": "Invalid verification code"
+  "invalidOtpCode": "Invalid verification code",
+  "couldNotResendCodeTryAgain": "Could not resend code. Try again"
 }

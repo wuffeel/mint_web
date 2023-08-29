@@ -55,7 +55,7 @@ class ResendOtpText extends StatelessWidget {
             if (state is AuthOtpResendFailure) ...[
               const SizedBox(height: 8),
               Text(
-                'Could not resend code. Try again',
+                context.l10n.couldNotResendCodeTryAgain,
                 style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ]
