@@ -5,10 +5,16 @@ import '../../../widgets/mint_back_button.dart';
 import '../../../widgets/mint_logo.dart';
 import 'auth_left_panel_container.dart';
 
-class AuthLeftPanelWithLogo extends StatelessWidget {
-  const AuthLeftPanelWithLogo({required this.child, super.key, this.onBack});
+class AuthLeftPanel extends StatelessWidget {
+  const AuthLeftPanel({
+    required this.child,
+    super.key,
+    this.hasLogo = true,
+    this.onBack,
+  });
 
   final Widget child;
+  final bool hasLogo;
   final VoidCallback? onBack;
 
   @override
@@ -18,7 +24,7 @@ class AuthLeftPanelWithLogo extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           const SizedBox(height: 30),
-          const MintLogo(),
+          if (hasLogo) const MintLogo(),
           if (context.router.canPop()) ...[
             const SizedBox(height: 8),
             MintBackButton(onBack: onBack),

@@ -6,7 +6,7 @@ import '../../../../l10n/l10n.dart';
 import '../../../../router/app_router.gr.dart';
 import '../../../../theme/mint_text_styles.dart';
 import '../../../bloc/auth/auth_bloc.dart';
-import '../widgets/auth_left_panel_with_logo.dart';
+import '../widgets/auth_left_panel.dart';
 import '../widgets/auth_page_body.dart';
 import 'widgets/conditions_agree_text.dart';
 import 'widgets/phone_field_error_decoration.dart';
@@ -63,7 +63,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
       },
       builder: (context, state) => Scaffold(
         body: AuthPageBody(
-          child: AuthLeftPanelWithLogo(
+          child: AuthLeftPanel(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[

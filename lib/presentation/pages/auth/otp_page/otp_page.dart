@@ -8,7 +8,7 @@ import '../../../bloc/auth/auth_bloc.dart';
 import '../../../bloc/resend_timer/resend_timer_bloc.dart';
 import '../../../bloc/resend_timer/ticker.dart';
 import '../../../bloc/user/user_bloc.dart';
-import '../widgets/auth_left_panel_with_logo.dart';
+import '../widgets/auth_left_panel.dart';
 import '../widgets/auth_page_body.dart';
 import 'widgets/otp_field_error_decoration.dart';
 import 'widgets/otp_sent_text.dart';
@@ -59,7 +59,7 @@ class _OtpPageState extends State<_OtpView> {
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           return AuthPageBody(
-            child: AuthLeftPanelWithLogo(
+            child: AuthLeftPanel(
               onBack: _resetPhone,
               child: BlocBuilder<UserBloc, UserState>(
                 builder: (context, userState) {

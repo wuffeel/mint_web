@@ -25,4 +25,10 @@ class MintTextStyles {
     height: 1.1,
     fontWeight: FontWeight.w500,
   );
+
+  static const body = TextStyle(
+    fontSize: 17,
+    height: 1.2,
+    letterSpacing: -0.01,
+  );
 }
