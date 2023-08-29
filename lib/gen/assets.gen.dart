@@ -17,8 +17,12 @@ class $AssetsSvgGen {
   /// File path: assets/svg/mint_logo.svg
   SvgGenImage get mintLogo => const SvgGenImage('assets/svg/mint_logo.svg');
 
+  /// File path: assets/svg/refresh_icon.svg
+  SvgGenImage get refreshIcon =>
+      const SvgGenImage('assets/svg/refresh_icon.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [mintLogo];
+  List<SvgGenImage> get values => [mintLogo, refreshIcon];
 }
 
 class Assets {

@@ -10,5 +10,7 @@
   "enterCode": "Введіть код",
   "codeWasSentTo": "Код було надіслано на",
   "resendCode": "Надіслати код повторно",
-  "youWillBeAbleToResendCodeIn": "Ви зможете надіслати код повторно через"
+  "youWillBeAbleToResendCodeIn": "Ви зможете надіслати код повторно через",
+  "oopsSomethingWentWrong": "Упс, щось пішло не так",
+  "tryAgain": "Спробувати знову"
 }

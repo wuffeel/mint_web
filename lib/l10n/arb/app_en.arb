@@ -10,5 +10,7 @@
   "enterCode": "Enter a code",
   "codeWasSentTo": "The code was sent to",
   "resendCode": "Resend code",
-  "youWillBeAbleToResendCodeIn": "You will able to re-send a code in"
+  "youWillBeAbleToResendCodeIn": "You will able to re-send a code in",
+  "oopsSomethingWentWrong": "Oops, something went wrong",
+  "tryAgain": "Try again"
 }
