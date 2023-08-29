@@ -68,14 +68,19 @@ class _OtpPageState extends State<_OtpView> {
                     onChanged: (_) => setState(() {}),
                   ),
                   const SizedBox(height: 18),
-                  ElevatedButton(
-                    onPressed: _otpController.text.isNotEmpty
-                        ? () => _verifyOtp(_otpController.text.trim())
-                        : null,
-                    child: Text(l10n.signUp),
-                  ),
+                  if (state is! AuthVerifyOtpLoading)
+                    ElevatedButton(
+                      onPressed: _otpController.text.isNotEmpty
+                          ? () => _verifyOtp(_otpController.text.trim())
+                          : null,
+                      child: Text(l10n.signUp),
+                    )
+                  else
+                    const Center(child: CircularProgressIndicator()),
                   const SizedBox(height: 8),
-                  const Align(child: ResendOtpText()),
+                  if (state is! AuthVerifyOtpLoading &&
+                      state is! AuthVerifyOtpSuccess)
+                    const Align(child: ResendOtpText()),
                 ],
               ),
             ),

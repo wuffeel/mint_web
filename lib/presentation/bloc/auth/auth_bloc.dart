@@ -28,6 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     try {
+      emit(AuthVerifyPhoneLoading());
       await _verifyPhoneUseCase(phoneNumber: event.phoneNumber);
       emit(AuthVerifyPhoneSuccess(phoneNumber: event.phoneNumber));
     } catch (error) {
@@ -44,8 +45,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (state is! AuthVerifyPhoneSuccess) return;
 
     try {
+      emit(AuthVerifyOtpLoading(phoneNumber: state.phoneNumber));
       await _verifyOtpUseCase(otpCode: event.otpCode);
-      emit(AuthVerifyOtpSuccess());
+      emit(AuthVerifyOtpSuccess(phoneNumber: state.phoneNumber));
     } catch (error) {
       if (kDebugMode) print('AuthVerifyOtpFailure: $error');
       _handleOtpVerificationFailure(error, emit, state);
@@ -58,13 +60,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     final state = this.state;
     if (state is! AuthVerifyPhoneSuccess) return;
+    final phone = state.phoneNumber;
 
     try {
-      await _verifyPhoneUseCase(phoneNumber: state.phoneNumber);
-      emit(AuthOtpResendSuccess(phoneNumber: state.phoneNumber));
+      emit(AuthOtpResendLoading(phoneNumber: phone));
+      await _verifyPhoneUseCase(phoneNumber: phone);
+      emit(AuthOtpResendSuccess(phoneNumber: phone));
     } catch (error) {
       if (kDebugMode) print('AuthOtpResendFailure: $error');
-      emit(AuthOtpResendFailure(phoneNumber: state.phoneNumber));
+      emit(AuthOtpResendFailure(phoneNumber: phone));
     }
   }
 

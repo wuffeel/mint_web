@@ -48,13 +48,13 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return BlocListener<AuthBloc, AuthState>(
+    return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthVerifyPhoneSuccess) {
           context.router.navigate(const OtpRoute());
         }
       },
-      child: Scaffold(
+      builder: (context, state) => Scaffold(
         body: AuthPageBody(
           child: AuthLeftPanelWithLogo(
             child: Column(
@@ -72,13 +72,19 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                   },
                 ),
                 const SizedBox(height: 18),
-                ElevatedButton(
-                  onPressed: _isPhoneValid ? () => _verifyPhone(
-                    context,
-                    _phoneController.text.trim(),
-                  ) : null,
-                  child: Text(l10n.signUp),
-                ),
+                if (state is! AuthVerifyPhoneLoading &&
+                    state is! AuthVerifyPhoneSuccess)
+                  ElevatedButton(
+                    onPressed: _isPhoneValid
+                        ? () => _verifyPhone(
+                              context,
+                              _phoneController.text.trim(),
+                            )
+                        : null,
+                    child: Text(l10n.signUp),
+                  )
+                else
+                  const Center(child: CircularProgressIndicator()),
                 const SizedBox(height: 8),
                 const ConditionsAgreeText(),
                 const SizedBox(height: 70),
