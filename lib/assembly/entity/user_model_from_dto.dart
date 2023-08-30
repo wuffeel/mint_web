@@ -18,6 +18,7 @@ class UserModelFromDto implements Factory<Future<UserModel>, UserModelDto> {
     photoUrl: await _service.getLinkByStorageUrl(param.photoUrl),
     firstName: param.firstName,
     lastName: param.lastName,
+    email: param.email,
     dateOfBirth: param.dateOfBirth,
   );
 }

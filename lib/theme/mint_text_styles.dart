@@ -28,7 +28,13 @@ class MintTextStyles {
 
   static const body = TextStyle(
     fontSize: 17,
-    height: 1.2,
+    height: 1.3,
     letterSpacing: -0.01,
+  );
+
+  static const headline1 = TextStyle(
+    fontSize: 17,
+    fontWeight: FontWeight.w600,
+    height: 1.3,
   );
 }

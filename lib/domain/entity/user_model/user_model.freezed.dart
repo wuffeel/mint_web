@@ -21,6 +21,7 @@ mixin _$UserModel {
   String? get photoUrl => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
   DateTime? get dateOfBirth => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -39,6 +40,7 @@ abstract class $UserModelCopyWith<$Res> {
       String? photoUrl,
       String? firstName,
       String? lastName,
+      String? email,
       DateTime? dateOfBirth});
 }
 
@@ -60,6 +62,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? photoUrl = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
+    Object? email = freezed,
     Object? dateOfBirth = freezed,
   }) {
     return _then(_value.copyWith(
@@ -83,6 +86,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
       dateOfBirth: freezed == dateOfBirth
           ? _value.dateOfBirth
           : dateOfBirth // ignore: cast_nullable_to_non_nullable
@@ -104,6 +111,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       String? photoUrl,
       String? firstName,
       String? lastName,
+      String? email,
       DateTime? dateOfBirth});
 }
 
@@ -123,6 +131,7 @@ class __$$_UserModelCopyWithImpl<$Res>
     Object? photoUrl = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
+    Object? email = freezed,
     Object? dateOfBirth = freezed,
   }) {
     return _then(_$_UserModel(
@@ -146,6 +155,10 @@ class __$$_UserModelCopyWithImpl<$Res>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
       dateOfBirth: freezed == dateOfBirth
           ? _value.dateOfBirth
           : dateOfBirth // ignore: cast_nullable_to_non_nullable
@@ -163,6 +176,7 @@ class _$_UserModel implements _UserModel {
       this.photoUrl,
       this.firstName,
       this.lastName,
+      this.email,
       this.dateOfBirth});
 
   @override
@@ -176,11 +190,13 @@ class _$_UserModel implements _UserModel {
   @override
   final String? lastName;
   @override
+  final String? email;
+  @override
   final DateTime? dateOfBirth;
 
   @override
   String toString() {
-    return 'UserModel(id: $id, phoneNumber: $phoneNumber, photoUrl: $photoUrl, firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth)';
+    return 'UserModel(id: $id, phoneNumber: $phoneNumber, photoUrl: $photoUrl, firstName: $firstName, lastName: $lastName, email: $email, dateOfBirth: $dateOfBirth)';
   }
 
   @override
@@ -197,13 +213,14 @@ class _$_UserModel implements _UserModel {
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
+            (identical(other.email, email) || other.email == email) &&
             (identical(other.dateOfBirth, dateOfBirth) ||
                 other.dateOfBirth == dateOfBirth));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, phoneNumber, photoUrl, firstName, lastName, dateOfBirth);
+  int get hashCode => Object.hash(runtimeType, id, phoneNumber, photoUrl,
+      firstName, lastName, email, dateOfBirth);
 
   @JsonKey(ignore: true)
   @override
@@ -219,6 +236,7 @@ abstract class _UserModel implements UserModel {
       final String? photoUrl,
       final String? firstName,
       final String? lastName,
+      final String? email,
       final DateTime? dateOfBirth}) = _$_UserModel;
 
   @override
@@ -231,6 +249,8 @@ abstract class _UserModel implements UserModel {
   String? get firstName;
   @override
   String? get lastName;
+  @override
+  String? get email;
   @override
   DateTime? get dateOfBirth;
   @override

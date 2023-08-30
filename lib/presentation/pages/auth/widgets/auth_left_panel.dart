@@ -11,11 +11,13 @@ class AuthLeftPanel extends StatelessWidget {
     super.key,
     this.hasLogo = true,
     this.onBack,
+    this.forceBackButton = false,
   });
 
   final Widget child;
   final bool hasLogo;
   final VoidCallback? onBack;
+  final bool forceBackButton;
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +27,11 @@ class AuthLeftPanel extends StatelessWidget {
         children: <Widget>[
           const SizedBox(height: 30),
           if (hasLogo) const MintLogo(),
-          if (context.router.canPop()) ...[
+          if (context.router.canPop() || forceBackButton) ...[
             const SizedBox(height: 8),
             MintBackButton(onBack: onBack),
           ],
+          const SizedBox(height: 30),
           const Spacer(flex: 3),
           child,
           const Spacer(flex: 5),

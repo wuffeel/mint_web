@@ -19,7 +19,9 @@ class MainWrapperPage extends AutoRouter with AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<UserBloc>()..add(UserInitializeRequested()),
+      create: (context) => getIt<UserBloc>()
+        ..add(UserInitializeRequested())
+        ..add(UserFetchRequested()),
       child: BlocListener<UserBloc, UserState>(
         listener: _logOutListener,
         child: this,

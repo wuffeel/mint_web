@@ -15,6 +15,7 @@ class UserModelDto with _$UserModelDto {
     String? photoUrl,
     String? firstName,
     String? lastName,
+    String? email,
     // ignore: invalid_annotation_target
     @JsonKey(fromJson: DateUtils.tryConvertToDateTime) DateTime? dateOfBirth,
   }) = _UserModelDto;

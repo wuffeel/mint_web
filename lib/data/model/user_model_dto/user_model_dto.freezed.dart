@@ -24,7 +24,8 @@ mixin _$UserModelDto {
   String? get phoneNumber => throw _privateConstructorUsedError;
   String? get photoUrl => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
-  String? get lastName =>
+  String? get lastName => throw _privateConstructorUsedError;
+  String? get email =>
       throw _privateConstructorUsedError; // ignore: invalid_annotation_target
   @JsonKey(fromJson: DateUtils.tryConvertToDateTime)
   DateTime? get dateOfBirth => throw _privateConstructorUsedError;
@@ -47,6 +48,7 @@ abstract class $UserModelDtoCopyWith<$Res> {
       String? photoUrl,
       String? firstName,
       String? lastName,
+      String? email,
       @JsonKey(fromJson: DateUtils.tryConvertToDateTime)
       DateTime? dateOfBirth});
 }
@@ -69,6 +71,7 @@ class _$UserModelDtoCopyWithImpl<$Res, $Val extends UserModelDto>
     Object? photoUrl = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
+    Object? email = freezed,
     Object? dateOfBirth = freezed,
   }) {
     return _then(_value.copyWith(
@@ -92,6 +95,10 @@ class _$UserModelDtoCopyWithImpl<$Res, $Val extends UserModelDto>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
       dateOfBirth: freezed == dateOfBirth
           ? _value.dateOfBirth
           : dateOfBirth // ignore: cast_nullable_to_non_nullable
@@ -114,6 +121,7 @@ abstract class _$$_UserModelDtoCopyWith<$Res>
       String? photoUrl,
       String? firstName,
       String? lastName,
+      String? email,
       @JsonKey(fromJson: DateUtils.tryConvertToDateTime)
       DateTime? dateOfBirth});
 }
@@ -134,6 +142,7 @@ class __$$_UserModelDtoCopyWithImpl<$Res>
     Object? photoUrl = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
+    Object? email = freezed,
     Object? dateOfBirth = freezed,
   }) {
     return _then(_$_UserModelDto(
@@ -157,6 +166,10 @@ class __$$_UserModelDtoCopyWithImpl<$Res>
           ? _value.lastName
           : lastName // ignore: cast_nullable_to_non_nullable
               as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
       dateOfBirth: freezed == dateOfBirth
           ? _value.dateOfBirth
           : dateOfBirth // ignore: cast_nullable_to_non_nullable
@@ -174,6 +187,7 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
       this.photoUrl,
       this.firstName,
       this.lastName,
+      this.email,
       @JsonKey(fromJson: DateUtils.tryConvertToDateTime) this.dateOfBirth});
 
   factory _$_UserModelDto.fromJson(Map<String, dynamic> json) =>
@@ -189,6 +203,8 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
   final String? firstName;
   @override
   final String? lastName;
+  @override
+  final String? email;
 // ignore: invalid_annotation_target
   @override
   @JsonKey(fromJson: DateUtils.tryConvertToDateTime)
@@ -196,7 +212,7 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserModelDto(id: $id, phoneNumber: $phoneNumber, photoUrl: $photoUrl, firstName: $firstName, lastName: $lastName, dateOfBirth: $dateOfBirth)';
+    return 'UserModelDto(id: $id, phoneNumber: $phoneNumber, photoUrl: $photoUrl, firstName: $firstName, lastName: $lastName, email: $email, dateOfBirth: $dateOfBirth)';
   }
 
   @override
@@ -209,6 +225,7 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
       ..add(DiagnosticsProperty('photoUrl', photoUrl))
       ..add(DiagnosticsProperty('firstName', firstName))
       ..add(DiagnosticsProperty('lastName', lastName))
+      ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('dateOfBirth', dateOfBirth));
   }
 
@@ -226,14 +243,15 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
                 other.firstName == firstName) &&
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
+            (identical(other.email, email) || other.email == email) &&
             (identical(other.dateOfBirth, dateOfBirth) ||
                 other.dateOfBirth == dateOfBirth));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, phoneNumber, photoUrl, firstName, lastName, dateOfBirth);
+  int get hashCode => Object.hash(runtimeType, id, phoneNumber, photoUrl,
+      firstName, lastName, email, dateOfBirth);
 
   @JsonKey(ignore: true)
   @override
@@ -256,6 +274,7 @@ abstract class _UserModelDto implements UserModelDto {
       final String? photoUrl,
       final String? firstName,
       final String? lastName,
+      final String? email,
       @JsonKey(fromJson: DateUtils.tryConvertToDateTime)
       final DateTime? dateOfBirth}) = _$_UserModelDto;
 
@@ -272,6 +291,8 @@ abstract class _UserModelDto implements UserModelDto {
   String? get firstName;
   @override
   String? get lastName;
+  @override
+  String? get email;
   @override // ignore: invalid_annotation_target
   @JsonKey(fromJson: DateUtils.tryConvertToDateTime)
   DateTime? get dateOfBirth;

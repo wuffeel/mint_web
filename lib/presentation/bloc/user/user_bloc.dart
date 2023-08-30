@@ -33,7 +33,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Future<void> _userInitializer(
     UserInitializeRequested event,
     Emitter<UserState> emit,
-  ) {
+  ) async {
     return emit.forEach(
       _userController.user,
       onData: (user) =>
@@ -45,6 +45,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     UserFetchRequested event,
     Emitter<UserState> emit,
   ) async {
+    final state = this.state;
+    if (state is UserAuthenticated) return;
+
     try {
       emit(UserFetchLoading());
       final user = await _fetchUserUseCase();

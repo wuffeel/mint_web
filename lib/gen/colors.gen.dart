@@ -39,4 +39,7 @@ class MintColors {
 
   /// Color: #3269E1
   static const Color stepperBlue = Color(0xFF3269E1);
+
+  /// Color: #B3B3B3
+  static const Color stepperGrey = Color(0xFFB3B3B3);
 }
