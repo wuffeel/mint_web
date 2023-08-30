@@ -5,7 +5,7 @@ import '../../domain/entity/user_model/user_model.dart';
 import '../../domain/service/abstract/storage_service.dart';
 import '../factory.dart';
 
-@Injectable(as: Factory<UserModel, UserModelDto>)
+@Injectable(as: Factory<Future<UserModel>, UserModelDto>)
 class UserModelFromDto implements Factory<Future<UserModel>, UserModelDto> {
   UserModelFromDto(this._service);
 
