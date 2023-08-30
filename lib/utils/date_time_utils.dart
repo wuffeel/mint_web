@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class DateUtils {
+class DateTimeUtils {
   static DateTime convertToDateTime(dynamic value) {
     if (value is DateTime) {
       return value;
@@ -21,5 +21,13 @@ class DateUtils {
       return DateTime.parse(value);
     }
     return null;
+  }
+
+  static DateTime findMostRecentSunday(DateTime currentDate) {
+    final daysSinceSunday = (currentDate.weekday + 7 - DateTime.sunday) % 7;
+    final mostRecentSunday = currentDate.subtract(
+      Duration(days: daysSinceSunday),
+    );
+    return mostRecentSunday;
   }
 }

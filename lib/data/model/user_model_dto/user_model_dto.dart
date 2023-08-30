@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../utils/date_utils.dart';
+import '../../../utils/date_time_utils.dart';
 
 part 'user_model_dto.freezed.dart';
 
@@ -17,7 +17,7 @@ class UserModelDto with _$UserModelDto {
     String? lastName,
     String? email,
     // ignore: invalid_annotation_target
-    @JsonKey(fromJson: DateUtils.tryConvertToDateTime) DateTime? dateOfBirth,
+    @JsonKey(fromJson: DateTimeUtils.tryConvertToDateTime) DateTime? dateOfBirth,
   }) = _UserModelDto;
 
   factory UserModelDto.fromJson(Map<String, dynamic> json) =>
