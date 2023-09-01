@@ -33,7 +33,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _verifyPhoneUseCase(phoneNumber: event.phoneNumber);
       emit(AuthVerifyPhoneSuccess(phoneNumber: event.phoneNumber));
     } catch (error) {
-      if (kDebugMode) print('AuthVerifyPhoneFailure: $error');
+      debugPrint('AuthVerifyPhoneFailure: $error');
       _handlePhoneVerificationFailure(error, emit);
     }
   }
@@ -50,7 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _verifyOtpUseCase(otpCode: event.otpCode);
       emit(AuthVerifyOtpSuccess(phoneNumber: state.phoneNumber));
     } catch (error) {
-      if (kDebugMode) print('AuthVerifyOtpFailure: $error');
+      debugPrint('AuthVerifyOtpFailure: $error');
       _handleOtpVerificationFailure(error, emit, state);
     }
   }
@@ -68,7 +68,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _verifyPhoneUseCase(phoneNumber: phone);
       emit(AuthOtpResendSuccess(phoneNumber: phone));
     } catch (error) {
-      if (kDebugMode) print('AuthOtpResendFailure: $error');
+      debugPrint('AuthOtpResendFailure: $error');
       emit(AuthOtpResendFailure(phoneNumber: phone));
     }
   }

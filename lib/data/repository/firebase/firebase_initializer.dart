@@ -41,7 +41,7 @@ class FirebaseInitializer {
       final app = await Firebase.initializeApp(options: _getFirebaseOptions());
       _firebaseCompleter.complete(app);
     } catch (e, s) {
-      if (kDebugMode) print('Firebase initialization error: $e');
+      debugPrint('Firebase initialization error: $e');
       _firebaseCompleter.completeError(e, s);
     }
   }

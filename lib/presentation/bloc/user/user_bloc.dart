@@ -53,7 +53,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       final user = await _fetchUserUseCase();
       _userController.addToUserStream(user);
     } catch (error) {
-      if (kDebugMode) print('UserFetchFailure: $error');
+      debugPrint('UserFetchFailure: $error');
       emit(UserFetchFailure());
     }
   }
@@ -69,7 +69,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       await _logOutUseCase();
       _userController.addToUserStream(null);
     } catch (error) {
-      if (kDebugMode) print('UserLogOutFailure: $error');
+      debugPrint('UserLogOutFailure: $error');
       emit(UserLogOutFailure(state.user));
     }
   }
