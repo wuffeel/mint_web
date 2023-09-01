@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class DateTimeUtils {
   static DateTime convertToDateTime(dynamic value) {
@@ -23,11 +24,70 @@ class DateTimeUtils {
     return null;
   }
 
-  static DateTime findMostRecentSunday(DateTime currentDate) {
-    final daysSinceSunday = (currentDate.weekday + 7 - DateTime.sunday) % 7;
-    final mostRecentSunday = currentDate.subtract(
-      Duration(days: daysSinceSunday),
+  /// Returns most recent [weekday].
+  ///
+  /// [weekday] is a number, where [1] stands for 'Monday'.
+  ///
+  /// Example use:
+  /// ```
+  /// final weekday = findMostRecentWeekday(DateTime.sunday);
+  /// ```
+  static DateTime findMostRecentWeekday([int weekday = 1]) {
+    final now = DateTime.now();
+    final daysSinceWeekday = (now.weekday + 7 - weekday) % 7;
+
+    final recentWeekday = now.subtract(Duration(days: daysSinceWeekday));
+    return recentWeekday;
+  }
+
+  /// Returns list of shor weekday names for specified [locale].
+  ///
+  /// [startWeekday] stands for weekday from which weekday list begins.
+  /// See [findMostRecentWeekday].
+  ///
+  /// [locale] stands for locale in which weekdays should be returned.
+  ///
+  /// Example use:
+  /// ```
+  /// final shortWeekdays = getShortWeekdays(); // ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
+  /// ```
+  static List<String> getShortWeekdays({
+    int startWeekday = 1,
+    String locale = 'en_US',
+  }) {
+    final mostRecentSunday = findMostRecentWeekday(startWeekday);
+    final list = List<String>.generate(
+      7,
+      (index) => DateFormat.E(locale).format(
+        mostRecentSunday.add(Duration(days: index)),
+      ),
     );
-    return mostRecentSunday;
+    return list;
+  }
+
+  /// Returns weekday names.
+  ///
+  /// [startWeekday] stands for weekday from which weekday list begins.
+  /// See [findMostRecentWeekday].
+  ///
+  /// [locale] stands for locale in which weekdays should be returned.
+  ///
+  /// Example use:
+  /// ```
+  /// // ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+  /// final weekdays = getWeekdays();
+  /// ```
+  static List<String> getWeekdays({
+    int startWeekday = 1,
+    String locale = 'en_US',
+  }) {
+    final firstWeekday = findMostRecentWeekday(startWeekday);
+
+    final shortWeekdays = List<String>.generate(7, (index) {
+      final weekday = firstWeekday.add(Duration(days: index));
+      return DateFormat.EEEE(locale).format(weekday);
+    });
+
+    return shortWeekdays;
   }
 }

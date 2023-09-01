@@ -42,5 +42,9 @@
   "yourAvailability": "Ваша графік роботи",
   "pleaseProvideYourGeneralAvailability": "Будь ласка, надайте свій загальний графік протягом тижня, пізніше ви зможете його редагувати в розділі \"Графік роботи\"",
   "startTime": "Час початку",
-  "endTime": "Час завершення"
+  "endTime": "Час завершення",
+  "fieldIsRequired": "Обов'язкове поле",
+  "invalidEmail": "Некоректна електронна пошта",
+  "selectAtLeastOneSkill": "Оберіть хоча б один навичок",
+  "enterCorrectPrice": "Введіть корректну ціну"
 }

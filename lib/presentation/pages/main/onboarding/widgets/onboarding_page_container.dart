@@ -17,7 +17,7 @@ class OnboardingPageContainer extends StatelessWidget {
 
   final String title;
   final String subTitle;
-  final VoidCallback onNext;
+  final VoidCallback? onNext;
   final Widget child;
   final bool forceBackButton;
   final VoidCallback? onBack;

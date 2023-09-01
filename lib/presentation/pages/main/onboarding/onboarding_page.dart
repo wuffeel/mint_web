@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/entity/experience_model.dart';
-import '../../../../domain/entity/user_model/user_model.dart';
+import '../../../../domain/entity/onboarding/onboarding.dart';
+import '../../../bloc/onboarding/onboarding_bloc.dart';
 import '../../../bloc/user/user_bloc.dart';
 import '../../../widgets/error_try_again.dart';
 import '../../auth/widgets/auth_left_panel_container.dart';
@@ -16,20 +17,27 @@ import 'widgets/pricing_widget.dart';
 import 'widgets/professional_skills_widget.dart';
 
 @RoutePage()
-class OnboardingPage extends StatefulWidget {
+class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
 
   @override
-  State<OnboardingPage> createState() => _OnboardingPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => OnboardingBloc(),
+      child: const _OnboardingView(),
+    );
+  }
 }
 
-class _OnboardingPageState extends State<OnboardingPage> {
-  var _userInfo = const UserModel(id: '');
-  List<String>? _specializations;
-  var _experience = ExperienceModel();
-  int _pricing = 0;
-  var _workInfo = <String, Map<String, String>>{};
-  var _timeOfDayInfo = <String, Map<String, TimeOfDay?>?>{};
+class _OnboardingView extends StatefulWidget {
+  const _OnboardingView();
+
+  @override
+  State<_OnboardingView> createState() => _OnboardingViewState();
+}
+
+class _OnboardingViewState extends State<_OnboardingView> {
+  int _currentWorkDay = 0;
 
   final _controller = PageController();
   int _currentStep = 1;
@@ -47,13 +55,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
     });
   }
 
-  void _nextPage() {
+  void _nextPage(OnboardingForm form) {
     setState(() {
       _controller.nextPage(
         duration: _pageSwitchDuration,
         curve: _pageSwitchCurve,
       );
     });
+    context.read<OnboardingBloc>().add(OnboardingLogEvent(form));
   }
 
   @override
@@ -85,56 +94,55 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   ),
                 ),
                 Expanded(
-                  child: PageView(
-                    controller: _controller,
-                    onPageChanged: (page) => setState(
-                      () => _currentStep = page + 1,
-                    ),
-                    children: <Widget>[
-                      BasicInfoWidget(
-                        onNext: _nextPage,
-                        onDataChange: (info) => setState(
-                          () => _userInfo = info,
-                        ),
-                        userInfo: _userInfo,
-                      ),
-                      ProfessionalSkillsWidget(
-                        onBack: _previousPage,
-                        onNext: _nextPage,
-                        selectedSpecializations: _specializations,
-                        onChange: (specializations) => setState(
-                          () => _specializations = specializations,
-                        ),
-                      ),
-                      ExperienceWidget(
-                        onBack: _previousPage,
-                        onNext: _nextPage,
-                        experienceData: _experience,
-                        onChange: (experience) => setState(
-                          () => _experience = experience,
-                        ),
-                      ),
-                      PricingWidget(
-                        onBack: _previousPage,
-                        onNext: _nextPage,
-                        selectedPricing: _pricing,
-                        onChange: (pricing) => setState(
-                          () => _pricing = pricing,
-                        ),
-                      ),
-                      AvailabilityWidget(
-                        onBack: _previousPage,
-                        onNext: _nextPage,
-                        workInfo: _workInfo,
-                        timeOfDayInfo: _timeOfDayInfo,
-                        onWorkInfoChange: (workInfo) => setState(
-                          () => _workInfo = workInfo,
-                        ),
-                        onTimeInfoChange: (timeInfo) => setState(
-                          () => _timeOfDayInfo = timeInfo,
-                        ),
-                      ),
-                    ],
+                  child: BlocBuilder<OnboardingBloc, OnboardingState>(
+                    builder: (context, state) {
+                      return OnboardingFormBuilder(
+                        model: state.model,
+                        builder: (context, formModel, child) {
+                          final workDayForm = formModel
+                              .availabilityWorkDayInfoForm[_currentWorkDay];
+                          return PageView(
+                            controller: _controller,
+                            onPageChanged: (page) => setState(
+                              () => _currentStep = page + 1,
+                            ),
+                            children: <Widget>[
+                              BasicInfoWidget(
+                                formModel.basicInfoForm,
+                                onNext: () => _nextPage(formModel),
+                              ),
+                              ProfessionalSkillsWidget(
+                                formModel.specializationsControl,
+                                onBack: _previousPage,
+                                onNext: () => _nextPage(formModel),
+                              ),
+                              ExperienceWidget(
+                                formModel.experienceInfoForm,
+                                onBack: _previousPage,
+                                onNext: () => _nextPage(formModel),
+                              ),
+                              PricingWidget(
+                                formModel.pricingControl,
+                                onBack: _previousPage,
+                                onNext: () => _nextPage(formModel),
+                              ),
+                              AvailabilityWidget(
+                                formModel.availabilityControl,
+                                onBack: _previousPage,
+                                onNext: formModel.availabilityControl.valid
+                                    ? () => _nextPage(formModel)
+                                    : null,
+                                currentIndex: _currentWorkDay,
+                                currentWorkDayForm: workDayForm,
+                                onWorkDayIndexChange: (index) => setState(
+                                  () => _currentWorkDay = index,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                   ),
                 ),
               ],

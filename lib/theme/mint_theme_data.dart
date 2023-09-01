@@ -37,7 +37,7 @@ class MintThemeData {
     contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
     errorStyle: const TextStyle(fontSize: 12, height: 1.3),
     errorBorder: OutlineInputBorder(
-      borderSide: BorderSide.none,
+      borderSide: const BorderSide(color: MintColors.errorColor),
       borderRadius: BorderRadius.circular(8),
     ),
     hintStyle: TextStyle(

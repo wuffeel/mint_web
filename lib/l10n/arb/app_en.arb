@@ -42,5 +42,9 @@
   "yourAvailability": "Your availability",
   "pleaseProvideYourGeneralAvailability": "Please provide your general availability throughout a week, later you can edit in the Availability section",
   "startTime": "Start time",
-  "endTime": "End time"
+  "endTime": "End time",
+  "fieldIsRequired": "Field is required",
+  "invalidEmail": "Invalid e-mail",
+  "selectAtLeastOneSkill": "Select at least one skill",
+  "enterCorrectPrice": "Enter correct price"
 }

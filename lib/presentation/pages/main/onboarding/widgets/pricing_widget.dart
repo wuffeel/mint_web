@@ -1,52 +1,97 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../../../../l10n/l10n.dart';
+import '../../../../bloc/onboarding/onboarding_bloc.dart';
 import 'onboarding_page_container.dart';
 
-class PricingWidget extends StatefulWidget {
-  const PricingWidget({
+class PricingWidget extends StatelessWidget {
+  const PricingWidget(
+    this.pricingControl, {
     required this.onBack,
     required this.onNext,
-    required this.selectedPricing,
-    required this.onChange,
     super.key,
   });
 
   final VoidCallback onBack;
   final VoidCallback onNext;
-  final int selectedPricing;
-  final void Function(int) onChange;
+  final FormControl<int> pricingControl;
 
-  @override
-  State<PricingWidget> createState() => _PricingWidgetState();
-}
-
-class _PricingWidgetState extends State<PricingWidget> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return OnboardingPageContainer(
-      title: l10n.pricing,
-      subTitle: l10n.setCompetitivePrice,
-      onBack: widget.onBack,
-      onNext: widget.onNext,
-      child: TextFormField(
-        decoration: const InputDecoration(counterText: ''),
-        initialValue: '₴${widget.selectedPricing}/hr',
-        inputFormatters: [_PricingInputFormatter()],
-        maxLength: 9,
-        onChanged: (pricing) {
-          final price = pricing.split('/').first;
-          final priceWithoutCurrency = price.substring(1, price.length);
-          widget.onChange(int.parse(priceWithoutCurrency));
-        },
-      ),
+    return BlocBuilder<OnboardingBloc, OnboardingState>(
+      builder: (context, state) {
+        return ReactiveFormField(
+          formControl: pricingControl,
+          builder: (field) {
+            final error = field.control.errors;
+            return OnboardingPageContainer(
+              title: l10n.pricing,
+              subTitle: l10n.setCompetitivePrice,
+              onBack: onBack,
+              onNext: field.control.valid ? onNext : null,
+              child: _TextField(
+                errorText: error.isNotEmpty && field.control.touched
+                    ? l10n.enterCorrectPrice
+                    : null,
+                selectedPricing: field.control.value ?? 0,
+                onChange: (value) {
+                  pricingControl.value = value;
+                  if (!pricingControl.touched) {
+                    pricingControl.markAsTouched();
+                  }
+                },
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _TextField extends StatelessWidget {
+  const _TextField({
+    required this.selectedPricing,
+    required this.onChange,
+    this.errorText,
+  });
+
+  final int selectedPricing;
+  final void Function(int) onChange;
+  final String? errorText;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      decoration: InputDecoration(counterText: '', errorText: errorText),
+      initialValue: '₴$selectedPricing/hr',
+      inputFormatters: [_PricingInputFormatter()],
+      maxLength: 9,
+      onChanged: (pricing) {
+        onChange(_PricingInputFormatter.getPrice(pricing));
+      },
     );
   }
 }
 
 class _PricingInputFormatter extends TextInputFormatter {
+  static int getPrice(String pricing) {
+    final symbolArray = <String>[];
+    for (var i = 0; i < pricing.length; i++) {
+      try {
+        int.parse(pricing[i]);
+        symbolArray.add(pricing[i]);
+      } catch (_) {
+        continue;
+      }
+    }
+    return int.parse(symbolArray.join());
+  }
+
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,

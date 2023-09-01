@@ -4,15 +4,15 @@ import '../../../../../gen/colors.gen.dart';
 
 class AvailabilityWeekdayList extends StatelessWidget {
   const AvailabilityWeekdayList({
-    required this.selectedWeekday,
+    required this.currentWeekday,
     required this.shortWeekdays,
     required this.onWeekdaySelect,
     super.key,
   });
 
-  final String selectedWeekday;
+  final int currentWeekday;
   final List<String> shortWeekdays;
-  final void Function(String) onWeekdaySelect;
+  final void Function(int) onWeekdaySelect;
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +21,13 @@ class AvailabilityWeekdayList extends StatelessWidget {
       children: List.generate(
         shortWeekdays.length,
         (index) {
-          final weekday = shortWeekdays[index];
+          final shortWeekday = shortWeekdays[index];
           return InkWell(
-            onTap: () => onWeekdaySelect(weekday),
+            onTap: () => onWeekdaySelect(index),
             child: _WeekdayContainer(
-              shortWeekday: weekday,
-              isSelected: weekday == selectedWeekday,
-              size: 48,
+              shortWeekday: shortWeekday,
+              isSelected: index == currentWeekday,
+              height: 48,
             ),
           );
         },
@@ -40,32 +40,31 @@ class _WeekdayContainer extends StatelessWidget {
   const _WeekdayContainer({
     required this.shortWeekday,
     required this.isSelected,
-    required this.size,
+    required this.height,
   });
 
   final String shortWeekday;
   final bool isSelected;
-  final double size;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
+    return AnimatedContainer(
+      height: height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: isSelected ? MintColors.stepperBlue : MintColors.brandBlue4,
       ),
-      child: SizedBox(
-        height: size,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 15),
-          child: Center(
-            child: Text(
-              shortWeekday,
-              style: TextStyle(
-                fontSize: 14,
-                color: isSelected ? Colors.white : Colors.black,
-                height: 1.3,
-              ),
+      duration: const Duration(milliseconds: 200),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 15),
+        child: Center(
+          child: Text(
+            shortWeekday,
+            style: TextStyle(
+              fontSize: 14,
+              color: isSelected ? Colors.white : Colors.black,
+              height: 1.3,
             ),
           ),
         ),

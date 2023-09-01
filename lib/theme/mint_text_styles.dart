@@ -37,4 +37,10 @@ class MintTextStyles {
     fontWeight: FontWeight.w600,
     height: 1.3,
   );
+
+  static const error = TextStyle(
+    fontSize: 12,
+    height: 1.3,
+    color: MintColors.errorColor,
+  );
 }
