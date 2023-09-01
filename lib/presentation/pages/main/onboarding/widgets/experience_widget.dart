@@ -26,8 +26,6 @@ class ExperienceWidget extends StatelessWidget {
     return errors.containsKey(ValidationMessage.requiredTrue);
   }
 
-  bool _isTouched(FormControl<dynamic> control) => control.touched;
-
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;

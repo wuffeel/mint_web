@@ -2,7 +2,6 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../domain/entity/experience_model.dart';
 import '../../../../domain/entity/onboarding/onboarding.dart';
 import '../../../bloc/onboarding/onboarding_bloc.dart';
 import '../../../bloc/user/user_bloc.dart';

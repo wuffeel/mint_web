@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-import '../../../../../domain/entity/onboarding/onboarding.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../../theme/mint_text_styles.dart';
 import '../../../../widgets/mint_multi_item_selection.dart';
