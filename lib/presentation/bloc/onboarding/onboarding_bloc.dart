@@ -1,31 +1,48 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../domain/entity/onboarding/onboarding.dart';
+import '../../../domain/usecase/fetch_specializations_use_case.dart';
 import '../../../utils/date_time_utils.dart';
 
 part 'onboarding_event.dart';
 
 part 'onboarding_state.dart';
 
+@injectable
 class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
-  OnboardingBloc()
+  OnboardingBloc(this._fetchSpecializationsUseCase)
       : super(
           OnboardingState(
-            model: Onboarding(availability: _getAvailabilitySkeleton()),
+            model: Onboarding(
+              basicInfo: BasicInfo(),
+              experienceInfo: ExperienceInfo(),
+              availability: _getAvailabilitySkeleton(),
+            ),
           ),
         ) {
-    on<OnboardingLogEvent>((event, emit) {
-      print('basicInfo: ${event.form.basicInfoControl?.value}');
-      print('specializations: ${event.form.specializationsControl.value}');
-      print('availability: ${event.form.availabilityControl.value}');
-      print('experienceInfo: ${event.form.experienceInfoControl?.value}');
-      print('pricing: ${event.form.pricingControl.value}');
-    });
+    on<OnboardingSpecializationsRequested>(_onSpecializationsRequested);
   }
+
+  final FetchSpecializationsUseCase _fetchSpecializationsUseCase;
 
   static List<WorkDayInfo> _getAvailabilitySkeleton() {
     final weekdays = DateTimeUtils.getWeekdays();
     return weekdays.map((e) => WorkDayInfo(weekday: e)).toList();
+  }
+
+  Future<void> _onSpecializationsRequested(
+    OnboardingSpecializationsRequested event,
+    Emitter<OnboardingState> emit,
+  ) async {
+    try {
+      emit(state.copyWith(isLoading: true));
+      final specializations = await _fetchSpecializationsUseCase();
+      emit(state.copyWith(specializations: specializations, isLoading: false));
+    } catch (error) {
+      debugPrint('OnboardingSpecialistFetchError: $error');
+      emit(state.copyWith(isSpecializationsError: true, isLoading: false));
+    }
   }
 }

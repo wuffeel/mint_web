@@ -8,3 +8,5 @@ class OnboardingLogEvent extends OnboardingEvent {
 
   final OnboardingForm form;
 }
+
+class OnboardingSpecializationsRequested extends OnboardingEvent {}
