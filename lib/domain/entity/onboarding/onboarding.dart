@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:reactive_forms_annotations/reactive_forms_annotations.dart';
 
@@ -10,21 +8,23 @@ part 'onboarding.gform.dart';
 @Rf()
 class Onboarding {
   Onboarding({
-    this.basicInfo,
+    required this.basicInfo,
+    required this.experienceInfo,
     @RfControl(validators: [RequiredValidator()])
     this.specializations = const [],
-    this.experienceInfo,
     @RfControl(validators: [MinValidator(1)]) this.pricing = 0,
-    @RfArray<dynamic>() this.availability = const [],
+    @RfArray(validators: [WorkDayInfoListValidator()])
+    this.availability = const [],
   });
 
-  final BasicInfo? basicInfo;
+  final BasicInfo basicInfo;
   final List<String> specializations;
-  final ExperienceInfo? experienceInfo;
+  final ExperienceInfo experienceInfo;
   final int pricing;
   final List<WorkDayInfo> availability;
 }
 
+@Rf()
 @RfGroup<dynamic>()
 class BasicInfo {
   BasicInfo({
@@ -43,6 +43,7 @@ class BasicInfo {
   final DateTime? dateOfBirth;
 }
 
+@Rf()
 @RfGroup<dynamic>(validators: [ExperienceInfoValidator()])
 class ExperienceInfo {
   ExperienceInfo({
@@ -68,11 +69,10 @@ class ExperienceInfo {
 }
 
 @Rf()
-@RfGroup<dynamic>()
+@RfGroup(validators: [WorkDayInfoValidator()])
 class WorkDayInfo {
   WorkDayInfo({
     this.weekday = '',
-    this.shortWeekday = '',
     @RfControl<TimeOfDay>() this.startTime,
     @RfControl<TimeOfDay>() this.endTime,
   });
@@ -80,7 +80,6 @@ class WorkDayInfo {
   factory WorkDayInfo.fromMap(Map<String, dynamic> map) {
     return WorkDayInfo(
       weekday: map['weekday'] as String,
-      shortWeekday: map['shortWeekday'] as String,
       startTime: map['startTime'] as TimeOfDay?,
       endTime: map['endTime'] as TimeOfDay?,
     );
@@ -89,14 +88,30 @@ class WorkDayInfo {
   /// Weekday name in English, e.g. 'Monday'.
   final String weekday;
 
-  /// Short weekday name localized, e.g. 'Mon' for en_US
-  final String shortWeekday;
-
   /// Start time of working day in 12-hour format, e.g. 0:00 AM.
   final TimeOfDay? startTime;
 
   /// End time of working day in 12-hour format, e.g. 0:00 AM.
   final TimeOfDay? endTime;
+}
+
+class ExperienceInfoValidator extends Validator<dynamic> {
+  const ExperienceInfoValidator() : super();
+
+  @override
+  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
+    final experienceInfo =
+        ExperienceInfo.fromMap(control.value as Map<String, Object?>);
+
+    final noExperience = experienceInfo.noExperience;
+
+    if (experienceInfo.experience != null ||
+        (noExperience != null && noExperience)) {
+      return null;
+    } else {
+      return {ValidationMessage.requiredTrue: true};
+    }
+  }
 }
 
 class WorkDayInfoValidator extends Validator<dynamic> {
@@ -121,57 +136,121 @@ class WorkDayInfoValidator extends Validator<dynamic> {
     return endMinutes - startMinutes;
   }
 
+  void _clearErrors(
+    AbstractControl<dynamic> startControl,
+    AbstractControl<dynamic> endControl,
+  ) {
+    startControl.setErrors({});
+    endControl.setErrors({});
+  }
+
+  void _setErrors(
+    Map<String, bool> error,
+    FormGroup formControl, {
+    AbstractControl<dynamic>? startControl,
+    AbstractControl<dynamic>? endControl,
+  }) {
+    formControl.markAllAsTouched();
+    if (startControl != null) startControl.setErrors(error);
+    if (endControl != null) endControl.setErrors(error);
+  }
+
+  /// Handles time comparison and sets validation errors if conditions are met.
+  ///
+  /// Compares [startTime] and [endTime] within the [formControl] and sets
+  /// validation errors for [startTimeControl] and [endTimeControl] as needed.
+  ///
+  /// Checks for:
+  /// - [startTime] and [endTime] equality
+  /// - time difference between [startTime] and [endTime] lower than
+  /// [_minConsultationMinutes]
+  void _handleTimeComparison(
+    FormGroup formControl,
+    AbstractControl<dynamic> startTimeControl,
+    AbstractControl<dynamic> endTimeControl,
+    TimeOfDay startTime,
+    TimeOfDay endTime,
+  ) {
+    if (startTime.hour == endTime.hour && startTime.minute == endTime.minute) {
+      _setErrors(
+        {WorkDayValidationMessages.timeEqual: true},
+        formControl,
+        startControl: startTimeControl,
+        endControl: endTimeControl,
+      );
+    } else if (_minutesDifference(startTime, endTime) <
+        _minConsultationMinutes) {
+      _setErrors(
+        {WorkDayValidationMessages.lowDifference: true},
+        formControl,
+        startControl: startTimeControl,
+        endControl: endTimeControl,
+      );
+    } else {
+      _clearErrors(startTimeControl, endTimeControl);
+    }
+  }
+
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
     final errorStart = {WorkDayValidationMessages.startRequired: true};
     final errorEnd = {WorkDayValidationMessages.endRequired: true};
-    final errorEqual = {WorkDayValidationMessages.timeEqual: true};
-    final errorDifference = {WorkDayValidationMessages.lowDifference: true};
 
-    final workInfo = WorkDayInfo.fromMap(control.value as Map<String, Object?>);
+    control as FormGroup;
+    final startTimeControl =
+        control.control(WorkDayInfoForm.startTimeControlName);
+    final endTimeControl = control.control(WorkDayInfoForm.endTimeControlName);
+    final workInfo = WorkDayInfo.fromMap(control.value);
     final startTime = workInfo.startTime;
     final endTime = workInfo.endTime;
 
     if (startTime == null && endTime == null) {
+      _clearErrors(startTimeControl, endTimeControl);
       return null;
-    } else if (startTime != null && endTime == null) {
-      log('startTime != null && endTime == null');
-      return errorEnd;
-    } else if (endTime != null && startTime == null) {
-      log('endTime != null && startTime == null');
-      return errorStart;
-    } else if (startTime != null && endTime != null) {
-      if (startTime.hour == endTime.hour &&
-          startTime.minute == endTime.minute) {
-        log('startTime.hour == endTime.hour && startTime.minute == endTime.minute');
-        return errorEqual;
-      } else if (_minutesDifference(startTime, endTime) <
-          _minConsultationMinutes) {
-        log('_minutesDifference(startTime, endTime) < _minConsultationMinutes');
-
-        return errorDifference;
-      }
     }
+    if (startTime != null && endTime == null) {
+      _setErrors(errorEnd, control, endControl: endTimeControl);
+      return null;
+    }
+    if (endTime != null && startTime == null) {
+      _setErrors(errorStart, control, startControl: startTimeControl);
+      return null;
+    }
+
+    if (startTime == null || endTime == null) return null;
+
+    _handleTimeComparison(
+      control,
+      startTimeControl,
+      endTimeControl,
+      startTime,
+      endTime,
+    );
 
     return null;
   }
 }
 
-class ExperienceInfoValidator extends Validator<dynamic> {
-  const ExperienceInfoValidator() : super();
+class WorkDayInfoListValidator extends Validator<dynamic> {
+  const WorkDayInfoListValidator() : super();
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
-    final experienceInfo =
-        ExperienceInfo.fromMap(control.value as Map<String, Object?>);
+    final formArray = control as FormArray<Map<String, Object?>>;
 
-    final noExperience = experienceInfo.noExperience;
+    final workInfoList = formArray.value ?? [];
 
-    if (experienceInfo.experience != null ||
-        (noExperience != null && noExperience)) {
-      return null;
-    } else {
-      return {ValidationMessage.requiredTrue: true};
-    }
+    final availabilityValid = workInfoList.any(
+      (workDay) {
+        if (workDay == null) return false;
+        final workDayInfo = WorkDayInfo.fromMap(workDay);
+        final startTime = workDayInfo.startTime;
+        final endTime = workDayInfo.endTime;
+        if (startTime == null && endTime == null) return false;
+        return startTime != null && endTime != null;
+      },
+    );
+
+    return availabilityValid ? null : {ValidationMessage.required: true};
   }
 }
