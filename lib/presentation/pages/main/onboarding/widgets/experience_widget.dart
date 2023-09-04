@@ -70,7 +70,7 @@ class ExperienceWidget extends StatelessWidget {
                         );
                       },
                       firstDate: DateTime(DateTime.now().year - 65),
-                      lastDate: DateTime(DateTime.now().year - 18),
+                      lastDate: DateTime.now(),
                     );
                   },
                 ),
