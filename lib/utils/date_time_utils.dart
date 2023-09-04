@@ -90,4 +90,7 @@ class DateTimeUtils {
 
     return shortWeekdays;
   }
+
+  /// Used for freezed as toJson JsonKey() to prevent DateTime String conversion
+  static DateTime dateTimeToJson(DateTime date) => date;
 }

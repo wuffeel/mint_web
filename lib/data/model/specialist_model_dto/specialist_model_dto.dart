@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../utils/date_time_utils.dart';
+
 part 'specialist_model_dto.freezed.dart';
 
 part 'specialist_model_dto.g.dart';
@@ -12,6 +14,10 @@ class SpecialistModelDto with _$SpecialistModelDto {
     required String firstName,
     required String lastName,
     required int price,
+    @JsonKey(
+      fromJson: DateTimeUtils.convertToDateTime,
+      toJson: DateTimeUtils.dateTimeToJson,
+    )
     required DateTime experience,
     required List<String> specializations,
     @Default(0.0) double rating,

@@ -16,8 +16,10 @@ class UserModelDto with _$UserModelDto {
     String? firstName,
     String? lastName,
     String? email,
-    // ignore: invalid_annotation_target
-    @JsonKey(fromJson: DateTimeUtils.tryConvertToDateTime)
+    @JsonKey(
+      fromJson: DateTimeUtils.tryConvertToDateTime,
+      toJson: DateTimeUtils.dateTimeToJson,
+    )
     DateTime? dateOfBirth,
   }) = _UserModelDto;
 
