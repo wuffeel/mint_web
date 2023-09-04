@@ -22,7 +22,7 @@ class LoginWrapperPage extends AutoRouter with AutoRouteWrapper {
             context.router.replace(const SpecialistCheckRoute());
           }
           if (state is UserUnauthenticated) {
-            context.router.replace(const AuthWrapperRoute());
+            context.router.replaceAll([const AuthWrapperRoute()]);
           }
         },
         child: this,

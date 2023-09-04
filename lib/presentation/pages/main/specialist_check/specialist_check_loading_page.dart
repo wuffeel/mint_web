@@ -16,7 +16,7 @@ class SpecialistCheckLoadingPage extends StatelessWidget {
       body: BlocConsumer<SpecialistInfoBloc, SpecialistInfoState>(
         listener: (context, state) {
           if (state is SpecialistInfoNotFound) {
-            context.router.replace(const OnboardingRoute());
+            context.router.replaceAll([const OnboardingRoute()]);
           }
         },
         builder: (context, state) {

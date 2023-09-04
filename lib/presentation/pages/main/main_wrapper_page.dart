@@ -13,7 +13,7 @@ class MainWrapperPage extends AutoRouter with AutoRouteWrapper {
 
   void _userBlocListener(BuildContext context, UserState state) {
     if (state is UserUnauthenticated) {
-      context.router.replace(const AuthWrapperRoute());
+      context.router.replaceAll([const AuthWrapperRoute()]);
     }
     if (state is UserAuthenticated) {
       context.read<SpecialistInfoBloc>().add(SpecialistInfoFetchRequested());
