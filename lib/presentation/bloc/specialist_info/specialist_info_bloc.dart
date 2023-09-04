@@ -62,8 +62,12 @@ class SpecialistInfoBloc
     Emitter<SpecialistInfoState> emit,
   ) async {
     final user = _currentUser;
+    if (user == null) return;
+
     final state = this.state;
-    if (user == null || state is SpecialistInfoFetchSuccess) return;
+    if (state is SpecialistInfoFetchSuccess && state.specialist.id == user.id) {
+      return;
+    }
 
     try {
       emit(SpecialistInfoLoading());

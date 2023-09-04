@@ -34,8 +34,17 @@ class MainWrapperPage extends AutoRouter with AutoRouteWrapper {
             ..add(UserFetchRequested()),
         ),
       ],
-      child: BlocListener<UserBloc, UserState>(
-        listener: _userBlocListener,
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<UserBloc, UserState>(listener: _userBlocListener),
+          BlocListener<SpecialistInfoBloc, SpecialistInfoState>(
+            listener: (context, state) {
+              if (state is SpecialistInfoNotFound) {
+                context.router.replaceAll([const OnboardingRoute()]);
+              }
+            },
+          ),
+        ],
         child: this,
       ),
     );
