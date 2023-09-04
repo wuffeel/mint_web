@@ -11,21 +11,12 @@ import '../../bloc/user/user_bloc.dart';
 class MainWrapperPage extends AutoRouter with AutoRouteWrapper {
   const MainWrapperPage({super.key});
 
-  void _logOutListener(BuildContext context, UserState state) {
+  void _userBlocListener(BuildContext context, UserState state) {
     if (state is UserUnauthenticated) {
       context.router.replace(const AuthWrapperRoute());
     }
-  }
-
-  void _specialistInfoListener(
-    BuildContext context,
-    SpecialistInfoState state,
-  ) {
-    if (state is SpecialistInfoFetchSuccess) {
-      context.router.navigate(const HomeRoute());
-    }
-    if (state is SpecialistInfoNotFound) {
-      context.router.navigate(const OnboardingRoute());
+    if (state is UserAuthenticated) {
+      context.read<SpecialistInfoBloc>().add(SpecialistInfoFetchRequested());
     }
   }
 
@@ -34,23 +25,17 @@ class MainWrapperPage extends AutoRouter with AutoRouteWrapper {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+          create: (context) => getIt<SpecialistInfoBloc>()
+            ..add(SpecialistInfoInitializeRequested()),
+        ),
+        BlocProvider(
           create: (context) => getIt<UserBloc>()
             ..add(UserInitializeRequested())
             ..add(UserFetchRequested()),
         ),
-        BlocProvider(
-          create: (context) => getIt<SpecialistInfoBloc>()
-            ..add(SpecialistInfoInitializeRequested())
-            ..add(SpecialistInfoFetchRequested()),
-        ),
       ],
-      child: MultiBlocListener(
-        listeners: [
-          BlocListener<UserBloc, UserState>(listener: _logOutListener),
-          BlocListener<SpecialistInfoBloc, SpecialistInfoState>(
-            listener: _specialistInfoListener,
-          ),
-        ],
+      child: BlocListener<UserBloc, UserState>(
+        listener: _userBlocListener,
         child: this,
       ),
     );

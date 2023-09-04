@@ -11,6 +11,7 @@ class OnboardingPageContainer extends StatelessWidget {
     required this.onNext,
     required this.child,
     this.forceBackButton = true,
+    this.hasCustomNextButton = false,
     this.onBack,
     super.key,
   });
@@ -21,6 +22,7 @@ class OnboardingPageContainer extends StatelessWidget {
   final Widget child;
   final bool forceBackButton;
   final VoidCallback? onBack;
+  final bool hasCustomNextButton;
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +45,11 @@ class OnboardingPageContainer extends StatelessWidget {
                 ),
                 const SizedBox(height: 34),
                 child,
-                const SizedBox(height: 50),
-                ElevatedButton(onPressed: onNext, child: Text(l10n.next)),
-                const SizedBox(height: 30),
+                if (!hasCustomNextButton) ...[
+                  const SizedBox(height: 50),
+                  ElevatedButton(onPressed: onNext, child: Text(l10n.next)),
+                  const SizedBox(height: 30),
+                ],
               ],
             ),
           ),

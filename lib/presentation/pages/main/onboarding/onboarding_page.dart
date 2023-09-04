@@ -24,9 +24,14 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          getIt<OnboardingBloc>()..add(OnboardingSpecializationsRequested()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<OnboardingBloc>()
+            ..add(OnboardingSpecializationsRequested()),
+        ),
+        BlocProvider(create: (context) => getIt<SpecialistBloc>()),
+      ],
       child: const _OnboardingView(),
     );
   }
@@ -150,7 +155,7 @@ class _OnboardingViewState extends State<_OnboardingView> {
                                 formModel.availabilityControl
                                     .controls[_currentWorkDay] as FormGroup,
                                 onBack: _previousPage,
-                                onNext: () => _onSubmit(formModel.model),
+                                onSubmit: () => _onSubmit(formModel.model),
                                 currentIndex: _currentWorkDay,
                                 currentWorkDayForm: workDayForm,
                                 onWorkDayIndexChange: (index) => setState(

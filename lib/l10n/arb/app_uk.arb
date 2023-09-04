@@ -21,6 +21,7 @@
   "couldNotResendCodeTryAgain": "Не вдалося повторно надіслати код. Спробуйте знову",
   "back": "Назад",
   "next": "Далі",
+  "submit": "Підтвердити",
   "basicInformation": "Основна інформація",
   "letsGiveYourPatientsBetterSense": "Давайте надамо вашим пацієнтам краще розуміння про вас",
   "firstName": "Ім'я",

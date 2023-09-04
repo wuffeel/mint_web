@@ -32,5 +32,11 @@ class SpecialistModelDto with _$SpecialistModelDto {
   factory SpecialistModelDto.fromJson(Map<String, dynamic> json) =>
       _$SpecialistModelDtoFromJson(json);
 
+  factory SpecialistModelDto.fromJsonWithId(
+    Map<String, dynamic> json,
+    String id,
+  ) =>
+      _$SpecialistModelDtoFromJson(<String, dynamic>{'id': id, ...json});
+
   Map<String, dynamic> toJsonWithoutId() => toJson()..remove('id');
 }

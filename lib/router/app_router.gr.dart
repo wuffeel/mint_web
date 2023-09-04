@@ -8,7 +8,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i9;
+import 'package:auto_route/auto_route.dart' as _i11;
 import 'package:mint_web/presentation/pages/auth/auth_wrapper_page.dart' as _i1;
 import 'package:mint_web/presentation/pages/auth/enter_phone/enter_phone_page.dart'
     as _i2;
@@ -19,58 +19,74 @@ import 'package:mint_web/presentation/pages/main/home/home_page.dart' as _i3;
 import 'package:mint_web/presentation/pages/main/main_wrapper_page.dart' as _i6;
 import 'package:mint_web/presentation/pages/main/onboarding/onboarding_page.dart'
     as _i7;
+import 'package:mint_web/presentation/pages/main/specialist_check/specialist_check_loading_page.dart'
+    as _i9;
+import 'package:mint_web/presentation/pages/main/specialist_check/specialist_check_page.dart'
+    as _i10;
 
-abstract class $AppRouter extends _i9.RootStackRouter {
+abstract class $AppRouter extends _i11.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i9.PageFactory> pagesMap = {
+  final Map<String, _i11.PageFactory> pagesMap = {
     AuthWrapperRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i11.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i9.WrappedRoute(child: const _i1.AuthWrapperPage()),
+        child: _i11.WrappedRoute(child: const _i1.AuthWrapperPage()),
       );
     },
     EnterPhoneRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i11.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i2.EnterPhonePage(),
       );
     },
     HomeRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i11.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i3.HomePage(),
       );
     },
     LoginRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i11.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i4.LoginPage(),
       );
     },
     LoginWrapperRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i11.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i9.WrappedRoute(child: const _i5.LoginWrapperPage()),
+        child: _i11.WrappedRoute(child: const _i5.LoginWrapperPage()),
       );
     },
     MainWrapperRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i11.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i9.WrappedRoute(child: const _i6.MainWrapperPage()),
+        child: _i11.WrappedRoute(child: const _i6.MainWrapperPage()),
       );
     },
     OnboardingRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i11.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i7.OnboardingPage(),
       );
     },
     OtpRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i11.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i8.OtpPage(),
+      );
+    },
+    SpecialistCheckLoadingRoute.name: (routeData) {
+      return _i11.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i9.SpecialistCheckLoadingPage(),
+      );
+    },
+    SpecialistCheckRoute.name: (routeData) {
+      return _i11.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i11.WrappedRoute(child: const _i10.SpecialistCheckPage()),
       );
     },
   };
@@ -78,8 +94,8 @@ abstract class $AppRouter extends _i9.RootStackRouter {
 
 /// generated route for
 /// [_i1.AuthWrapperPage]
-class AuthWrapperRoute extends _i9.PageRouteInfo<void> {
-  const AuthWrapperRoute({List<_i9.PageRouteInfo>? children})
+class AuthWrapperRoute extends _i11.PageRouteInfo<void> {
+  const AuthWrapperRoute({List<_i11.PageRouteInfo>? children})
       : super(
           AuthWrapperRoute.name,
           initialChildren: children,
@@ -87,13 +103,13 @@ class AuthWrapperRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'AuthWrapperRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i11.PageInfo<void> page = _i11.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i2.EnterPhonePage]
-class EnterPhoneRoute extends _i9.PageRouteInfo<void> {
-  const EnterPhoneRoute({List<_i9.PageRouteInfo>? children})
+class EnterPhoneRoute extends _i11.PageRouteInfo<void> {
+  const EnterPhoneRoute({List<_i11.PageRouteInfo>? children})
       : super(
           EnterPhoneRoute.name,
           initialChildren: children,
@@ -101,13 +117,13 @@ class EnterPhoneRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'EnterPhoneRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i11.PageInfo<void> page = _i11.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i3.HomePage]
-class HomeRoute extends _i9.PageRouteInfo<void> {
-  const HomeRoute({List<_i9.PageRouteInfo>? children})
+class HomeRoute extends _i11.PageRouteInfo<void> {
+  const HomeRoute({List<_i11.PageRouteInfo>? children})
       : super(
           HomeRoute.name,
           initialChildren: children,
@@ -115,13 +131,13 @@ class HomeRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'HomeRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i11.PageInfo<void> page = _i11.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i4.LoginPage]
-class LoginRoute extends _i9.PageRouteInfo<void> {
-  const LoginRoute({List<_i9.PageRouteInfo>? children})
+class LoginRoute extends _i11.PageRouteInfo<void> {
+  const LoginRoute({List<_i11.PageRouteInfo>? children})
       : super(
           LoginRoute.name,
           initialChildren: children,
@@ -129,13 +145,13 @@ class LoginRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'LoginRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i11.PageInfo<void> page = _i11.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i5.LoginWrapperPage]
-class LoginWrapperRoute extends _i9.PageRouteInfo<void> {
-  const LoginWrapperRoute({List<_i9.PageRouteInfo>? children})
+class LoginWrapperRoute extends _i11.PageRouteInfo<void> {
+  const LoginWrapperRoute({List<_i11.PageRouteInfo>? children})
       : super(
           LoginWrapperRoute.name,
           initialChildren: children,
@@ -143,13 +159,13 @@ class LoginWrapperRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'LoginWrapperRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i11.PageInfo<void> page = _i11.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i6.MainWrapperPage]
-class MainWrapperRoute extends _i9.PageRouteInfo<void> {
-  const MainWrapperRoute({List<_i9.PageRouteInfo>? children})
+class MainWrapperRoute extends _i11.PageRouteInfo<void> {
+  const MainWrapperRoute({List<_i11.PageRouteInfo>? children})
       : super(
           MainWrapperRoute.name,
           initialChildren: children,
@@ -157,13 +173,13 @@ class MainWrapperRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'MainWrapperRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i11.PageInfo<void> page = _i11.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i7.OnboardingPage]
-class OnboardingRoute extends _i9.PageRouteInfo<void> {
-  const OnboardingRoute({List<_i9.PageRouteInfo>? children})
+class OnboardingRoute extends _i11.PageRouteInfo<void> {
+  const OnboardingRoute({List<_i11.PageRouteInfo>? children})
       : super(
           OnboardingRoute.name,
           initialChildren: children,
@@ -171,13 +187,13 @@ class OnboardingRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'OnboardingRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i11.PageInfo<void> page = _i11.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i8.OtpPage]
-class OtpRoute extends _i9.PageRouteInfo<void> {
-  const OtpRoute({List<_i9.PageRouteInfo>? children})
+class OtpRoute extends _i11.PageRouteInfo<void> {
+  const OtpRoute({List<_i11.PageRouteInfo>? children})
       : super(
           OtpRoute.name,
           initialChildren: children,
@@ -185,5 +201,33 @@ class OtpRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'OtpRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i11.PageInfo<void> page = _i11.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i9.SpecialistCheckLoadingPage]
+class SpecialistCheckLoadingRoute extends _i11.PageRouteInfo<void> {
+  const SpecialistCheckLoadingRoute({List<_i11.PageRouteInfo>? children})
+      : super(
+          SpecialistCheckLoadingRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SpecialistCheckLoadingRoute';
+
+  static const _i11.PageInfo<void> page = _i11.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i10.SpecialistCheckPage]
+class SpecialistCheckRoute extends _i11.PageRouteInfo<void> {
+  const SpecialistCheckRoute({List<_i11.PageRouteInfo>? children})
+      : super(
+          SpecialistCheckRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SpecialistCheckRoute';
+
+  static const _i11.PageInfo<void> page = _i11.PageInfo<void>(name);
 }

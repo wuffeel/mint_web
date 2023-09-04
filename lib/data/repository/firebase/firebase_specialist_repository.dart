@@ -71,6 +71,6 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     final data = specialistDoc.data();
     if (data == null) return null;
 
-    return SpecialistModelDto.fromJson(data);
+    return SpecialistModelDto.fromJsonWithId(data, specialistDoc.id);
   }
 }

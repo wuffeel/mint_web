@@ -73,6 +73,7 @@ class SpecialistBloc extends Bloc<SpecialistEvent, SpecialistState> {
     if (user == null) return;
 
     try {
+      emit(SpecialistAddNewLoading());
       final onboardingSpec =
           _onboardingSpecialistFromOnboarding.create(event.onboarding);
 
@@ -87,7 +88,7 @@ class SpecialistBloc extends Bloc<SpecialistEvent, SpecialistState> {
 
       final phone = user.phoneNumber;
       final userData = await _updateUserDataUseCase(
-        userModel.copyWith(phoneNumber: phone),
+        userModel.copyWith(id: user.id, phoneNumber: phone),
       );
 
       _specialistController.addToSpecialistStream(specialistModel);

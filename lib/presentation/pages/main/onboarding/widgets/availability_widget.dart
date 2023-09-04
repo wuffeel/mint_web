@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../../../../backbone/work_day_validation_messages.dart';
 import '../../../../../domain/entity/onboarding/onboarding.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../../utils/date_time_utils.dart';
+import '../../../../bloc/specialist/specialist_bloc.dart';
 import 'availability_weekday_list.dart';
 import 'onboarding_page_container.dart';
 
@@ -13,7 +15,7 @@ class AvailabilityWidget extends StatefulWidget {
     this.control,
     this.formControl, {
     required this.onBack,
-    required this.onNext,
+    required this.onSubmit,
     required this.currentWorkDayForm,
     required this.currentIndex,
     required this.onWorkDayIndexChange,
@@ -21,7 +23,7 @@ class AvailabilityWidget extends StatefulWidget {
   });
 
   final VoidCallback onBack;
-  final VoidCallback? onNext;
+  final VoidCallback? onSubmit;
   final FormArray<Map<String, Object?>> control;
   final FormGroup formControl;
   final WorkDayInfoForm currentWorkDayForm;
@@ -52,7 +54,8 @@ class _AvailabilityWidgetState extends State<AvailabilityWidget> {
             title: l10n.yourAvailability,
             subTitle: l10n.pleaseProvideYourGeneralAvailability,
             onBack: widget.onBack,
-            onNext: control.valid && arrayControl.valid ? widget.onNext : null,
+            hasCustomNextButton: true,
+            onNext: null,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,6 +105,21 @@ class _AvailabilityWidgetState extends State<AvailabilityWidget> {
                     );
                   },
                 ),
+                const SizedBox(height: 50),
+                BlocBuilder<SpecialistBloc, SpecialistState>(
+                  builder: (context, state) {
+                    if (state is SpecialistAddNewLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return ElevatedButton(
+                      onPressed: control.valid && arrayControl.valid
+                          ? widget.onSubmit
+                          : null,
+                      child: Text(l10n.submit),
+                    );
+                  },
+                ),
+                const SizedBox(height: 30),
               ],
             ),
           );

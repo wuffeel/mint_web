@@ -5,6 +5,6 @@ abstract class SpecialistState {}
 
 class SpecialistInitial extends SpecialistState {}
 
-class SpecialistAddNewSuccess extends SpecialistState {}
+class SpecialistAddNewLoading extends SpecialistState {}
 
 class SpecialistAddNewFailure extends SpecialistState {}
