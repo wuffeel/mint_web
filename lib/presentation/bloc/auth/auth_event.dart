@@ -3,6 +3,8 @@ part of 'auth_bloc.dart';
 @immutable
 abstract class AuthEvent {}
 
+class AuthCheckPhoneRequested extends AuthEvent {}
+
 class AuthVerifyPhoneRequested extends AuthEvent {
   AuthVerifyPhoneRequested(this.phoneNumber);
 

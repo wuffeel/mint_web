@@ -58,7 +58,8 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthVerifyPhoneSuccess) {
-          context.router.navigate(const OtpRoute());
+          context.router.markUrlStateForReplace();
+          context.router.push(const OtpRoute());
         }
       },
       builder: (context, state) => Scaffold(
@@ -82,8 +83,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                   ),
                 ),
                 const SizedBox(height: 18),
-                if (state is! AuthVerifyPhoneLoading &&
-                    state is! AuthVerifyPhoneSuccess)
+                if (state is! AuthVerifyPhoneLoading)
                   ElevatedButton(
                     onPressed: _getVerifyCallback(context),
                     child: Text(l10n.signUp),

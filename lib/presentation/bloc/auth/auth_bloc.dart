@@ -15,6 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this._verifyPhoneUseCase,
     this._verifyOtpUseCase,
   ) : super(AuthInitial()) {
+    on<AuthCheckPhoneRequested>(_onAuthCheckPhone);
     on<AuthVerifyPhoneRequested>(_onVerifyPhone);
     on<AuthPhoneChangeRequested>((event, emit) => emit(AuthInitial()));
     on<AuthVerifyOtpRequested>(_onVerifyOtp);
@@ -23,6 +24,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   final VerifyPhoneUseCase _verifyPhoneUseCase;
   final VerifyOtpUseCase _verifyOtpUseCase;
+
+  /// Checks for current state of [AuthBloc] for navigation purposes. If phone
+  /// has not been entered yet, user will be redirected to phone enter page.
+  void _onAuthCheckPhone(
+    AuthCheckPhoneRequested event,
+    Emitter<AuthState> emit,
+  ) {
+    final state = this.state;
+    if (state is! AuthVerifyPhoneSuccess) emit(AuthPhoneNotEntered());
+  }
 
   Future<void> _onVerifyPhone(
     AuthVerifyPhoneRequested event,

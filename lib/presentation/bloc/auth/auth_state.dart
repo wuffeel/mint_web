@@ -5,6 +5,8 @@ abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
 
+class AuthPhoneNotEntered extends AuthState {}
+
 class AuthVerifyPhoneFailure extends AuthState {}
 
 class AuthVerifyPhoneInvalidNumber extends AuthState {}

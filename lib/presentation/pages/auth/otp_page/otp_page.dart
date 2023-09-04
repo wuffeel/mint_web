@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../l10n/l10n.dart';
+import '../../../../router/app_router.gr.dart';
 import '../../../../theme/mint_text_styles.dart';
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../../bloc/resend_timer/resend_timer_bloc.dart';
@@ -15,15 +16,33 @@ import 'widgets/otp_sent_text.dart';
 import 'widgets/resend_otp_text.dart';
 
 @RoutePage()
-class OtpPage extends StatelessWidget {
+class OtpPage extends StatefulWidget {
   const OtpPage({super.key});
+
+  @override
+  State<OtpPage> createState() => _OtpPageState();
+}
+
+class _OtpPageState extends State<OtpPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<AuthBloc>().add(AuthCheckPhoneRequested());
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ResendTimerBloc(ticker: const Ticker())
         ..add(ResendTimerStartRequested()),
-      child: const _OtpView(),
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthPhoneNotEntered) {
+            context.router.replaceAll([const EnterPhoneRoute()]);
+          }
+        },
+        child: const _OtpView(),
+      ),
     );
   }
 }
@@ -32,14 +51,15 @@ class _OtpView extends StatefulWidget {
   const _OtpView();
 
   @override
-  State<_OtpView> createState() => _OtpPageState();
+  State<_OtpView> createState() => _OtpViewState();
 }
 
-class _OtpPageState extends State<_OtpView> {
+class _OtpViewState extends State<_OtpView> {
   final _otpController = TextEditingController();
 
   void _resetPhone() {
     context.read<AuthBloc>().add(AuthPhoneChangeRequested());
+    context.router.navigate(const EnterPhoneRoute());
   }
 
   void _verifyOtp(String otpCode) {
@@ -61,6 +81,7 @@ class _OtpPageState extends State<_OtpView> {
           return AuthPageBody(
             child: AuthLeftPanel(
               onBack: _resetPhone,
+              forceBackButton: true,
               child: BlocBuilder<UserBloc, UserState>(
                 builder: (context, userState) {
                   if (userState is UserFetchLoading) {
