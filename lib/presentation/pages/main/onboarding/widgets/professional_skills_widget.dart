@@ -8,6 +8,7 @@ import 'onboarding_page_container.dart';
 
 class ProfessionalSkillsWidget extends StatelessWidget {
   const ProfessionalSkillsWidget(
+    this.control,
     this.specializations, {
     required this.onBack,
     required this.onNext,
@@ -16,29 +17,23 @@ class ProfessionalSkillsWidget extends StatelessWidget {
 
   final VoidCallback onBack;
   final VoidCallback onNext;
-  final FormControl<List<String>> specializations;
+  final FormControl<List<String>> control;
+  final List<String> specializations;
 
   @override
   Widget build(BuildContext context) {
-    final items = <String>[
-      'Fears',
-      'Problems with self-control',
-      'Relationships with oneself',
-      'Emotions',
-      'My development',
-      'Relationship with children',
-      'Career',
-      'Finances',
-    ];
     final l10n = context.l10n;
+    String required(Object input) => l10n.selectAtLeastOneSkill;
     return ReactiveFormField(
-      formControl: specializations,
+      formControl: control,
+      validationMessages: {ValidationMessage.required: required},
       builder: (ReactiveFormFieldState<List<String>, dynamic> field) {
+        final errorText = field.errorText;
         return OnboardingPageContainer(
           title: l10n.professionalSkills,
           subTitle: l10n.selectAsManyAsApply,
           onBack: onBack,
-          onNext: (field.control.value?.isNotEmpty ?? false) ? onNext : null,
+          onNext: (field.control.value ?? []).isNotEmpty ? onNext : null,
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxHeight: 500),
             child: SingleChildScrollView(
@@ -46,10 +41,15 @@ class ProfessionalSkillsWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   MintMultiItemSelection(
-                    items: items,
-                    itemTitles: items,
-                    selectedItems: specializations.value ?? <String>[],
-                    onItemSelected: specializations.updateValue,
+                    items: specializations,
+                    itemTitles: specializations,
+                    selectedItems: control.value ?? <String>[],
+                    onItemSelected: (list) {
+                      control.updateValue(list);
+                      if (!control.touched) {
+                        control.markAsTouched();
+                      }
+                    },
                     itemInnerPadding: const EdgeInsets.symmetric(
                       vertical: 10,
                       horizontal: 8,
@@ -57,12 +57,9 @@ class ProfessionalSkillsWidget extends StatelessWidget {
                     mainSpacing: 8,
                     crossSpacing: 8,
                   ),
-                  if (field.control.errors.isNotEmpty) ...[
+                  if (errorText != null) ...[
                     const SizedBox(height: 8),
-                    Text(
-                      l10n.selectAtLeastOneSkill,
-                      style: MintTextStyles.error,
-                    ),
+                    Text(errorText, style: MintTextStyles.error),
                   ],
                 ],
               ),

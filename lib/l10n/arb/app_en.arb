@@ -46,5 +46,7 @@
   "fieldIsRequired": "Field is required",
   "invalidEmail": "Invalid e-mail",
   "selectAtLeastOneSkill": "Select at least one skill",
-  "enterCorrectPrice": "Enter correct price"
+  "enterCorrectPrice": "Enter correct price",
+  "timeIsEqual": "Time is equal",
+  "differenceShouldBeMoreThan1Hour": "Difference should be more than 1 hour"
 }

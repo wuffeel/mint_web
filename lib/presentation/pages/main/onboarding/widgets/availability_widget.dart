@@ -4,15 +4,14 @@ import 'package:reactive_forms/reactive_forms.dart';
 import '../../../../../backbone/work_day_validation_messages.dart';
 import '../../../../../domain/entity/onboarding/onboarding.dart';
 import '../../../../../l10n/l10n.dart';
-import '../../../../../theme/mint_text_styles.dart';
 import '../../../../../utils/date_time_utils.dart';
-import '../../../../widgets/form_field_container.dart';
 import 'availability_weekday_list.dart';
 import 'onboarding_page_container.dart';
 
-class AvailabilityWidget extends StatelessWidget {
+class AvailabilityWidget extends StatefulWidget {
   const AvailabilityWidget(
-    this.availability, {
+    this.control,
+    this.formControl, {
     required this.onBack,
     required this.onNext,
     required this.currentWorkDayForm,
@@ -23,110 +22,163 @@ class AvailabilityWidget extends StatelessWidget {
 
   final VoidCallback onBack;
   final VoidCallback? onNext;
-  final FormArray<Map<String, Object?>> availability;
+  final FormArray<Map<String, Object?>> control;
+  final FormGroup formControl;
   final WorkDayInfoForm currentWorkDayForm;
   final int currentIndex;
   final void Function(int) onWorkDayIndexChange;
 
   @override
+  State<AvailabilityWidget> createState() => _AvailabilityWidgetState();
+}
+
+class _AvailabilityWidgetState extends State<AvailabilityWidget> {
+  /// ['Mon', 'Tue', ..., 'Sun']
+  late final _shortWeekdays = DateTimeUtils.getShortWeekdays(
+    locale: context.l10n.localeName,
+  );
+
+  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    // ['Mon', 'Tue', ..., 'Sun']
-    final shortWeekdays = DateTimeUtils.getShortWeekdays(
-      locale: context.l10n.localeName,
-    );
-    final errorText = {
-      WorkDayValidationMessages.startRequired: 'Required',
-      WorkDayValidationMessages.endRequired: 'Required',
-      WorkDayValidationMessages.timeEqual: 'Equal',
-      WorkDayValidationMessages.lowDifference: 'Low difference',
-    };
-    return OnboardingPageContainer(
-      title: l10n.yourAvailability,
-      subTitle: l10n.pleaseProvideYourGeneralAvailability,
-      onBack: onBack,
-      onNext: onNext,
-      child: ReactiveWorkDayInfoForm(
-        key: ValueKey(currentIndex),
-        form: currentWorkDayForm,
-        child: ReactiveWorkDayInfoFormConsumer(
-          builder: (context, form, child) {
-            print(form.form.errors.toString());
-            return Column(
+    String required(Object error) => l10n.fieldIsRequired;
+    final arrayControl = widget.control;
+    return ReactiveForm(
+      key: ValueKey(widget.currentIndex),
+      formGroup: widget.formControl,
+      child: ReactiveFormConsumer(
+        builder: (context, control, child) {
+          return OnboardingPageContainer(
+            title: l10n.yourAvailability,
+            subTitle: l10n.pleaseProvideYourGeneralAvailability,
+            onBack: widget.onBack,
+            onNext: control.valid && arrayControl.valid ? widget.onNext : null,
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 AvailabilityWeekdayList(
-                  currentWeekday: currentIndex,
-                  shortWeekdays: shortWeekdays,
-                  onWeekdaySelect: onWorkDayIndexChange,
+                  currentWeekday: widget.currentIndex,
+                  shortWeekdays: _shortWeekdays,
+                  onWeekdaySelect: widget.onWorkDayIndexChange,
                 ),
                 const SizedBox(height: 28),
                 ReactiveTimePicker(
-                  formControl: form.startTimeControl,
+                  formControl: widget.currentWorkDayForm.startTimeControl,
+                  initialEntryMode: TimePickerEntryMode.input,
                   builder: (context, picker, child) {
                     return _AvailabilityTimePicker(
+                      control: picker.control,
                       time: picker.value,
                       hintText: l10n.startTime,
                       onTap: picker.showPicker,
+                      validationMessages: {
+                        WorkDayValidationMessages.startRequired: required,
+                        WorkDayValidationMessages.timeEqual: (error) =>
+                            l10n.timeIsEqual,
+                        WorkDayValidationMessages.lowDifference: (error) =>
+                            l10n.differenceShouldBeMoreThan1Hour,
+                      },
                     );
                   },
                 ),
                 const SizedBox(height: 16),
                 ReactiveTimePicker(
-                  formControl: form.endTimeControl,
+                  formControl: widget.currentWorkDayForm.endTimeControl,
+                  initialEntryMode: TimePickerEntryMode.input,
                   builder: (context, picker, child) {
                     return _AvailabilityTimePicker(
+                      control: picker.control,
                       time: picker.value,
                       hintText: l10n.endTime,
                       onTap: picker.showPicker,
+                      validationMessages: {
+                        WorkDayValidationMessages.endRequired: required,
+                        WorkDayValidationMessages.timeEqual: (error) =>
+                            l10n.timeIsEqual,
+                        WorkDayValidationMessages.lowDifference: (error) =>
+                            l10n.differenceShouldBeMoreThan1Hour,
+                      },
                     );
                   },
                 ),
               ],
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
 }
 
-class _AvailabilityTimePicker extends StatelessWidget {
+class _AvailabilityTimePicker extends StatefulWidget {
   const _AvailabilityTimePicker({
+    required this.control,
     required this.time,
     required this.hintText,
     required this.onTap,
+    required this.validationMessages,
   });
 
+  final FormControl<TimeOfDay?>? control;
   final TimeOfDay? time;
   final String hintText;
   final VoidCallback onTap;
+  final Map<String, String Function(Object)>? validationMessages;
 
-  String _timeToString(TimeOfDay time) {
-    final hour = time.hour.toString().padLeft(2, '0');
-    final minute = time.minute.toString().padLeft(2, '0');
-    return '$hour:$minute';
-  }
+  @override
+  State<_AvailabilityTimePicker> createState() =>
+      _AvailabilityTimePickerState();
+}
+
+class _AvailabilityTimePickerState extends State<_AvailabilityTimePicker> {
+  final _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
-    final locTime = time;
-    return InkWell(
-      onTap: onTap,
-      child: FormFieldContainer(
-        child: SizedBox(
-          width: double.infinity,
-          child: Text(
-            locTime != null ? _timeToString(locTime) : hintText,
-            style: MintTextStyles.body.copyWith(
-              color: time == null
-                  ? Theme.of(context).hintColor.withOpacity(0.3)
-                  : null,
-            ),
+    return Stack(
+      children: <Widget>[
+        ReactiveTextField(
+          key: ObjectKey(widget.control),
+          enableInteractiveSelection: false,
+          decoration: InputDecoration(hintText: widget.hintText),
+          formControl: widget.control,
+          onTap: (_) => widget.onTap(),
+          readOnly: true,
+          showCursor: false,
+          valueAccessor: TimeOfDayValueAccessor(),
+          validationMessages: widget.validationMessages,
+        ),
+        Positioned.fill(
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(onTap: widget.onTap),
           ),
         ),
-      ),
+        if (widget.control?.value != null)
+          Positioned.fill(
+            right: 8,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Material(
+                child: InkWell(
+                  onTap: () {
+                    _focusNode
+                      ..unfocus()
+                      ..canRequestFocus = false;
+                    widget.control?.updateValue(null);
+                    Future.delayed(const Duration(milliseconds: 100), () {
+                      _focusNode.canRequestFocus = true;
+                    });
+                  },
+                  child: const Icon(Icons.clear),
+                ),
+              ),
+            ),
+          )
+        else
+          const SizedBox.shrink(),
+      ],
     );
   }
 }

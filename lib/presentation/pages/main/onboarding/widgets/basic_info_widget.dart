@@ -13,11 +13,13 @@ import 'onboarding_page_container.dart';
 
 class BasicInfoWidget extends StatelessWidget {
   const BasicInfoWidget(
+    this.control,
     this.form, {
     required this.onNext,
     super.key,
   });
 
+  final FormGroup control;
   final BasicInfoForm form;
   final VoidCallback? onNext;
 
@@ -25,63 +27,62 @@ class BasicInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     String required(Object input) => l10n.fieldIsRequired;
-    return ReactiveOnboardingFormConsumer(
-      builder: (context, onboarding, child) => OnboardingPageContainer(
-        title: l10n.basicInformation,
-        subTitle: l10n.letsGiveYourPatientsBetterSense,
-        onNext: (onboarding.basicInfoControl?.valid ?? true) ? onNext : null,
-        forceBackButton: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ReactiveTextField<String>(
-              formControl: form.firstNameControl,
-              decoration: InputDecoration(hintText: l10n.firstName),
-              onSubmitted: (_) => form.form.focus(
-                BasicInfoForm.lastNameControlName,
+    return ReactiveForm(
+      formGroup: control,
+      child: ReactiveFormConsumer(
+        builder: (context, control, child) => OnboardingPageContainer(
+          title: l10n.basicInformation,
+          subTitle: l10n.letsGiveYourPatientsBetterSense,
+          onNext: control.valid ? onNext : null,
+          forceBackButton: false,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ReactiveTextField<String>(
+                formControl: form.firstNameControl,
+                decoration: InputDecoration(hintText: l10n.firstName),
+                onSubmitted: (_) => form.form.focus(
+                  BasicInfoForm.lastNameControlName,
+                ),
+                textInputAction: TextInputAction.next,
+                validationMessages: {ValidationMessage.required: required},
               ),
-              textInputAction: TextInputAction.next,
-              validationMessages: {
-                ValidationMessage.required: required,
-              },
-            ),
-            const SizedBox(height: 16),
-            ReactiveTextField<String>(
-              formControl: form.lastNameControl,
-              decoration: InputDecoration(hintText: l10n.lastName),
-              onSubmitted: (_) => form.form.focus(
-                BasicInfoForm.emailControlName,
+              const SizedBox(height: 16),
+              ReactiveTextField<String>(
+                formControl: form.lastNameControl,
+                decoration: InputDecoration(hintText: l10n.lastName),
+                onSubmitted: (_) => form.form.focus(
+                  BasicInfoForm.emailControlName,
+                ),
+                textInputAction: TextInputAction.next,
+                validationMessages: {ValidationMessage.required: required},
               ),
-              textInputAction: TextInputAction.next,
-              validationMessages: {
-                ValidationMessage.required: required,
-              },
-            ),
-            const SizedBox(height: 16),
-            ReactiveTextField<String>(
-              formControl: form.emailControl,
-              decoration: InputDecoration(hintText: l10n.email),
-              validationMessages: {
-                ValidationMessage.required: required,
-                ValidationMessage.email: (input) => l10n.invalidEmail,
-              },
-            ),
-            const SizedBox(height: 16),
-            const _PhoneNumberField(),
-            const SizedBox(height: 16),
-            ReactiveDatePicker(
-              formControl: form.dateOfBirthControl,
-              builder: (context, picker, child) {
-                return _DateOfBirthField(
-                  dateOfBirth: picker.value,
-                  onTap: picker.showPicker,
-                );
-              },
-              firstDate: DateTime(DateTime.now().year - 65),
-              lastDate: DateTime.now(),
-            ),
-          ],
+              const SizedBox(height: 16),
+              ReactiveTextField<String>(
+                formControl: form.emailControl,
+                decoration: InputDecoration(hintText: l10n.email),
+                validationMessages: {
+                  ValidationMessage.required: required,
+                  ValidationMessage.email: (input) => l10n.invalidEmail,
+                },
+              ),
+              const SizedBox(height: 16),
+              const _PhoneNumberField(),
+              const SizedBox(height: 16),
+              ReactiveDatePicker(
+                formControl: form.dateOfBirthControl,
+                builder: (context, picker, child) {
+                  return _DateOfBirthField(
+                    dateOfBirth: picker.value,
+                    onTap: picker.showPicker,
+                  );
+                },
+                firstDate: DateTime(DateTime.now().year - 65),
+                lastDate: DateTime.now(),
+              ),
+            ],
+          ),
         ),
       ),
     );

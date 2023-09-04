@@ -46,5 +46,7 @@
   "fieldIsRequired": "Обов'язкове поле",
   "invalidEmail": "Некоректна електронна пошта",
   "selectAtLeastOneSkill": "Оберіть хоча б один навичок",
-  "enterCorrectPrice": "Введіть корректну ціну"
+  "enterCorrectPrice": "Введіть корректну ціну",
+  "timeIsEqual": "Час однаковий",
+  "differenceShouldBeMoreThan1Hour": "Різниця повинна бути більшою за 1 годину"
 }

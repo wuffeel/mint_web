@@ -1,9 +1,12 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../../../domain/entity/onboarding/onboarding.dart';
+import '../../../../injector/injector.dart';
 import '../../../bloc/onboarding/onboarding_bloc.dart';
+import '../../../bloc/specialist/specialist_bloc.dart';
 import '../../../bloc/user/user_bloc.dart';
 import '../../../widgets/error_try_again.dart';
 import '../../auth/widgets/auth_left_panel_container.dart';
@@ -22,7 +25,8 @@ class OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => OnboardingBloc(),
+      create: (context) =>
+          getIt<OnboardingBloc>()..add(OnboardingSpecializationsRequested()),
       child: const _OnboardingView(),
     );
   }
@@ -61,7 +65,19 @@ class _OnboardingViewState extends State<_OnboardingView> {
         curve: _pageSwitchCurve,
       );
     });
-    context.read<OnboardingBloc>().add(OnboardingLogEvent(form));
+  }
+
+  void _onSubmit(Onboarding onboarding) {
+    context.read<SpecialistBloc>().add(SpecialistAddNewRequested(onboarding));
+  }
+
+  void _onRefresh(UserState userState, OnboardingState onboardingState) {
+    if (userState is UserFetchFailure) {
+      context.read<UserBloc>().add(UserFetchRequested());
+    }
+    if (onboardingState.isSpecializationsError) {
+      context.read<OnboardingBloc>().add(OnboardingSpecializationsRequested());
+    }
   }
 
   @override
@@ -69,35 +85,39 @@ class _OnboardingViewState extends State<_OnboardingView> {
     return Scaffold(
       body: AuthPageBody(
         child: BlocBuilder<UserBloc, UserState>(
-          builder: (context, state) {
-            if (state is UserFetchLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (state is UserFetchFailure) {
-              return ErrorTryAgain(
-                onRefresh: () =>
-                    context.read<UserBloc>().add(UserFetchRequested()),
-              );
-            }
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                const SizedBox(height: 22),
-                AuthLeftPanelContainer(
-                  child: SizedBox(
-                    height: 40,
-                    child: OnboardingStepper(
-                      currentStep: _currentStep,
-                      totalSteps: 5,
+          builder: (context, userState) {
+            return BlocBuilder<OnboardingBloc, OnboardingState>(
+              builder: (context, onboardingState) {
+                if (userState is UserFetchLoading ||
+                    onboardingState.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (userState is UserFetchFailure ||
+                    onboardingState.isSpecializationsError) {
+                  return ErrorTryAgain(
+                    onRefresh: () => _onRefresh(userState, onboardingState),
+                  );
+                }
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    const SizedBox(height: 22),
+                    AuthLeftPanelContainer(
+                      child: SizedBox(
+                        height: 40,
+                        child: OnboardingStepper(
+                          currentStep: _currentStep,
+                          totalSteps: 5,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: BlocBuilder<OnboardingBloc, OnboardingState>(
-                    builder: (context, state) {
-                      return OnboardingFormBuilder(
-                        model: state.model,
+                    Expanded(
+                      child: OnboardingFormBuilder(
+                        model: onboardingState.model,
                         builder: (context, formModel, child) {
+                          final s = formModel.availabilityControl.controls[0]
+                              as FormGroup;
+                          debugPrint(s.errors.toString());
                           final workDayForm = formModel
                               .availabilityWorkDayInfoForm[_currentWorkDay];
                           return PageView(
@@ -107,15 +127,18 @@ class _OnboardingViewState extends State<_OnboardingView> {
                             ),
                             children: <Widget>[
                               BasicInfoWidget(
+                                formModel.basicInfoControl,
                                 formModel.basicInfoForm,
                                 onNext: () => _nextPage(formModel),
                               ),
                               ProfessionalSkillsWidget(
                                 formModel.specializationsControl,
+                                onboardingState.specializations,
                                 onBack: _previousPage,
                                 onNext: () => _nextPage(formModel),
                               ),
                               ExperienceWidget(
+                                formModel.experienceInfoControl,
                                 formModel.experienceInfoForm,
                                 onBack: _previousPage,
                                 onNext: () => _nextPage(formModel),
@@ -127,10 +150,10 @@ class _OnboardingViewState extends State<_OnboardingView> {
                               ),
                               AvailabilityWidget(
                                 formModel.availabilityControl,
+                                formModel.availabilityControl
+                                    .controls[_currentWorkDay] as FormGroup,
                                 onBack: _previousPage,
-                                onNext: formModel.availabilityControl.valid
-                                    ? () => _nextPage(formModel)
-                                    : null,
+                                onNext: () => _onSubmit(formModel.model),
                                 currentIndex: _currentWorkDay,
                                 currentWorkDayForm: workDayForm,
                                 onWorkDayIndexChange: (index) => setState(
@@ -140,11 +163,11 @@ class _OnboardingViewState extends State<_OnboardingView> {
                             ],
                           );
                         },
-                      );
-                    },
-                  ),
-                ),
-              ],
+                      ),
+                    ),
+                  ],
+                );
+              },
             );
           },
         ),

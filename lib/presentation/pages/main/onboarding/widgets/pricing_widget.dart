@@ -26,23 +26,23 @@ class PricingWidget extends StatelessWidget {
       builder: (context, state) {
         return ReactiveFormField(
           formControl: pricingControl,
+          validationMessages: {
+            ValidationMessage.min: (error) => l10n.enterCorrectPrice,
+          },
           builder: (field) {
-            final error = field.control.errors;
+            final errorText = field.errorText;
             return OnboardingPageContainer(
               title: l10n.pricing,
               subTitle: l10n.setCompetitivePrice,
               onBack: onBack,
               onNext: field.control.valid ? onNext : null,
               child: _TextField(
-                errorText: error.isNotEmpty && field.control.touched
-                    ? l10n.enterCorrectPrice
-                    : null,
+                errorText: errorText,
                 selectedPricing: field.control.value ?? 0,
                 onChange: (value) {
-                  pricingControl.value = value;
-                  if (!pricingControl.touched) {
-                    pricingControl.markAsTouched();
-                  }
+                  pricingControl
+                    ..updateValue(value)
+                    ..markAsTouched();
                 },
               ),
             );
