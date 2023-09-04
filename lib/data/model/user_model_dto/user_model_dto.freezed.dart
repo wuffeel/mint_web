@@ -180,7 +180,7 @@ class __$$_UserModelDtoCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
+class _$_UserModelDto extends _UserModelDto with DiagnosticableTreeMixin {
   const _$_UserModelDto(
       {required this.id,
       this.phoneNumber,
@@ -188,7 +188,8 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
       this.firstName,
       this.lastName,
       this.email,
-      @JsonKey(fromJson: DateTimeUtils.tryConvertToDateTime) this.dateOfBirth});
+      @JsonKey(fromJson: DateTimeUtils.tryConvertToDateTime) this.dateOfBirth})
+      : super._();
 
   factory _$_UserModelDto.fromJson(Map<String, dynamic> json) =>
       _$$_UserModelDtoFromJson(json);
@@ -267,7 +268,7 @@ class _$_UserModelDto with DiagnosticableTreeMixin implements _UserModelDto {
   }
 }
 
-abstract class _UserModelDto implements UserModelDto {
+abstract class _UserModelDto extends UserModelDto {
   const factory _UserModelDto(
       {required final String id,
       final String? phoneNumber,
@@ -277,6 +278,7 @@ abstract class _UserModelDto implements UserModelDto {
       final String? email,
       @JsonKey(fromJson: DateTimeUtils.tryConvertToDateTime)
       final DateTime? dateOfBirth}) = _$_UserModelDto;
+  const _UserModelDto._() : super._();
 
   factory _UserModelDto.fromJson(Map<String, dynamic> json) =
       _$_UserModelDto.fromJson;

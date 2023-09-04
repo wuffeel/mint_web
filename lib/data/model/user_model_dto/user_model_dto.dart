@@ -21,9 +21,13 @@ class UserModelDto with _$UserModelDto {
     DateTime? dateOfBirth,
   }) = _UserModelDto;
 
+  const UserModelDto._();
+
   factory UserModelDto.fromJson(Map<String, dynamic> json) =>
       _$UserModelDtoFromJson(json);
 
   factory UserModelDto.fromJsonWithId(Map<String, dynamic> json, String id) =>
       _$UserModelDtoFromJson(<String, dynamic>{'id': id, ...json});
+
+  Map<String, dynamic> toJsonWithoutId() => toJson()..remove('id');
 }
