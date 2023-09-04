@@ -9,9 +9,11 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
   FirebaseSpecialistRepository(this._firebaseInitializer);
 
   static const _filterCollection = 'filter';
+  static const _specialistCollection = 'specialists';
+  static const _workInfoCollection = 'work_info';
+
   static const _specialistFilterDocId = 'specialist_filter';
   static const _specializations = 'specializations';
-  static const _specialistCollection = 'specialists';
 
   final FirebaseInitializer _firebaseInitializer;
 
@@ -42,6 +44,19 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
         .collection(_specialistCollection)
         .doc(id)
         .set(specialist.toJsonWithoutId());
+  }
+
+  @override
+  Future<void> addWorkInfoData(
+    String specialistId,
+    Map<String, Map<String, String>> workInfoMap,
+  ) async {
+    final firestore = await _firebaseInitializer.firestore;
+
+    return firestore
+        .collection(_workInfoCollection)
+        .doc('info_$specialistId')
+        .set(workInfoMap);
   }
 
   @override

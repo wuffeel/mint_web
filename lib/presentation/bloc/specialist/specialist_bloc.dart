@@ -12,6 +12,7 @@ import '../../../domain/entity/onboarding_specialist/onboarding_specialist.dart'
 import '../../../domain/entity/specialist_model/specialist_model.dart';
 import '../../../domain/entity/user_model/user_model.dart';
 import '../../../domain/usecase/add_new_specialist_use_case.dart';
+import '../../../domain/usecase/add_work_info_data_use_case.dart';
 import '../../../domain/usecase/update_user_data_use_case.dart';
 
 part 'specialist_event.dart';
@@ -23,6 +24,7 @@ class SpecialistBloc extends Bloc<SpecialistEvent, SpecialistState> {
   SpecialistBloc(
     this._addSpecialistWithIdUseCase,
     this._updateUserDataUseCase,
+    this._addWorkInfoDataUseCase,
     this._onboardingSpecialistFromOnboarding,
     this._specialistModelFromOnboarding,
     this._userModelFromOnboarding,
@@ -35,6 +37,8 @@ class SpecialistBloc extends Bloc<SpecialistEvent, SpecialistState> {
 
   final AddSpecialistWithIdUseCase _addSpecialistWithIdUseCase;
   final UpdateUserDataUseCase _updateUserDataUseCase;
+  final AddWorkInfoDataUseCase _addWorkInfoDataUseCase;
+
   final assembly.Factory<OnboardingSpecialist?, Onboarding>
       _onboardingSpecialistFromOnboarding;
   final assembly.Factory<SpecialistModel, OnboardingSpecialist>
@@ -79,6 +83,7 @@ class SpecialistBloc extends Bloc<SpecialistEvent, SpecialistState> {
       final userModel = _userModelFromOnboarding.create(onboardingSpec);
 
       await _addSpecialistWithIdUseCase(user.id, specialistModel);
+      await _addWorkInfoDataUseCase(user.id, onboardingSpec.workInfo);
 
       final phone = user.phoneNumber;
       final userData = await _updateUserDataUseCase(

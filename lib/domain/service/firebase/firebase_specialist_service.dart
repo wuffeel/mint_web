@@ -37,6 +37,14 @@ class FirebaseSpecialistService implements SpecialistService {
   }
 
   @override
+  Future<void> addWorkInfoData(
+    String specialistId,
+    Map<String, Map<String, String>> workInfoMap,
+  ) {
+    return _specialistRepository.addWorkInfoData(specialistId, workInfoMap);
+  }
+
+  @override
   Future<SpecialistModel?> fetchSpecialistData(String specialistId) async {
     final specialist = await _specialistRepository.fetchSpecialistData(
       specialistId,

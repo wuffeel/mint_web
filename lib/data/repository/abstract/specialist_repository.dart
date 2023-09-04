@@ -5,5 +5,10 @@ abstract class SpecialistRepository {
 
   Future<void> addSpecialistWithId(String id, SpecialistModelDto specialist);
 
+  Future<void> addWorkInfoData(
+    String specialistId,
+    Map<String, Map<String, String>> workInfoMap,
+  );
+
   Future<SpecialistModelDto?> fetchSpecialistData(String specialistId);
 }
