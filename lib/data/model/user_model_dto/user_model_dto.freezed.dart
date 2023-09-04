@@ -25,9 +25,10 @@ mixin _$UserModelDto {
   String? get photoUrl => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
-  String? get email =>
-      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
-  @JsonKey(fromJson: DateTimeUtils.tryConvertToDateTime)
+  String? get email => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: DateTimeUtils.tryConvertToDateTime,
+      toJson: DateTimeUtils.dateTimeToJson)
   DateTime? get dateOfBirth => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -49,7 +50,9 @@ abstract class $UserModelDtoCopyWith<$Res> {
       String? firstName,
       String? lastName,
       String? email,
-      @JsonKey(fromJson: DateTimeUtils.tryConvertToDateTime)
+      @JsonKey(
+          fromJson: DateTimeUtils.tryConvertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
       DateTime? dateOfBirth});
 }
 
@@ -122,7 +125,9 @@ abstract class _$$_UserModelDtoCopyWith<$Res>
       String? firstName,
       String? lastName,
       String? email,
-      @JsonKey(fromJson: DateTimeUtils.tryConvertToDateTime)
+      @JsonKey(
+          fromJson: DateTimeUtils.tryConvertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
       DateTime? dateOfBirth});
 }
 
@@ -188,7 +193,10 @@ class _$_UserModelDto extends _UserModelDto with DiagnosticableTreeMixin {
       this.firstName,
       this.lastName,
       this.email,
-      @JsonKey(fromJson: DateTimeUtils.tryConvertToDateTime) this.dateOfBirth})
+      @JsonKey(
+          fromJson: DateTimeUtils.tryConvertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
+      this.dateOfBirth})
       : super._();
 
   factory _$_UserModelDto.fromJson(Map<String, dynamic> json) =>
@@ -206,9 +214,10 @@ class _$_UserModelDto extends _UserModelDto with DiagnosticableTreeMixin {
   final String? lastName;
   @override
   final String? email;
-// ignore: invalid_annotation_target
   @override
-  @JsonKey(fromJson: DateTimeUtils.tryConvertToDateTime)
+  @JsonKey(
+      fromJson: DateTimeUtils.tryConvertToDateTime,
+      toJson: DateTimeUtils.dateTimeToJson)
   final DateTime? dateOfBirth;
 
   @override
@@ -276,7 +285,9 @@ abstract class _UserModelDto extends UserModelDto {
       final String? firstName,
       final String? lastName,
       final String? email,
-      @JsonKey(fromJson: DateTimeUtils.tryConvertToDateTime)
+      @JsonKey(
+          fromJson: DateTimeUtils.tryConvertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
       final DateTime? dateOfBirth}) = _$_UserModelDto;
   const _UserModelDto._() : super._();
 
@@ -295,8 +306,10 @@ abstract class _UserModelDto extends UserModelDto {
   String? get lastName;
   @override
   String? get email;
-  @override // ignore: invalid_annotation_target
-  @JsonKey(fromJson: DateTimeUtils.tryConvertToDateTime)
+  @override
+  @JsonKey(
+      fromJson: DateTimeUtils.tryConvertToDateTime,
+      toJson: DateTimeUtils.dateTimeToJson)
   DateTime? get dateOfBirth;
   @override
   @JsonKey(ignore: true)

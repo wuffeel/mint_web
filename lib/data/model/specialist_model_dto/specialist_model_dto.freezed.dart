@@ -24,6 +24,9 @@ mixin _$SpecialistModelDto {
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
   int get price => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: DateTimeUtils.convertToDateTime,
+      toJson: DateTimeUtils.dateTimeToJson)
   DateTime get experience => throw _privateConstructorUsedError;
   List<String> get specializations => throw _privateConstructorUsedError;
   double get rating => throw _privateConstructorUsedError;
@@ -49,6 +52,9 @@ abstract class $SpecialistModelDtoCopyWith<$Res> {
       String firstName,
       String lastName,
       int price,
+      @JsonKey(
+          fromJson: DateTimeUtils.convertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
       DateTime experience,
       List<String> specializations,
       double rating,
@@ -145,6 +151,9 @@ abstract class _$$_SpecialistModelDtoCopyWith<$Res>
       String firstName,
       String lastName,
       int price,
+      @JsonKey(
+          fromJson: DateTimeUtils.convertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
       DateTime experience,
       List<String> specializations,
       double rating,
@@ -235,6 +244,9 @@ class _$_SpecialistModelDto extends _SpecialistModelDto
       required this.firstName,
       required this.lastName,
       required this.price,
+      @JsonKey(
+          fromJson: DateTimeUtils.convertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
       required this.experience,
       required final List<String> specializations,
       this.rating = 0.0,
@@ -257,6 +269,9 @@ class _$_SpecialistModelDto extends _SpecialistModelDto
   @override
   final int price;
   @override
+  @JsonKey(
+      fromJson: DateTimeUtils.convertToDateTime,
+      toJson: DateTimeUtils.dateTimeToJson)
   final DateTime experience;
   final List<String> _specializations;
   @override
@@ -364,6 +379,9 @@ abstract class _SpecialistModelDto extends SpecialistModelDto {
       required final String firstName,
       required final String lastName,
       required final int price,
+      @JsonKey(
+          fromJson: DateTimeUtils.convertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
       required final DateTime experience,
       required final List<String> specializations,
       final double rating,
@@ -385,6 +403,9 @@ abstract class _SpecialistModelDto extends SpecialistModelDto {
   @override
   int get price;
   @override
+  @JsonKey(
+      fromJson: DateTimeUtils.convertToDateTime,
+      toJson: DateTimeUtils.dateTimeToJson)
   DateTime get experience;
   @override
   List<String> get specializations;

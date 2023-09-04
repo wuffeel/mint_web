@@ -92,5 +92,5 @@ class DateTimeUtils {
   }
 
   /// Used for freezed as toJson JsonKey() to prevent DateTime String conversion
-  static DateTime dateTimeToJson(DateTime date) => date;
+  static DateTime? dateTimeToJson(DateTime? date) => date;
 }

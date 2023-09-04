@@ -24,5 +24,5 @@ Map<String, dynamic> _$$_UserModelDtoToJson(_$_UserModelDto instance) =>
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'email': instance.email,
-      'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
+      'dateOfBirth': DateTimeUtils.dateTimeToJson(instance.dateOfBirth),
     };

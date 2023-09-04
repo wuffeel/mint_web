@@ -12,7 +12,7 @@ _$_SpecialistModelDto _$$_SpecialistModelDtoFromJson(Map json) =>
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       price: json['price'] as int,
-      experience: DateTime.parse(json['experience'] as String),
+      experience: DateTimeUtils.convertToDateTime(json['experience']),
       specializations: (json['specializations'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
@@ -30,7 +30,7 @@ Map<String, dynamic> _$$_SpecialistModelDtoToJson(
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'price': instance.price,
-      'experience': instance.experience.toIso8601String(),
+      'experience': DateTimeUtils.dateTimeToJson(instance.experience),
       'specializations': instance.specializations,
       'rating': instance.rating,
       'reviewCount': instance.reviewCount,
