@@ -13,4 +13,9 @@ class FirebaseStorageService implements StorageService {
   Future<String?> getLinkByStorageUrl(String? storageUrl) {
     return _storageRepository.getLinkByStorageUrl(storageUrl);
   }
+
+  @override
+  Future<String> uploadUserPhoto(String filePath, String userId) {
+    return _storageRepository.uploadUserPhoto(filePath, userId);
+  }
 }
