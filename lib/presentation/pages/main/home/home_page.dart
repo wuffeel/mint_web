@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../bloc/specialist_info/specialist_info_bloc.dart';
+import '../../../bloc/user/user_bloc.dart';
 
 @RoutePage()
 class HomePage extends StatelessWidget {
@@ -18,7 +19,21 @@ class HomePage extends StatelessWidget {
           }
           if (state is SpecialistInfoFetchSuccess) {
             return Center(
-              child: Text(state.specialist.toString().split(',').join('\n')),
+              child: FractionallySizedBox(
+                widthFactor: 0.3,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(state.specialist.toString().split(',').join('\n')),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () =>
+                          context.read<UserBloc>().add(UserLogOutRequested()),
+                      child: const Text('Log out'),
+                    )
+                  ],
+                ),
+              ),
             );
           }
           return const SizedBox.shrink();
