@@ -19,6 +19,7 @@ class AuthWrapperPage extends AutoRouter with AutoRouteWrapper {
 
   void _userFetchListener(BuildContext context, UserState state) {
     if (state is UserAuthenticated) {
+      context.router.markUrlStateForReplace();
       context.router.replace(const MainWrapperRoute());
     }
   }

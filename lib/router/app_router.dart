@@ -7,7 +7,6 @@ class AppRouter extends $AppRouter {
   List<AutoRoute> get routes => [
         AutoRoute(
           initial: true,
-          path: '/',
           page: LoginWrapperRoute.page,
           children: [AutoRoute(path: '', page: LoginRoute.page)],
         ),
@@ -31,6 +30,7 @@ class AppRouter extends $AppRouter {
           path: '/main',
           page: MainWrapperRoute.page,
           children: [
+            AutoRoute(path: 'onboarding', page: OnboardingRoute.page),
             AutoRoute(path: 'home', page: HomeRoute.page),
             RedirectRoute(path: '', redirectTo: 'home'),
           ],

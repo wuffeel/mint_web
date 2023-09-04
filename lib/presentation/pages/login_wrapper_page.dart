@@ -19,7 +19,7 @@ class LoginWrapperPage extends AutoRouter with AutoRouteWrapper {
       child: BlocListener<UserBloc, UserState>(
         listener: (context, state) {
           if (state is UserAuthenticated) {
-            context.router.replace(const SpecialistCheckRoute());
+            context.router.replace(const MainWrapperRoute());
           }
           if (state is UserUnauthenticated) {
             context.router.replaceAll([const AuthWrapperRoute()]);

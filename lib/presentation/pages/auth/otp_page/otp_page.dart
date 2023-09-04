@@ -59,6 +59,7 @@ class _OtpViewState extends State<_OtpView> {
 
   void _resetPhone() {
     context.read<AuthBloc>().add(AuthPhoneChangeRequested());
+    context.router.markUrlStateForReplace();
     context.router.navigate(const EnterPhoneRoute());
   }
 

@@ -56,6 +56,7 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return BlocConsumer<AuthBloc, AuthState>(
+      listenWhen: (oldState, newState) => oldState is! AuthVerifyPhoneSuccess,
       listener: (context, state) {
         if (state is AuthVerifyPhoneSuccess) {
           context.router.markUrlStateForReplace();

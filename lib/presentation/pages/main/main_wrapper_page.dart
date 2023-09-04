@@ -13,10 +13,23 @@ class MainWrapperPage extends AutoRouter with AutoRouteWrapper {
 
   void _userBlocListener(BuildContext context, UserState state) {
     if (state is UserUnauthenticated) {
+      context.router.markUrlStateForReplace();
       context.router.replaceAll([const AuthWrapperRoute()]);
     }
     if (state is UserAuthenticated) {
       context.read<SpecialistInfoBloc>().add(SpecialistInfoFetchRequested());
+    }
+  }
+
+  void _specialistInfoBlocListener(
+    BuildContext context,
+    SpecialistInfoState state,
+  ) {
+    if (state is SpecialistInfoFetchSuccess) {
+      context.router.navigate(const HomeRoute());
+    }
+    if (state is SpecialistInfoNotFound) {
+      context.router.navigate(const OnboardingRoute());
     }
   }
 
@@ -38,11 +51,9 @@ class MainWrapperPage extends AutoRouter with AutoRouteWrapper {
         listeners: [
           BlocListener<UserBloc, UserState>(listener: _userBlocListener),
           BlocListener<SpecialistInfoBloc, SpecialistInfoState>(
-            listener: (context, state) {
-              if (state is SpecialistInfoNotFound) {
-                context.router.replaceAll([const OnboardingRoute()]);
-              }
-            },
+            listenWhen: (oldState, newState) =>
+                oldState is! SpecialistInfoFetchSuccess,
+            listener: _specialistInfoBlocListener,
           ),
         ],
         child: this,
