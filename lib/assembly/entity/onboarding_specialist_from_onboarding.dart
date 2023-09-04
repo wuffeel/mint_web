@@ -38,10 +38,10 @@ class OnboardingSpecialistFromOnboarding
       final endTimeHour = endTime.hour;
       final endTimeMinute = endTime.minute;
       workInfoMap[workDay.weekday] = {
-        'startTime': DateFormat.jm('enUS').format(
+        'startTime': DateFormat.jm('en_US').format(
           DateTime(1, 1, 1, startTimeHour, startTimeMinute).toUtc(),
         ),
-        'endTime': DateFormat.jm('enUS').format(
+        'endTime': DateFormat.jm('en_US').format(
           DateTime(1, 1, 1, endTimeHour, endTimeMinute).toUtc(),
         ),
       };
