@@ -79,7 +79,7 @@ class BasicInfoWidget extends StatelessWidget {
                   );
                 },
                 firstDate: DateTime(DateTime.now().year - 65),
-                lastDate: DateTime.now(),
+                lastDate: DateTime(DateTime.now().year - 18),
               ),
             ],
           ),
