@@ -6,6 +6,7 @@ import '../../../../l10n/l10n.dart';
 import '../../../../router/app_router.gr.dart';
 import '../../../../theme/mint_text_styles.dart';
 import '../../../bloc/auth/auth_bloc.dart';
+import '../../../widgets/scrollable_area.dart';
 import '../widgets/auth_left_panel.dart';
 import '../widgets/auth_page_body.dart';
 import 'widgets/conditions_agree_text.dart';
@@ -65,37 +66,40 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
       },
       builder: (context, state) => Scaffold(
         body: AuthPageBody(
-          child: AuthLeftPanel(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(l10n.signUp, style: MintTextStyles.title),
-                const SizedBox(height: 58),
-                PhoneFieldErrorDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  child: TextField(
-                    controller: _phoneController,
-                    decoration: InputDecoration(hintText: l10n.phoneNumber),
-                    onChanged: (phone) {
-                      setState(() {
-                        _isPhoneValid = _validatePhoneNumber(phone);
-                      });
-                    },
+          child: ScrollableArea(
+            child: AuthLeftPanel(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(l10n.signUp, style: MintTextStyles.title),
+                  const SizedBox(height: 58),
+                  PhoneFieldErrorDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    child: TextField(
+                      controller: _phoneController,
+                      decoration: InputDecoration(hintText: l10n.phoneNumber),
+                      onChanged: (phone) {
+                        setState(() {
+                          _isPhoneValid = _validatePhoneNumber(phone);
+                        });
+                      },
+                    ),
                   ),
-                ),
-                const SizedBox(height: 18),
-                if (state is! AuthVerifyPhoneLoading)
-                  ElevatedButton(
-                    onPressed: _getVerifyCallback(context),
-                    child: Text(l10n.signUp),
-                  )
-                else
-                  const Center(child: CircularProgressIndicator()),
-                const SizedBox(height: 8),
-                const ConditionsAgreeText(),
-                const SizedBox(height: 70),
-                const Align(child: SignInText()),
-              ],
+                  const SizedBox(height: 18),
+                  if (state is! AuthVerifyPhoneLoading)
+                    ElevatedButton(
+                      onPressed: _getVerifyCallback(context),
+                      child: Text(l10n.signUp),
+                    )
+                  else
+                    const Center(child: CircularProgressIndicator()),
+                  const SizedBox(height: 8),
+                  const ConditionsAgreeText(),
+                  const SizedBox(height: 70),
+                  const Align(child: SignInText()),
+                  const SizedBox(height: 50),
+                ],
+              ),
             ),
           ),
         ),

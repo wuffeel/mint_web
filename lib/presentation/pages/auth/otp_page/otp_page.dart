@@ -9,6 +9,7 @@ import '../../../bloc/auth/auth_bloc.dart';
 import '../../../bloc/resend_timer/resend_timer_bloc.dart';
 import '../../../bloc/resend_timer/ticker.dart';
 import '../../../bloc/user/user_bloc.dart';
+import '../../../widgets/scrollable_area.dart';
 import '../widgets/auth_left_panel.dart';
 import '../widgets/auth_page_body.dart';
 import 'widgets/otp_field_error_decoration.dart';
@@ -80,51 +81,72 @@ class _OtpViewState extends State<_OtpView> {
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           return AuthPageBody(
-            child: AuthLeftPanel(
-              onBack: _resetPhone,
-              forceBackButton: true,
-              child: BlocBuilder<UserBloc, UserState>(
-                builder: (context, userState) {
-                  if (userState is UserFetchLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(l10n.enterCode, style: MintTextStyles.title),
-                      const SizedBox(height: 8),
-                      if (state is AuthVerifyPhoneSuccess)
-                        OtpSentText(phoneNumber: state.phoneNumber),
-                      const SizedBox(height: 34),
-                      OtpFieldErrorDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        child: TextField(
+            child: ScrollableArea(
+              child: AuthLeftPanel(
+                onBack: _resetPhone,
+                forceBackButton: true,
+                child: BlocBuilder<UserBloc, UserState>(
+                  builder: (context, userState) {
+                    if (userState is UserFetchLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(l10n.enterCode, style: MintTextStyles.title),
+                        const SizedBox(height: 8),
+                        if (state is AuthVerifyPhoneSuccess)
+                          OtpSentText(phoneNumber: state.phoneNumber),
+                        const SizedBox(height: 34),
+                        _OtpTextField(
                           controller: _otpController,
-                          decoration: InputDecoration(hintText: l10n.enterCode),
-                          onChanged: (_) => setState(() {}),
+                          onChanged: () => setState(() {}),
                         ),
-                      ),
-                      const SizedBox(height: 18),
-                      if (state is! AuthVerifyOtpLoading)
-                        ElevatedButton(
-                          onPressed: _otpController.text.isNotEmpty
-                              ? () => _verifyOtp(_otpController.text.trim())
-                              : null,
-                          child: Text(l10n.signUp),
-                        )
-                      else
-                        const Center(child: CircularProgressIndicator()),
-                      const SizedBox(height: 8),
-                      if (state is! AuthVerifyOtpLoading &&
-                          state is! AuthVerifyOtpSuccess)
-                        const Align(child: ResendOtpText()),
-                    ],
-                  );
-                },
+                        const SizedBox(height: 18),
+                        if (state is! AuthVerifyOtpLoading)
+                          ElevatedButton(
+                            onPressed: _otpController.text.isNotEmpty
+                                ? () => _verifyOtp(_otpController.text.trim())
+                                : null,
+                            child: Text(l10n.signUp),
+                          )
+                        else
+                          const Center(child: CircularProgressIndicator()),
+                        const SizedBox(height: 8),
+                        if (state is! AuthVerifyOtpLoading &&
+                            state is! AuthVerifyOtpSuccess)
+                          const Align(child: ResendOtpText()),
+                        const SizedBox(height: 50),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _OtpTextField extends StatelessWidget {
+  const _OtpTextField({required this.controller, required this.onChanged});
+
+  final TextEditingController controller;
+  final VoidCallback onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return OtpFieldErrorDecoration(
+      borderRadius: BorderRadius.circular(8),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          hintText: l10n.enterCode,
+        ),
+        onChanged: (_) => onChanged(),
       ),
     );
   }
