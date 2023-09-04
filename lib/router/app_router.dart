@@ -31,6 +31,7 @@ class AppRouter extends $AppRouter {
           page: MainWrapperRoute.page,
           children: [
             AutoRoute(path: 'home', page: HomeRoute.page),
+            RedirectRoute(path: '', redirectTo: 'home'),
           ],
         ),
       ];
