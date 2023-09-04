@@ -7,10 +7,10 @@ import '../entity/specialist_model/specialist_model.dart';
 
 @lazySingleton
 class SpecialistController {
-  final _specialistController = BehaviorSubject<SpecialistModel?>();
+  final _specialistController = BehaviorSubject<SpecialistModel>();
 
-  Stream<SpecialistModel?> get specialist => _specialistController.stream;
+  Stream<SpecialistModel> get specialist => _specialistController.stream;
 
-  void addToSpecialistStream(SpecialistModel? specialist) =>
+  void addToSpecialistStream(SpecialistModel specialist) =>
       _specialistController.add(specialist);
 }
