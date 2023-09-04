@@ -13,7 +13,7 @@ class SpecialistModelToDto
         firstName: param.firstName,
         lastName: param.lastName,
         price: param.price,
-        experience: param.experience,
+        experience: param.experience.toUtc(),
         specializations: param.specializations,
         rating: param.rating,
         reviewCount: param.reviewCount,

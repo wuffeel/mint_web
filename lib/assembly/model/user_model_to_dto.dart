@@ -19,7 +19,7 @@ class UserModelToDto implements Factory<Future<UserModelDto>, UserModel> {
       email: param.email,
       firstName: param.firstName,
       lastName: param.lastName,
-      dateOfBirth: param.dateOfBirth,
+      dateOfBirth: param.dateOfBirth?.toUtc(),
       photoUrl: photo != null && !photo.startsWith('http')
           ? await _service.uploadUserPhoto(photo, param.id)
           : photo,

@@ -15,6 +15,6 @@ class UserModelFromOnboardingSpecialist
         firstName: param.firstName,
         lastName: param.lastName,
         email: param.email,
-        dateOfBirth: param.dateOfBirth.toUtc(),
+        dateOfBirth: param.dateOfBirth,
       );
 }

@@ -13,7 +13,7 @@ class SpecialistModelFromOnboardingSpecialist
         firstName: param.firstName,
         lastName: param.lastName,
         price: param.price,
-        experience: param.experience.toUtc(),
+        experience: param.experience,
         specializations: param.specializations,
         about: param.about,
         education: param.education,
