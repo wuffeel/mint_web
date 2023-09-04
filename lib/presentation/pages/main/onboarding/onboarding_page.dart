@@ -115,9 +115,6 @@ class _OnboardingViewState extends State<_OnboardingView> {
                       child: OnboardingFormBuilder(
                         model: onboardingState.model,
                         builder: (context, formModel, child) {
-                          final s = formModel.availabilityControl.controls[0]
-                              as FormGroup;
-                          debugPrint(s.errors.toString());
                           final workDayForm = formModel
                               .availabilityWorkDayInfoForm[_currentWorkDay];
                           return PageView(
