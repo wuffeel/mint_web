@@ -49,5 +49,9 @@
   "selectAtLeastOneSkill": "Select at least one skill",
   "enterCorrectPrice": "Enter correct price",
   "timeIsEqual": "Time is equal",
-  "differenceShouldBeMoreThan1Hour": "Difference should be more than 1 hour"
+  "differenceShouldBeMoreThan1Hour": "Difference should be more than 1 hour",
+  "home": "Home",
+  "patients": "Patients",
+  "appointments": "Appointments",
+  "messages": "Messages"
 }

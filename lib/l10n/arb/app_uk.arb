@@ -49,5 +49,9 @@
   "selectAtLeastOneSkill": "Оберіть хоча б один навичок",
   "enterCorrectPrice": "Введіть корректну ціну",
   "timeIsEqual": "Час однаковий",
-  "differenceShouldBeMoreThan1Hour": "Різниця повинна бути більшою за 1 годину"
+  "differenceShouldBeMoreThan1Hour": "Різниця повинна бути більшою за 1 годину",
+  "home": "Головна",
+  "patients": "Пацієнти",
+  "appointments": "Зустрічи",
+  "messages": "Повідомлення"
 }

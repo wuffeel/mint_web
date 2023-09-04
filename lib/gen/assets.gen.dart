@@ -17,6 +17,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/back_button.svg
   SvgGenImage get backButton => const SvgGenImage('assets/svg/back_button.svg');
 
+  /// File path: assets/svg/bell_icon.svg
+  SvgGenImage get bellIcon => const SvgGenImage('assets/svg/bell_icon.svg');
+
   /// File path: assets/svg/mint_logo.svg
   SvgGenImage get mintLogo => const SvgGenImage('assets/svg/mint_logo.svg');
 
@@ -25,7 +28,7 @@ class $AssetsSvgGen {
       const SvgGenImage('assets/svg/refresh_icon.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [backButton, mintLogo, refreshIcon];
+  List<SvgGenImage> get values => [backButton, bellIcon, mintLogo, refreshIcon];
 }
 
 class Assets {

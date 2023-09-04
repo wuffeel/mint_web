@@ -19,20 +19,21 @@ class AppRouter extends $AppRouter {
           ],
         ),
         AutoRoute(
-          path: '/check',
-          page: SpecialistCheckRoute.page,
-          children: [
-            AutoRoute(path: '', page: SpecialistCheckLoadingRoute.page),
-            AutoRoute(path: 'onboarding', page: OnboardingRoute.page),
-          ],
-        ),
-        AutoRoute(
           path: '/main',
           page: MainWrapperRoute.page,
           children: [
             AutoRoute(path: 'onboarding', page: OnboardingRoute.page),
-            AutoRoute(path: 'home', page: HomeRoute.page),
-            RedirectRoute(path: '', redirectTo: 'home'),
+            AutoRoute(
+              path: 'navigation',
+              page: NavigationRoute.page,
+              children: [
+                AutoRoute(path: 'home', page: HomeRoute.page),
+                AutoRoute(path: 'patients', page: PatientsRoute.page),
+                AutoRoute(path: 'appointments', page: AppointmentsRoute.page),
+                AutoRoute(path: 'messages', page: MessagesRoute.page),
+                RedirectRoute(path: '', redirectTo: 'home'),
+              ],
+            ),
           ],
         ),
       ];

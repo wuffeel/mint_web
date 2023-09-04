@@ -13,11 +13,17 @@ import 'package:flutter/material.dart';
 class MintColors {
   MintColors._();
 
+  /// Color: #787E99
+  static const Color bellGrey = Color(0xFF787E99);
+
   /// Color: #C7D5FB
   static const Color brandBlue4 = Color(0xFFC7D5FB);
 
   /// Color: #9BCAFF
   static const Color disabledButtonColor = Color(0xFF9BCAFF);
+
+  /// Color: #626DD4
+  static const Color elevation = Color(0xFF626DD4);
 
   /// Color: #FF3B30
   static const Color errorColor = Color(0xFFFF3B30);
