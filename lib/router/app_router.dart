@@ -23,7 +23,7 @@ class AppRouter extends $AppRouter {
           page: MainWrapperRoute.page,
           children: [
             AutoRoute(path: 'onboarding', page: OnboardingRoute.page),
-            RedirectRoute(path: '', redirectTo: 'onboarding'),
+            AutoRoute(path: 'home', page: HomeRoute.page),
           ],
         ),
       ];
