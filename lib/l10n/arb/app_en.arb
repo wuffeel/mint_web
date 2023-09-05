@@ -53,5 +53,18 @@
   "home": "Home",
   "patients": "Patients",
   "appointments": "Appointments",
-  "messages": "Messages"
+  "messages": "Messages",
+  "current": "Current",
+  "completed": "Completed",
+  "upcoming": "Upcoming",
+  "patient": "Patient",
+  "fullName": "Full name",
+  "contactPhone": "Contact phone",
+  "time": "Time",
+  "date": "Date",
+  "status": "Status",
+  "patientsList": "Patients list",
+  "search": "Search",
+  "sort": "Sort",
+  "filter": "Filter"
 }

@@ -53,5 +53,18 @@
   "home": "Головна",
   "patients": "Пацієнти",
   "appointments": "Зустрічи",
-  "messages": "Повідомлення"
+  "messages": "Повідомлення",
+  "current": "Поточна",
+  "completed": "Завершена",
+  "upcoming": "Майбутня",
+  "patient": "Пацієнт",
+  "fullName": "Повне ім'я",
+  "contactPhone": "Контактний телефон",
+  "time": "Час",
+  "date": "Дата",
+  "status": "Стан",
+  "patientsList": "Список пацієнтів",
+  "search": "Пошук",
+  "sort": "Сортування",
+  "filter": "Фільтр"
 }

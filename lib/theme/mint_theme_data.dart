@@ -48,4 +48,9 @@ class MintThemeData {
     ),
     hoverColor: Colors.white,
   );
+
+  static final textTheme = const TextTheme().apply(
+    bodyColor: MintColors.textDark,
+    displayColor: MintColors.textDark,
+  );
 }

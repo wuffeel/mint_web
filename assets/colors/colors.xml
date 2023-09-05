@@ -13,4 +13,7 @@
     <color name="brandBlue4">#C7D5FB</color>
     <color name="bellGrey">#787E99</color>
     <color name="elevation">#626DD4</color>
+    <color name="upcomingStatus">#DEF3EE</color>
+    <color name="completedStatus">#E8EFF5</color>
+    <color name="textDark">#323544</color>
 </resources>

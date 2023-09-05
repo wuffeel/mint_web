@@ -19,6 +19,9 @@ class MintColors {
   /// Color: #C7D5FB
   static const Color brandBlue4 = Color(0xFFC7D5FB);
 
+  /// Color: #E8EFF5
+  static const Color completedStatus = Color(0xFFE8EFF5);
+
   /// Color: #9BCAFF
   static const Color disabledButtonColor = Color(0xFF9BCAFF);
 
@@ -48,4 +51,10 @@ class MintColors {
 
   /// Color: #B3B3B3
   static const Color stepperGrey = Color(0xFFB3B3B3);
+
+  /// Color: #323544
+  static const Color textDark = Color(0xFF323544);
+
+  /// Color: #DEF3EE
+  static const Color upcomingStatus = Color(0xFFDEF3EE);
 }

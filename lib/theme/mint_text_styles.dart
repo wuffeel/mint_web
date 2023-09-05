@@ -43,4 +43,19 @@ class MintTextStyles {
     height: 1.3,
     color: MintColors.errorColor,
   );
+
+  static const figure = TextStyle(
+    fontSize: 15,
+    height: 1.3,
+  );
+
+  static const tagBig = TextStyle(
+    fontSize: 16,
+    height: 1.3,
+  );
+
+  static const tagSmall = TextStyle(
+    fontSize: 13,
+    height: 1.4,
+  );
 }

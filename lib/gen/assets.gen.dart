@@ -20,6 +20,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/bell_icon.svg
   SvgGenImage get bellIcon => const SvgGenImage('assets/svg/bell_icon.svg');
 
+  /// File path: assets/svg/filter_icon.svg
+  SvgGenImage get filterIcon => const SvgGenImage('assets/svg/filter_icon.svg');
+
   /// File path: assets/svg/mint_logo.svg
   SvgGenImage get mintLogo => const SvgGenImage('assets/svg/mint_logo.svg');
 
@@ -27,8 +30,12 @@ class $AssetsSvgGen {
   SvgGenImage get refreshIcon =>
       const SvgGenImage('assets/svg/refresh_icon.svg');
 
+  /// File path: assets/svg/sort_icon.svg
+  SvgGenImage get sortIcon => const SvgGenImage('assets/svg/sort_icon.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [backButton, bellIcon, mintLogo, refreshIcon];
+  List<SvgGenImage> get values =>
+      [backButton, bellIcon, filterIcon, mintLogo, refreshIcon, sortIcon];
 }
 
 class Assets {

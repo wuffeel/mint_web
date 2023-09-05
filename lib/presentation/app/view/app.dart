@@ -21,6 +21,7 @@ class App extends StatelessWidget {
         inputDecorationTheme: MintThemeData.inputDecoration,
         hintColor: MintColors.hintColor,
         scaffoldBackgroundColor: MintColors.scaffold,
+        textTheme: MintThemeData.textTheme,
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       routerConfig: _appRouter.config(),
