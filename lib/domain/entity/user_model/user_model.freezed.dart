@@ -169,7 +169,7 @@ class __$$_UserModelCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UserModel implements _UserModel {
+class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
   const _$_UserModel(
       {required this.id,
       this.phoneNumber,
@@ -195,8 +195,22 @@ class _$_UserModel implements _UserModel {
   final DateTime? dateOfBirth;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'UserModel(id: $id, phoneNumber: $phoneNumber, photoUrl: $photoUrl, firstName: $firstName, lastName: $lastName, email: $email, dateOfBirth: $dateOfBirth)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'UserModel'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
+      ..add(DiagnosticsProperty('photoUrl', photoUrl))
+      ..add(DiagnosticsProperty('firstName', firstName))
+      ..add(DiagnosticsProperty('lastName', lastName))
+      ..add(DiagnosticsProperty('email', email))
+      ..add(DiagnosticsProperty('dateOfBirth', dateOfBirth));
   }
 
   @override

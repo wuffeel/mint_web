@@ -223,7 +223,9 @@ class __$$_SpecialistModelCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_SpecialistModel implements _SpecialistModel {
+class _$_SpecialistModel
+    with DiagnosticableTreeMixin
+    implements _SpecialistModel {
   const _$_SpecialistModel(
       {required this.id,
       required this.firstName,
@@ -270,8 +272,26 @@ class _$_SpecialistModel implements _SpecialistModel {
   final String? education;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'SpecialistModel(id: $id, firstName: $firstName, lastName: $lastName, price: $price, experience: $experience, specializations: $specializations, rating: $rating, reviewCount: $reviewCount, photoUrl: $photoUrl, about: $about, education: $education)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'SpecialistModel'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('firstName', firstName))
+      ..add(DiagnosticsProperty('lastName', lastName))
+      ..add(DiagnosticsProperty('price', price))
+      ..add(DiagnosticsProperty('experience', experience))
+      ..add(DiagnosticsProperty('specializations', specializations))
+      ..add(DiagnosticsProperty('rating', rating))
+      ..add(DiagnosticsProperty('reviewCount', reviewCount))
+      ..add(DiagnosticsProperty('photoUrl', photoUrl))
+      ..add(DiagnosticsProperty('about', about))
+      ..add(DiagnosticsProperty('education', education));
   }
 
   @override
