@@ -104,7 +104,7 @@ class _BookingDataTableSource extends DataTableSource {
       cells: <DataCell>[
         DataCell(Center(child: Text('${index + 1}'))),
         DataCell(Text(fullName)),
-        DataCell(Text(_formatPhone(patientBook.phoneNumber))),
+        DataCell(Text(_formatPhone(patientBook.phoneNumber ?? ''))),
         DataCell(Text(_getDurationTime(bookTime, bookEndTime, locale))),
         DataCell(Text(DateFormat.yMd(locale).format(bookTime))),
         DataCell(Center(child: status)),
