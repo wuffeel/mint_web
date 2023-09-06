@@ -3,6 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'patient_book_dto.freezed.dart';
 
+part 'patient_book_dto.g.dart';
+
 @freezed
 class PatientBookDto with _$PatientBookDto {
   const factory PatientBookDto({
