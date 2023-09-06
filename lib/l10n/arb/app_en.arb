@@ -71,5 +71,10 @@
   "selectDate": "Select date",
   "selectStatus": "Select status",
   "apply": "Apply",
-  "noConsultationsFound": "No consultations found"
+  "noConsultationsFound": "No consultations found",
+  "selectDaysToApply": "Select days to apply",
+  "applyScheduleForOtherWeekdays": "Apply schedule for other weekdays",
+  "start": "Start",
+  "end": "End",
+  "schedule": "Schedule"
 }

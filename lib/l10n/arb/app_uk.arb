@@ -71,5 +71,10 @@
   "selectDate": "Оберіть дату",
   "selectStatus": "Оберіть стан",
   "apply": "Застосувати",
-  "noConsultationsFound": "Консультацій не знайдено"
+  "noConsultationsFound": "Консультацій не знайдено",
+  "selectDaysToApply": "Виберіть дні для застосування",
+  "applyScheduleForOtherWeekdays": "Застосувати графік до інших днів",
+  "start": "Початок",
+  "end": "Кінець",
+  "schedule": "Графік"
 }

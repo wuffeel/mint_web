@@ -120,8 +120,6 @@ class _OnboardingViewState extends State<_OnboardingView> {
                       child: OnboardingFormBuilder(
                         model: onboardingState.model,
                         builder: (context, formModel, child) {
-                          final workDayForm = formModel
-                              .availabilityWorkDayInfoForm[_currentWorkDay];
                           return PageView(
                             controller: _controller,
                             onPageChanged: (page) => setState(
@@ -157,7 +155,8 @@ class _OnboardingViewState extends State<_OnboardingView> {
                                 onBack: _previousPage,
                                 onSubmit: () => _onSubmit(formModel.model),
                                 currentIndex: _currentWorkDay,
-                                currentWorkDayForm: workDayForm,
+                                workDayFormList:
+                                    formModel.availabilityWorkDayInfoForm,
                                 onWorkDayIndexChange: (index) => setState(
                                   () => _currentWorkDay = index,
                                 ),
