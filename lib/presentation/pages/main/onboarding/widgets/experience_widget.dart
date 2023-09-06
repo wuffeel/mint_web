@@ -6,7 +6,7 @@ import '../../../../../domain/entity/onboarding/onboarding.dart';
 import '../../../../../gen/colors.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../../theme/mint_text_styles.dart';
-import '../../../../widgets/form_field_container.dart';
+import '../../../../widgets/mint_container.dart';
 import 'onboarding_page_container.dart';
 
 class ExperienceWidget extends StatelessWidget {
@@ -146,7 +146,7 @@ class _DateOfExperience extends StatelessWidget {
     final date = experienceDate;
     return InkWell(
       onTap: onTap,
-      child: FormFieldContainer(
+      child: MintContainer(
         child: SizedBox(
           width: double.infinity,
           child: Text(

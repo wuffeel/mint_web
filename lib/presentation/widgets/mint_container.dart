@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class FormFieldContainer extends StatelessWidget {
-  const FormFieldContainer({required this.child, super.key});
+class MintContainer extends StatelessWidget {
+  const MintContainer({required this.child, super.key});
 
   final Widget child;
 

@@ -8,7 +8,7 @@ import '../../../../../domain/entity/onboarding/onboarding.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../../theme/mint_text_styles.dart';
 import '../../../../bloc/user/user_bloc.dart';
-import '../../../../widgets/form_field_container.dart';
+import '../../../../widgets/mint_container.dart';
 import 'onboarding_page_container.dart';
 
 class BasicInfoWidget extends StatelessWidget {
@@ -102,7 +102,7 @@ class _PhoneNumberField extends StatelessWidget {
       builder: (context, state) {
         if (state is UserAuthenticated) {
           final phone = state.user.phoneNumber;
-          return FormFieldContainer(
+          return MintContainer(
             child: SizedBox(
               width: double.infinity,
               child: Text(
@@ -129,7 +129,7 @@ class _DateOfBirthField extends StatelessWidget {
     final date = dateOfBirth;
     return InkWell(
       onTap: onTap,
-      child: FormFieldContainer(
+      child: MintContainer(
         child: SizedBox(
           width: double.infinity,
           child: Text(
