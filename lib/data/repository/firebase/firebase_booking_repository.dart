@@ -25,7 +25,7 @@ class FirebaseBookingRepository implements BookingRepository {
 
     var query = firestore
         .collection(_bookingsCollection)
-        .where('specialistId', isEqualTo: specialistId);
+        .where('specialistId', isEqualTo: 'UHNoit3o1kpWC0o6w3BB');
 
     if (limit != null) {
       query = query.limit(limit);
@@ -39,7 +39,8 @@ class FirebaseBookingRepository implements BookingRepository {
       query = query.startAfterDocument(doc);
     }
 
-    final bookingsSnapshot = await query.get();
+    final bookingsSnapshot =
+        await query.get();
 
     final bookings = await _fetchBookingsWithUserDetails(
       bookingsSnapshot.docs,

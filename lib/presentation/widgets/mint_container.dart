@@ -6,11 +6,13 @@ class MintContainer extends StatelessWidget {
     super.key,
     this.width,
     this.height,
+    this.padding,
   });
 
   final Widget child;
   final double? width;
   final double? height;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,11 @@ class MintContainer extends StatelessWidget {
         color: Colors.white,
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+        padding: padding ??
+            const EdgeInsets.symmetric(
+              vertical: 14,
+              horizontal: 16,
+            ),
         child: SizedBox(width: width, height: height, child: child),
       ),
     );

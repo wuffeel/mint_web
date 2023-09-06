@@ -1,12 +1,13 @@
-import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../domain/entity/patient_book/patient_book.dart';
+import '../../../../domain/entity/patient_filter.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../injector/injector.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../theme/mint_text_styles.dart';
+import '../../../../utils/date_time_utils.dart';
 import '../../../bloc/patients/patients_bloc.dart';
 import 'widgets/patients_filter_dialog.dart';
 import 'widgets/patients_paginated_data_table.dart';
@@ -30,114 +31,18 @@ class _PatientsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: FractionallySizedBox(
           widthFactor: 0.83,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              const SizedBox(height: 36),
-              const _PatientsToolbar(),
-              const SizedBox(height: 16),
-              Flexible(
-                child: PatientsPaginatedDataTable(
-                  patientBookData: <PatientBook>[
-                    PatientBook(
-                      id: '',
-                      bookTime: DateTime(2023, 9, 5, 14, 30),
-                      durationMinutes: 60,
-                      endTime: DateTime(2023, 9, 5, 15, 30),
-                      phoneNumber: '+380123321123',
-                    ),
-                    PatientBook(
-                      id: '',
-                      bookTime: DateTime(2023, 9, 5, 10, 30),
-                      durationMinutes: 60,
-                      endTime: DateTime(2023, 9, 5, 11, 30),
-                      phoneNumber: '+380123321123',
-                    ),
-                    PatientBook(
-                      id: '',
-                      bookTime: DateTime(2023, 9, 5, 10, 30),
-                      durationMinutes: 60,
-                      endTime: DateTime(2023, 9, 5, 11, 30),
-                      phoneNumber: '+380123321123',
-                    ),
-                    PatientBook(
-                      id: '',
-                      bookTime: DateTime(2023, 9, 5, 10, 30),
-                      durationMinutes: 60,
-                      endTime: DateTime(2023, 9, 5, 11, 30),
-                      phoneNumber: '+380123321123',
-                    ),
-                    PatientBook(
-                      id: '',
-                      bookTime: DateTime(2023, 9, 5, 10, 30),
-                      durationMinutes: 60,
-                      endTime: DateTime(2023, 9, 5, 11, 30),
-                      phoneNumber: '+380123321123',
-                    ),
-                    PatientBook(
-                      id: '',
-                      bookTime: DateTime(2023, 9, 5, 10, 30),
-                      durationMinutes: 60,
-                      endTime: DateTime(2023, 9, 5, 11, 30),
-                      phoneNumber: '+380123321123',
-                    ),
-                    PatientBook(
-                      id: '',
-                      bookTime: DateTime(2023, 9, 5, 10, 30),
-                      durationMinutes: 60,
-                      endTime: DateTime(2023, 9, 5, 11, 30),
-                      phoneNumber: '+380123321123',
-                    ),
-                    PatientBook(
-                      id: '',
-                      bookTime: DateTime(2023, 9, 5, 10, 30),
-                      durationMinutes: 60,
-                      endTime: DateTime(2023, 9, 5, 11, 30),
-                      phoneNumber: '+380123321123',
-                    ),
-                    PatientBook(
-                      id: '',
-                      bookTime: DateTime(2023, 9, 5, 10, 30),
-                      durationMinutes: 60,
-                      endTime: DateTime(2023, 9, 5, 11, 30),
-                      phoneNumber: '+380123321123',
-                    ),
-                    PatientBook(
-                      id: '',
-                      bookTime: DateTime(2023, 9, 5, 10, 30),
-                      durationMinutes: 60,
-                      endTime: DateTime(2023, 9, 5, 11, 30),
-                      phoneNumber: '+380123321123',
-                    ),
-                    PatientBook(
-                      id: '',
-                      bookTime: DateTime(2023, 9, 5, 10, 30),
-                      durationMinutes: 60,
-                      endTime: DateTime(2023, 9, 5, 11, 30),
-                      phoneNumber: '+380123321123',
-                    ),
-                    PatientBook(
-                      id: '',
-                      bookTime: DateTime(2023, 9, 5, 10, 30),
-                      durationMinutes: 60,
-                      endTime: DateTime(2023, 9, 5, 11, 30),
-                      phoneNumber: '+380123321123',
-                    ),
-                    PatientBook(
-                      id: '',
-                      bookTime: DateTime(2023, 9, 5, 10, 30),
-                      durationMinutes: 60,
-                      endTime: DateTime(2023, 9, 5, 11, 30),
-                      phoneNumber: '+380123321123',
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 65),
+              SizedBox(height: 36),
+              _PatientsToolbar(),
+              SizedBox(height: 16),
+              Flexible(child: PatientsPaginatedDataTable()),
+              SizedBox(height: 65),
             ],
           ),
         ),
@@ -154,9 +59,48 @@ class _PatientsToolbar extends StatelessWidget {
       context: context,
       builder: (dialogContext) => BlocProvider.value(
         value: context.read<PatientsBloc>(),
-        child: PatientsFilterDialog(onApply: () {}, onClear: () {}),
+        child: BlocBuilder<PatientsBloc, PatientsState>(
+          builder: (context, state) {
+            if (state is PatientsBookListLoadSuccess) {
+              return PatientsFilterDialog(
+                filter: state.filter,
+                minDate: state.minBookTime,
+                maxDate: state.maxBookTime,
+                onApply: (filter) =>
+                    _onFilterApply(context, dialogContext, filter),
+                onClear: () => _onFilterClear(context, dialogContext),
+                selectableDatePredicate: (date) => state.bookList.any(
+                  (book) => DateTimeUtils.isSameDay(date, book.bookTime),
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
+  }
+
+  void _onFilterApply(
+    BuildContext context,
+    BuildContext dialogContext,
+    PatientFilter filter,
+  ) {
+    context.read<PatientsBloc>().add(PatientsFilterChanged(filter));
+    dialogContext.router.pop();
+  }
+
+  void _onFilterClear(BuildContext context, BuildContext dialogContext) {
+    context
+        .read<PatientsBloc>()
+        .add(PatientsFilterChanged(PatientFilter.empty));
+    dialogContext.router.pop();
+  }
+
+  void _onSearch(BuildContext context, String searchText) {
+    context
+        .read<PatientsBloc>()
+        .add(PatientsFilterChanged(PatientFilter(searchText: searchText)));
   }
 
   @override
@@ -179,33 +123,10 @@ class _PatientsToolbar extends StatelessWidget {
                   hintText: l10n.search,
                   prefixIcon: const Icon(Icons.search),
                 ),
+                onChanged: (search) => _onSearch(context, search),
               ),
             ),
             const SizedBox(width: 24),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Row(
-                  children: [
-                    Assets.svg.sortIcon.svg(
-                      width: 16,
-                      height: 16,
-                      colorFilter: ColorFilter.mode(
-                        Theme.of(context).iconTheme.color ?? Colors.black,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(l10n.sort, style: MintTextStyles.tagBig),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(width: 16),
             InkWell(
               onTap: () => _showFilterDialog(context),
               child: DecoratedBox(

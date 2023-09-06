@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../backbone/consultation_status.dart';
+import '../../../../../domain/entity/patient_filter.dart';
 import '../../../../../gen/assets.gen.dart';
 import '../../../../../gen/colors.gen.dart';
 import '../../../../../l10n/l10n.dart';
@@ -9,18 +11,59 @@ import '../../../../widgets/mint_container.dart';
 import '../../../../widgets/popup_app_bar.dart';
 import 'consultation_status_widget.dart';
 
-class PatientsFilterDialog extends StatelessWidget {
-  const PatientsFilterDialog({super.key, this.onClear, this.onApply});
+class PatientsFilterDialog extends StatefulWidget {
+  const PatientsFilterDialog({
+    required this.filter,
+    required this.onApply,
+    required this.onClear,
+    required this.minDate,
+    required this.maxDate,
+    required this.selectableDatePredicate,
+    super.key,
+  });
 
+  final PatientFilter filter;
   final VoidCallback? onClear;
-  final VoidCallback? onApply;
+  final void Function(PatientFilter) onApply;
+  final DateTime? minDate;
+  final DateTime? maxDate;
+  final bool Function(DateTime) selectableDatePredicate;
+
+  @override
+  State<PatientsFilterDialog> createState() => _PatientsFilterDialogState();
+}
+
+class _PatientsFilterDialogState extends State<PatientsFilterDialog> {
+  late PatientFilter _filter = widget.filter;
+
+  Future<void> _showDatePicker(
+    DateTime minDate,
+    DateTime maxDate,
+    bool Function(DateTime) selectableDatePredicate,
+  ) async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: maxDate,
+      firstDate: minDate,
+      lastDate: maxDate,
+      selectableDayPredicate: selectableDatePredicate,
+    );
+    if (date != null) {
+      setState(() => _filter = _filter.copyWith(bookDate: date));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final minDate = widget.minDate;
+    final maxDate = widget.maxDate;
+    final selectedDate = _filter.bookDate;
     return Dialog(
       backgroundColor: MintColors.scaffold,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6),
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Wrap(
@@ -31,23 +74,43 @@ class PatientsFilterDialog extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   const SizedBox(height: 8),
-                  _FilterAppBar(onClear: onClear),
+                  _FilterAppBar(onClear: widget.onClear),
                   const SizedBox(height: 24),
                   Text(l10n.date, style: MintTextStyles.medium16),
                   const SizedBox(height: 10),
-                  MintContainer(
-                    width: double.infinity,
-                    child: Text(l10n.selectDate, style: MintTextStyles.hint),
+                  InkWell(
+                    onTap: minDate != null && maxDate != null
+                        ? () => _showDatePicker(
+                              minDate,
+                              maxDate,
+                              widget.selectableDatePredicate,
+                            )
+                        : null,
+                    child: MintContainer(
+                      width: double.infinity,
+                      child: Text(
+                        selectedDate != null
+                            ? DateFormat.yMd(l10n.localeName)
+                                .format(selectedDate)
+                            : l10n.selectDate,
+                        style: selectedDate != null
+                            ? MintTextStyles.body
+                            : MintTextStyles.hint,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 16),
                   Text(l10n.status, style: MintTextStyles.medium16),
                   const SizedBox(height: 10),
                   _ConsultationStatusDropDown(
-                    onChanged: (status) {},
+                    status: _filter.status,
+                    onChanged: (status) => setState(
+                      () => _filter = _filter.copyWith(status: status),
+                    ),
                   ),
                   const SizedBox(height: 30),
                   ElevatedButton(
-                    onPressed: onApply,
+                    onPressed: () => widget.onApply(_filter),
                     child: Text(l10n.apply),
                   ),
                   const SizedBox(height: 20),
@@ -106,6 +169,7 @@ class _ConsultationStatusDropDown extends StatelessWidget {
     return DropdownButtonHideUnderline(
       child: MintContainer(
         width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: DropdownButton<ConsultationStatus?>(
           dropdownColor: Colors.white,
           icon: Assets.svg.arrowDown.svg(
@@ -130,6 +194,12 @@ class _ConsultationStatusDropDown extends StatelessWidget {
               value: ConsultationStatus.completed,
               child: ConsultationStatusWidget(
                 status: ConsultationStatus.completed,
+              ),
+            ),
+            DropdownMenuItem(
+              value: ConsultationStatus.current,
+              child: ConsultationStatusWidget(
+                status: ConsultationStatus.current,
               ),
             ),
           ],

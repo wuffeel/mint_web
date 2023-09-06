@@ -12,10 +12,37 @@ import '../../../../../theme/mint_text_styles.dart';
 import '../../../../bloc/patients/patients_bloc.dart';
 import 'consultation_status_widget.dart';
 
-class PatientsPaginatedDataTable extends StatelessWidget {
-  const PatientsPaginatedDataTable({required this.patientBookData, super.key});
+class PatientsPaginatedDataTable extends StatefulWidget {
+  const PatientsPaginatedDataTable({super.key});
 
-  final List<PatientBook> patientBookData;
+  @override
+  State<PatientsPaginatedDataTable> createState() =>
+      _PatientsPaginatedDataTableState();
+}
+
+class _PatientsPaginatedDataTableState
+    extends State<PatientsPaginatedDataTable> {
+  bool _sortAscending = false;
+
+  /// Index of date column
+  int? _sortColumnIndex = 4;
+
+  void _sort<T>(
+    Comparable<T> Function(PatientBook p) getField,
+    int columnIndex,
+    bool ascending,
+  ) {
+    final sortEvent = PatientsSortRequested(getField, ascending: ascending);
+    context.read<PatientsBloc>().add(sortEvent);
+    setState(() {
+      _sortColumnIndex = columnIndex;
+      _sortAscending = ascending;
+    });
+  }
+
+  void _onRefresh() {
+    context.read<PatientsBloc>().add(PatientsRefreshRequested());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +62,16 @@ class PatientsPaginatedDataTable extends StatelessWidget {
                 ),
               ),
               child: PaginatedDataTable2(
+                actions: [
+                  IconButton(
+                    onPressed: _onRefresh,
+                    icon: const Icon(Icons.refresh),
+                  ),
+                ],
+                empty: const _NoConsultationsFound(),
                 renderEmptyRowsInTheEnd: false,
-                headingTextStyle: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  height: 1.3,
-                  letterSpacing: -0.01,
-                ),
+                headingTextStyle: MintTextStyles.medium16.copyWith(height: 1.3),
+                header: const Text(''),
                 dataRowHeight: 75,
                 dataTextStyle: MintTextStyles.figure.copyWith(
                   color: MintColors.dark,
@@ -59,20 +89,30 @@ class PatientsPaginatedDataTable extends StatelessWidget {
                   DataColumn2(
                     label: Text(l10n.contactPhone),
                     size: ColumnSize.L,
-                    ),
+                  ),
                   DataColumn2(
                     label: Text(l10n.time),
                   ),
                   DataColumn2(
                     label: Text(l10n.date),
-                    onSort: (_, ascending) {},
+                    onSort: (columnIndex, ascending) => _sort(
+                      (p) => p.bookTime,
+                      columnIndex,
+                      ascending,
+                    ),
                   ),
                   DataColumn2(
                     label: Center(child: Text(l10n.status)),
                   ),
                 ],
-                sortArrowAlwaysVisible: true,
-                source: _BookingDataTableSource(context, state.bookList),
+                sortAscending: _sortAscending,
+                sortColumnIndex: _sortColumnIndex,
+                source: _BookingDataTableSource(
+                  context,
+                  state.filter.isEmpty
+                      ? state.bookList
+                      : state.filteredBookList,
+                ),
               ),
             );
           }
@@ -88,6 +128,20 @@ class _BookingDataTableSource extends DataTableSource {
 
   final BuildContext context;
   final List<PatientBook> patientBookList;
+
+  void sort<T>(
+    Comparable<T> Function(PatientBook d) getField, {
+    required bool ascending,
+  }) {
+    patientBookList.sort((a, b) {
+      final aValue = getField(a);
+      final bValue = getField(b);
+      return ascending
+          ? Comparable.compare(aValue, bValue)
+          : Comparable.compare(bValue, aValue);
+    });
+    notifyListeners();
+  }
 
   String _formatPhone(String phone) => formatAsPhoneNumber(phone) ?? phone;
 
@@ -150,6 +204,20 @@ class _BookingDataTableSource extends DataTableSource {
 
   @override
   int get selectedRowCount => 0;
+}
+
+class _NoConsultationsFound extends StatelessWidget {
+  const _NoConsultationsFound();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        context.l10n.noConsultationsFound,
+        style: MintTextStyles.title,
+      ),
+    );
+  }
 }
 
 /*class _AsyncBookingDataTableSource extends AsyncDataTableSource {

@@ -70,5 +70,6 @@
   "clear": "Очистити",
   "selectDate": "Оберіть дату",
   "selectStatus": "Оберіть стан",
-  "apply": "Застосувати"
+  "apply": "Застосувати",
+  "noConsultationsFound": "Консультацій не знайдено"
 }

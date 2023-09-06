@@ -93,4 +93,10 @@ class DateTimeUtils {
 
   /// Used for freezed as toJson JsonKey() to prevent DateTime String conversion
   static DateTime? dateTimeToJson(DateTime? date) => date;
+
+  /// Checks if [date] and [otherDate] are the same day
+  static bool isSameDay(DateTime date, DateTime otherDate) =>
+      date.year == otherDate.year &&
+      date.month == otherDate.month &&
+      date.day == otherDate.day;
 }

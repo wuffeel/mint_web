@@ -70,5 +70,6 @@
   "clear": "Clear",
   "selectDate": "Select date",
   "selectStatus": "Select status",
-  "apply": "Apply"
+  "apply": "Apply",
+  "noConsultationsFound": "No consultations found"
 }
