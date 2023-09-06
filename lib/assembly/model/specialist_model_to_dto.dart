@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../data/model/specialist_model_dto/specialist_model_dto.dart';
 import '../../domain/entity/specialist_model/specialist_model.dart';
+import '../../utils/date_time_utils.dart';
 import '../factory.dart';
 
 @Injectable(as: Factory<SpecialistModelDto, SpecialistModel>)
@@ -13,7 +14,7 @@ class SpecialistModelToDto
         firstName: param.firstName,
         lastName: param.lastName,
         price: param.price,
-        experience: param.experience.toUtc(),
+        experience: DateTimeUtils.toUtcDateOnly(param.experience),
         specializations: param.specializations,
         rating: param.rating,
         reviewCount: param.reviewCount,

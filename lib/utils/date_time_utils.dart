@@ -99,4 +99,8 @@ class DateTimeUtils {
       date.year == otherDate.year &&
       date.month == otherDate.month &&
       date.day == otherDate.day;
+
+  /// Converts [date] to UTC date without time
+  static DateTime toUtcDateOnly(DateTime date) =>
+      DateTime.utc(date.year, date.month, date.day);
 }
