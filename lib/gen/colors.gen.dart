@@ -22,8 +22,14 @@ class MintColors {
   /// Color: #E8EFF5
   static const Color completedStatus = Color(0xFFE8EFF5);
 
+  /// Color: #323544
+  static const Color dark = Color(0xFF323544);
+
   /// Color: #9BCAFF
   static const Color disabledButtonColor = Color(0xFF9BCAFF);
+
+  /// Color: #EAEAEA
+  static const Color dividerGrey = Color(0xFFEAEAEA);
 
   /// Color: #626DD4
   static const Color elevation = Color(0xFF626DD4);
@@ -40,6 +46,9 @@ class MintColors {
   /// Color: #3C3C43
   static const Color hintColor = Color(0xFF3C3C43);
 
+  /// Color: #B3B3B3
+  static const Color lightGrey = Color(0xFFB3B3B3);
+
   /// Color: #007AFF
   static const Color primaryBlueColor = Color(0xFF007AFF);
 
@@ -48,12 +57,6 @@ class MintColors {
 
   /// Color: #3269E1
   static const Color stepperBlue = Color(0xFF3269E1);
-
-  /// Color: #B3B3B3
-  static const Color stepperGrey = Color(0xFFB3B3B3);
-
-  /// Color: #323544
-  static const Color textDark = Color(0xFF323544);
 
   /// Color: #DEF3EE
   static const Color upcomingStatus = Color(0xFFDEF3EE);

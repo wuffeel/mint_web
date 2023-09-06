@@ -9,11 +9,12 @@
     <color name="errorColor">#FF3B30</color>
     <color name="brandBlue4">#C7D5FB</color>
     <color name="stepperBlue">#3269E1</color>
-    <color name="stepperGrey">#B3B3B3</color>
+    <color name="lightGrey">#B3B3B3</color>
     <color name="brandBlue4">#C7D5FB</color>
     <color name="bellGrey">#787E99</color>
     <color name="elevation">#626DD4</color>
     <color name="upcomingStatus">#DEF3EE</color>
     <color name="completedStatus">#E8EFF5</color>
-    <color name="textDark">#323544</color>
+    <color name="dark">#323544</color>
+    <color name="dividerGrey">#EAEAEA</color>
 </resources>

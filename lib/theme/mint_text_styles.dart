@@ -58,4 +58,15 @@ class MintTextStyles {
     fontSize: 13,
     height: 1.4,
   );
+
+  static const medium16 = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const hint = TextStyle(
+    fontSize: 16,
+    height: 1.5,
+    color: MintColors.lightGrey,
+  );
 }

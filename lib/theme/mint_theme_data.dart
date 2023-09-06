@@ -50,7 +50,7 @@ class MintThemeData {
   );
 
   static final textTheme = const TextTheme().apply(
-    bodyColor: MintColors.textDark,
-    displayColor: MintColors.textDark,
+    bodyColor: Colors.black,
+    displayColor: Colors.black,
   );
 }

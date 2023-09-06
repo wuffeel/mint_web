@@ -66,5 +66,9 @@
   "patientsList": "Patients list",
   "search": "Search",
   "sort": "Sort",
-  "filter": "Filter"
+  "filter": "Filter",
+  "clear": "Clear",
+  "selectDate": "Select date",
+  "selectStatus": "Select status",
+  "apply": "Apply"
 }

@@ -16,6 +16,7 @@ class App extends StatelessWidget {
     return MaterialApp.router(
       theme: ThemeData(
         colorScheme: MintThemeData.colorScheme,
+        dividerColor: MintColors.dividerGrey,
         elevatedButtonTheme: MintThemeData.elevatedButton,
         fontFamily: MintFontFamily.inter,
         inputDecorationTheme: MintThemeData.inputDecoration,
