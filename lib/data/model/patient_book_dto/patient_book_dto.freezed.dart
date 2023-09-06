@@ -21,8 +21,14 @@ PatientBookDto _$PatientBookDtoFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PatientBookDto {
   String get id => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: DateTimeUtils.convertToDateTime,
+      toJson: DateTimeUtils.dateTimeToJson)
   DateTime get bookTime => throw _privateConstructorUsedError;
   int get durationMinutes => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: DateTimeUtils.convertToDateTime,
+      toJson: DateTimeUtils.dateTimeToJson)
   DateTime get endTime => throw _privateConstructorUsedError;
   String? get phoneNumber => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
@@ -42,8 +48,14 @@ abstract class $PatientBookDtoCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      @JsonKey(
+          fromJson: DateTimeUtils.convertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
       DateTime bookTime,
       int durationMinutes,
+      @JsonKey(
+          fromJson: DateTimeUtils.convertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
       DateTime endTime,
       String? phoneNumber,
       String? firstName,
@@ -114,8 +126,14 @@ abstract class _$$_PatientBookDtoCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
+      @JsonKey(
+          fromJson: DateTimeUtils.convertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
       DateTime bookTime,
       int durationMinutes,
+      @JsonKey(
+          fromJson: DateTimeUtils.convertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
       DateTime endTime,
       String? phoneNumber,
       String? firstName,
@@ -181,8 +199,14 @@ class _$_PatientBookDto
     implements _PatientBookDto {
   const _$_PatientBookDto(
       {required this.id,
+      @JsonKey(
+          fromJson: DateTimeUtils.convertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
       required this.bookTime,
       required this.durationMinutes,
+      @JsonKey(
+          fromJson: DateTimeUtils.convertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
       required this.endTime,
       this.phoneNumber,
       this.firstName,
@@ -194,10 +218,16 @@ class _$_PatientBookDto
   @override
   final String id;
   @override
+  @JsonKey(
+      fromJson: DateTimeUtils.convertToDateTime,
+      toJson: DateTimeUtils.dateTimeToJson)
   final DateTime bookTime;
   @override
   final int durationMinutes;
   @override
+  @JsonKey(
+      fromJson: DateTimeUtils.convertToDateTime,
+      toJson: DateTimeUtils.dateTimeToJson)
   final DateTime endTime;
   @override
   final String? phoneNumber;
@@ -266,8 +296,14 @@ class _$_PatientBookDto
 abstract class _PatientBookDto implements PatientBookDto {
   const factory _PatientBookDto(
       {required final String id,
+      @JsonKey(
+          fromJson: DateTimeUtils.convertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
       required final DateTime bookTime,
       required final int durationMinutes,
+      @JsonKey(
+          fromJson: DateTimeUtils.convertToDateTime,
+          toJson: DateTimeUtils.dateTimeToJson)
       required final DateTime endTime,
       final String? phoneNumber,
       final String? firstName,
@@ -279,10 +315,16 @@ abstract class _PatientBookDto implements PatientBookDto {
   @override
   String get id;
   @override
+  @JsonKey(
+      fromJson: DateTimeUtils.convertToDateTime,
+      toJson: DateTimeUtils.dateTimeToJson)
   DateTime get bookTime;
   @override
   int get durationMinutes;
   @override
+  @JsonKey(
+      fromJson: DateTimeUtils.convertToDateTime,
+      toJson: DateTimeUtils.dateTimeToJson)
   DateTime get endTime;
   @override
   String? get phoneNumber;

@@ -43,7 +43,6 @@ class PatientsFilterDialog extends StatelessWidget {
                   Text(l10n.status, style: MintTextStyles.medium16),
                   const SizedBox(height: 10),
                   _ConsultationStatusDropDown(
-                    status: null,
                     onChanged: (status) {},
                   ),
                   const SizedBox(height: 30),

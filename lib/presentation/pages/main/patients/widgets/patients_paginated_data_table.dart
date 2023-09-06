@@ -23,39 +23,60 @@ class PatientsPaginatedDataTable extends StatelessWidget {
     return SelectionArea(
       child: BlocBuilder<PatientsBloc, PatientsState>(
         builder: (context, state) {
-          return PaginatedDataTable2(
-            autoRowsToHeight: true,
-            renderEmptyRowsInTheEnd: false,
-            headingTextStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              height: 1.3,
-              letterSpacing: -0.01,
-            ),
-            dataRowHeight: 75,
-            dataTextStyle: MintTextStyles.figure.copyWith(
-              color: MintColors.dark,
-            ),
-            minWidth: 900,
-            rowsPerPage: state.rowsLimit,
-            columns: <DataColumn>[
-              const DataColumn2(
-                label: Center(child: Text('#')),
-                numeric: true,
-                size: ColumnSize.S,
-                fixedWidth: 120,
+          if (state is PatientsFetchBookListLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state is PatientsBookListLoadSuccess) {
+            return Theme(
+              data: ThemeData(
+                scrollbarTheme: ScrollbarThemeData(
+                  thickness: MaterialStateProperty.all(5),
+                  thumbVisibility: MaterialStateProperty.all(true),
+                ),
               ),
-              DataColumn2(label: Text(l10n.fullName)),
-              DataColumn2(
-                label: Text(l10n.contactPhone),
-                fixedWidth: 200,
+              child: PaginatedDataTable2(
+                renderEmptyRowsInTheEnd: false,
+                headingTextStyle: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  height: 1.3,
+                  letterSpacing: -0.01,
+                ),
+                dataRowHeight: 75,
+                dataTextStyle: MintTextStyles.figure.copyWith(
+                  color: MintColors.dark,
+                ),
+                minWidth: 900,
+                rowsPerPage: state.rowsLimit,
+                columns: <DataColumn>[
+                  const DataColumn2(
+                    label: Center(child: Text('#')),
+                    numeric: true,
+                    size: ColumnSize.S,
+                    fixedWidth: 120,
+                  ),
+                  DataColumn2(label: Text(l10n.fullName), size: ColumnSize.L),
+                  DataColumn2(
+                    label: Text(l10n.contactPhone),
+                    size: ColumnSize.L,
+                    ),
+                  DataColumn2(
+                    label: Text(l10n.time),
+                  ),
+                  DataColumn2(
+                    label: Text(l10n.date),
+                    onSort: (_, ascending) {},
+                  ),
+                  DataColumn2(
+                    label: Center(child: Text(l10n.status)),
+                  ),
+                ],
+                sortArrowAlwaysVisible: true,
+                source: _BookingDataTableSource(context, state.bookList),
               ),
-              DataColumn2(label: Text(l10n.time)),
-              DataColumn2(label: Text(l10n.date)),
-              DataColumn2(label: Center(child: Text(l10n.status))),
-            ],
-            source: _BookingDataTableSource(context, patientBookData),
-          );
+            );
+          }
+          return const SizedBox.shrink();
         },
       ),
     );

@@ -30,7 +30,7 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
   late final StreamSubscription<UserModel?> _userSubscription;
 
   /// Pagination query cursor
-  String? _lastPatientBookId;
+  // String? _lastPatientBookId;
 
   /// Number of patient books to fetch
   static const _paginationLimit = 8;
@@ -63,8 +63,8 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
       );
       final bookList = await _fetchPatientBookListUseCase(
         user.id,
-        lastBookingId: _lastPatientBookId,
-        limit: _paginationLimit,
+        // lastBookingId: _lastPatientBookId,
+        // limit: _paginationLimit,
       );
       emit(
         PatientsFetchBookListSuccess(
@@ -72,9 +72,9 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
           hasReachedEnd: bookList.length < _paginationLimit,
         ),
       );
-      if (bookList.isNotEmpty) {
-        _lastPatientBookId = bookList.last.id;
-      }
+      // if (bookList.isNotEmpty) {
+      //   _lastPatientBookId = bookList.last.id;
+      // }
     } catch (error) {
       debugPrint('PatientsFetchBookListFailure: $error');
       emit(

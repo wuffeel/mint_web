@@ -8,9 +8,9 @@ part of 'patient_book_dto.dart';
 
 _$_PatientBookDto _$$_PatientBookDtoFromJson(Map json) => _$_PatientBookDto(
       id: json['id'] as String,
-      bookTime: DateTime.parse(json['bookTime'] as String),
+      bookTime: DateTimeUtils.convertToDateTime(json['bookTime']),
       durationMinutes: json['durationMinutes'] as int,
-      endTime: DateTime.parse(json['endTime'] as String),
+      endTime: DateTimeUtils.convertToDateTime(json['endTime']),
       phoneNumber: json['phoneNumber'] as String?,
       firstName: json['firstName'] as String?,
       lastName: json['lastName'] as String?,
@@ -19,9 +19,9 @@ _$_PatientBookDto _$$_PatientBookDtoFromJson(Map json) => _$_PatientBookDto(
 Map<String, dynamic> _$$_PatientBookDtoToJson(_$_PatientBookDto instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'bookTime': instance.bookTime.toIso8601String(),
+      'bookTime': DateTimeUtils.dateTimeToJson(instance.bookTime),
       'durationMinutes': instance.durationMinutes,
-      'endTime': instance.endTime.toIso8601String(),
+      'endTime': DateTimeUtils.dateTimeToJson(instance.endTime),
       'phoneNumber': instance.phoneNumber,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
