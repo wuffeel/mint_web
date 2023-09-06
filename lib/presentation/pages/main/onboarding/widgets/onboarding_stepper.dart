@@ -22,7 +22,7 @@ class OnboardingStepper extends StatelessWidget {
 
   Color get _enabledColor => MintColors.stepperBlue;
 
-  Color get _disabledColor => MintColors.stepperGrey;
+  Color get _disabledColor => MintColors.lightGrey;
 
   @override
   Widget build(BuildContext context) {
