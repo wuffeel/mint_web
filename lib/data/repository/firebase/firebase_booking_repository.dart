@@ -16,15 +16,16 @@ class FirebaseBookingRepository implements BookingRepository {
   final FirebaseInitializer _firebaseInitializer;
 
   @override
-  Future<List<PatientBookDto>> getPatientBookings({
+  Future<List<PatientBookDto>> getPatientBookings(
+    String specialistId, {
     String? lastBookingId,
     int? limit,
   }) async {
     final firestore = await _firebaseInitializer.firestore;
 
-    Query<Map<String, dynamic>> query = firestore.collection(
-      _bookingsCollection,
-    );
+    var query = firestore
+        .collection(_bookingsCollection)
+        .where('specialistId', isEqualTo: specialistId);
 
     if (limit != null) {
       query = query.limit(limit);
