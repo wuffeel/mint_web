@@ -10,9 +10,7 @@ class EnvironmentUtil {
   /// otherwise returns null.
   static EnvironmentType? getApplicationEnvironment() {
     for (final env in EnvironmentType.values) {
-      if (env.toShortString() == _environment) {
-        return env;
-      }
+      if (env.name == _environment) return env;
     }
     return null;
   }
