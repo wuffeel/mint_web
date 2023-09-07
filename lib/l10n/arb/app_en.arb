@@ -79,5 +79,6 @@
   "schedule": "Schedule",
   "online": "Online",
   "offline": "Offline",
-  "message": "Message"
+  "message": "Message",
+  "today": "Today"
 }

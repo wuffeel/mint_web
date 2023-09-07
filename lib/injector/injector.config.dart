@@ -14,24 +14,24 @@ import 'dart:async' as _i40;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:mint_web/assembly/entity/onboarding_specialist_from_onboarding.dart'
-    as _i8;
-import 'package:mint_web/assembly/entity/patient_book_from_dto.dart' as _i17;
+    as _i6;
+import 'package:mint_web/assembly/entity/patient_book_from_dto.dart' as _i16;
 import 'package:mint_web/assembly/entity/specialist_model_from_dto.dart'
     as _i43;
 import 'package:mint_web/assembly/entity/specialist_model_from_onboarding_specialist.dart'
-    as _i6;
+    as _i17;
 import 'package:mint_web/assembly/entity/user_model_from_dto.dart' as _i42;
 import 'package:mint_web/assembly/entity/user_model_from_onboarding_specialist.dart'
-    as _i10;
+    as _i8;
 import 'package:mint_web/assembly/factory.dart' as _i3;
-import 'package:mint_web/assembly/model/specialist_model_to_dto.dart' as _i12;
+import 'package:mint_web/assembly/model/specialist_model_to_dto.dart' as _i11;
 import 'package:mint_web/assembly/model/user_model_to_dto.dart' as _i41;
-import 'package:mint_web/assembly/modified_user_dto_to_map.dart' as _i14;
+import 'package:mint_web/assembly/modified_user_dto_to_map.dart' as _i13;
 import 'package:mint_web/data/model/patient_book_dto/patient_book_dto.dart'
-    as _i16;
+    as _i15;
 import 'package:mint_web/data/model/specialist_model_dto/specialist_model_dto.dart'
-    as _i11;
-import 'package:mint_web/data/model/user_model_dto/user_model_dto.dart' as _i13;
+    as _i9;
+import 'package:mint_web/data/model/user_model_dto/user_model_dto.dart' as _i12;
 import 'package:mint_web/data/repository/abstract/booking_repository.dart'
     as _i36;
 import 'package:mint_web/data/repository/abstract/phone_auth_repository.dart'
@@ -55,13 +55,13 @@ import 'package:mint_web/data/repository/firebase/firebase_user_repository.dart'
     as _i32;
 import 'package:mint_web/domain/controller/specialist_controller.dart' as _i23;
 import 'package:mint_web/domain/controller/user_controller.dart' as _i30;
-import 'package:mint_web/domain/entity/onboarding/onboarding.dart' as _i7;
+import 'package:mint_web/domain/entity/onboarding/onboarding.dart' as _i5;
 import 'package:mint_web/domain/entity/onboarding_specialist/onboarding_specialist.dart'
-    as _i5;
-import 'package:mint_web/domain/entity/patient_book/patient_book.dart' as _i15;
-import 'package:mint_web/domain/entity/specialist_model/specialist_model.dart'
     as _i4;
-import 'package:mint_web/domain/entity/user_model/user_model.dart' as _i9;
+import 'package:mint_web/domain/entity/patient_book/patient_book.dart' as _i14;
+import 'package:mint_web/domain/entity/specialist_model/specialist_model.dart'
+    as _i10;
+import 'package:mint_web/domain/entity/user_model/user_model.dart' as _i7;
 import 'package:mint_web/domain/service/abstract/booking_service.dart' as _i38;
 import 'package:mint_web/domain/service/abstract/phone_auth_service.dart'
     as _i21;
@@ -115,18 +115,18 @@ extension GetItInjectableX on _i1.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i3.Factory<_i4.SpecialistModel, _i5.OnboardingSpecialist>>(
-        () => _i6.SpecialistModelFromOnboardingSpecialist());
-    gh.factory<_i3.Factory<_i5.OnboardingSpecialist?, _i7.Onboarding>>(
-        () => _i8.OnboardingSpecialistFromOnboarding());
-    gh.factory<_i3.Factory<_i9.UserModel, _i5.OnboardingSpecialist>>(
-        () => _i10.UserModelFromOnboardingSpecialist());
-    gh.factory<_i3.Factory<_i11.SpecialistModelDto, _i4.SpecialistModel>>(
-        () => _i12.SpecialistModelToDto());
-    gh.factory<_i3.Factory<Map<String, dynamic>, _i13.UserModelDto>>(
-        () => _i14.ModifiedUserDtoToMap());
-    gh.factory<_i3.Factory<_i15.PatientBook, _i16.PatientBookDto>>(
-        () => _i17.UserModelFromOnboardingSpecialist());
+    gh.factory<_i3.Factory<_i4.OnboardingSpecialist?, _i5.Onboarding>>(
+        () => _i6.OnboardingSpecialistFromOnboarding());
+    gh.factory<_i3.Factory<_i7.UserModel, _i4.OnboardingSpecialist>>(
+        () => _i8.UserModelFromOnboardingSpecialist());
+    gh.factory<_i3.Factory<_i9.SpecialistModelDto, _i10.SpecialistModel>>(
+        () => _i11.SpecialistModelToDto());
+    gh.factory<_i3.Factory<Map<String, dynamic>, _i12.UserModelDto>>(
+        () => _i13.ModifiedUserDtoToMap());
+    gh.factory<_i3.Factory<_i14.PatientBook, _i15.PatientBookDto>>(
+        () => _i16.UserModelFromOnboardingSpecialist());
+    gh.factory<_i3.Factory<_i10.SpecialistModel, _i4.OnboardingSpecialist>>(
+        () => _i17.SpecialistModelFromOnboardingSpecialist());
     gh.lazySingleton<_i18.FirebaseInitializer>(
         () => _i18.FirebaseInitializer());
     gh.lazySingleton<_i19.PhoneAuthRepository>(
@@ -144,7 +144,7 @@ extension GetItInjectableX on _i1.GetIt {
     gh.lazySingleton<_i30.UserController>(() => _i30.UserController());
     gh.factory<_i31.UserRepository>(() => _i32.FirebaseUserRepository(
           gh<_i18.FirebaseInitializer>(),
-          gh<_i3.Factory<Map<String, dynamic>, _i13.UserModelDto>>(),
+          gh<_i3.Factory<Map<String, dynamic>, _i12.UserModelDto>>(),
         ));
     gh.factory<_i33.VerifyOtpUseCase>(
         () => _i33.VerifyOtpUseCase(gh<_i21.PhoneAuthService>()));
@@ -158,15 +158,15 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i37.FirebaseBookingRepository(gh<_i18.FirebaseInitializer>()));
     gh.factory<_i38.BookingService>(() => _i39.FirebaseBookingService(
           gh<_i36.BookingRepository>(),
-          gh<_i3.Factory<_i15.PatientBook, _i16.PatientBookDto>>(),
+          gh<_i3.Factory<_i14.PatientBook, _i15.PatientBookDto>>(),
         ));
-    gh.factory<_i3.Factory<_i40.Future<_i13.UserModelDto>, _i9.UserModel>>(
+    gh.factory<_i3.Factory<_i40.Future<_i12.UserModelDto>, _i7.UserModel>>(
         () => _i41.UserModelToDto(gh<_i28.StorageService>()));
-    gh.factory<_i3.Factory<_i40.Future<_i9.UserModel>, _i13.UserModelDto>>(
+    gh.factory<_i3.Factory<_i40.Future<_i7.UserModel>, _i12.UserModelDto>>(
         () => _i42.UserModelFromDto(gh<_i28.StorageService>()));
     gh.factory<
-            _i3.Factory<_i40.Future<_i4.SpecialistModel>,
-                _i11.SpecialistModelDto>>(
+            _i3.Factory<_i40.Future<_i10.SpecialistModel>,
+                _i9.SpecialistModelDto>>(
         () => _i43.SpecialistModelFromDto(gh<_i28.StorageService>()));
     gh.factory<_i44.FetchPatientBookListUseCase>(
         () => _i44.FetchPatientBookListUseCase(gh<_i38.BookingService>()));
@@ -177,14 +177,14 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i46.SpecialistService>(() => _i47.FirebaseSpecialistService(
           gh<_i24.SpecialistRepository>(),
           gh<
-              _i3.Factory<_i40.Future<_i4.SpecialistModel>,
-                  _i11.SpecialistModelDto>>(),
-          gh<_i3.Factory<_i11.SpecialistModelDto, _i4.SpecialistModel>>(),
+              _i3.Factory<_i40.Future<_i10.SpecialistModel>,
+                  _i9.SpecialistModelDto>>(),
+          gh<_i3.Factory<_i9.SpecialistModelDto, _i10.SpecialistModel>>(),
         ));
     gh.factory<_i48.UserService>(() => _i49.FirebaseUserService(
           gh<_i31.UserRepository>(),
-          gh<_i3.Factory<_i40.Future<_i9.UserModel>, _i13.UserModelDto>>(),
-          gh<_i3.Factory<_i40.Future<_i13.UserModelDto>, _i9.UserModel>>(),
+          gh<_i3.Factory<_i40.Future<_i7.UserModel>, _i12.UserModelDto>>(),
+          gh<_i3.Factory<_i40.Future<_i12.UserModelDto>, _i7.UserModel>>(),
         ));
     gh.factory<_i50.AddSpecialistWithIdUseCase>(
         () => _i50.AddSpecialistWithIdUseCase(gh<_i46.SpecialistService>()));
@@ -216,9 +216,9 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i50.AddSpecialistWithIdUseCase>(),
           gh<_i58.UpdateUserDataUseCase>(),
           gh<_i51.AddWorkInfoDataUseCase>(),
-          gh<_i3.Factory<_i5.OnboardingSpecialist?, _i7.Onboarding>>(),
-          gh<_i3.Factory<_i4.SpecialistModel, _i5.OnboardingSpecialist>>(),
-          gh<_i3.Factory<_i9.UserModel, _i5.OnboardingSpecialist>>(),
+          gh<_i3.Factory<_i4.OnboardingSpecialist?, _i5.Onboarding>>(),
+          gh<_i3.Factory<_i10.SpecialistModel, _i4.OnboardingSpecialist>>(),
+          gh<_i3.Factory<_i7.UserModel, _i4.OnboardingSpecialist>>(),
           gh<_i30.UserController>(),
           gh<_i23.SpecialistController>(),
         ));
