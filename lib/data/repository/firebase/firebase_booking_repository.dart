@@ -25,7 +25,7 @@ class FirebaseBookingRepository implements BookingRepository {
 
     var query = firestore
         .collection(_bookingsCollection)
-        .where('specialistId', isEqualTo: 'UHNoit3o1kpWC0o6w3BB');
+        .where('specialistId', isEqualTo: specialistId);
 
     if (limit != null) {
       query = query.limit(limit);
