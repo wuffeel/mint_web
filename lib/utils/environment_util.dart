@@ -2,6 +2,8 @@ import '../backbone/environment_type.dart';
 
 class EnvironmentUtil {
   /// Private constant storing the value of the environment type string.
+  ///
+  /// Should be one of [EnvironmentType.values]
   static const _environment = String.fromEnvironment('flavor');
 
   /// Attempts to match the environment type string with available values.
