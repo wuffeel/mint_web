@@ -87,6 +87,8 @@ class _AvailabilityWidgetState extends State<AvailabilityWidget> {
                         currentWeekday: widget.currentIndex,
                         shortWeekdays: _shortWeekdays,
                         onWeekdaySelect: widget.onWorkDayIndexChange,
+                        invalidWeekdayPredicate: (index) =>
+                            !widget.control.controls[index].valid,
                       ),
                       const SizedBox(height: 28),
                       _ReactiveTimePicker(
