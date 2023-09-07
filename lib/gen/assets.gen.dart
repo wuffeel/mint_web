@@ -14,6 +14,10 @@ import 'package:flutter/services.dart';
 class $AssetsSvgGen {
   const $AssetsSvgGen();
 
+  /// File path: assets/svg/actions_vertical.svg
+  SvgGenImage get actionsVertical =>
+      const SvgGenImage('assets/svg/actions_vertical.svg');
+
   /// File path: assets/svg/arrow_down.svg
   SvgGenImage get arrowDown => const SvgGenImage('assets/svg/arrow_down.svg');
 
@@ -32,6 +36,9 @@ class $AssetsSvgGen {
   /// File path: assets/svg/mint_logo.svg
   SvgGenImage get mintLogo => const SvgGenImage('assets/svg/mint_logo.svg');
 
+  /// File path: assets/svg/phone_icon.svg
+  SvgGenImage get phoneIcon => const SvgGenImage('assets/svg/phone_icon.svg');
+
   /// File path: assets/svg/refresh_icon.svg
   SvgGenImage get refreshIcon =>
       const SvgGenImage('assets/svg/refresh_icon.svg');
@@ -41,12 +48,14 @@ class $AssetsSvgGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
+        actionsVertical,
         arrowDown,
         backButton,
         bellIcon,
         crossIcon,
         filterIcon,
         mintLogo,
+        phoneIcon,
         refreshIcon,
         sortIcon
       ];

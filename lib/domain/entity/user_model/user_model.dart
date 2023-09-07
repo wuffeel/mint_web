@@ -14,4 +14,9 @@ class UserModel with _$UserModel {
     String? email,
     DateTime? dateOfBirth,
   }) = _UserModel;
+
+  const UserModel._();
+
+  String? get fullName =>
+      firstName != null && lastName != null ? '$firstName $lastName' : null;
 }

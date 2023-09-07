@@ -169,7 +169,7 @@ class __$$_UserModelCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
+class _$_UserModel extends _UserModel with DiagnosticableTreeMixin {
   const _$_UserModel(
       {required this.id,
       this.phoneNumber,
@@ -177,7 +177,8 @@ class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
       this.firstName,
       this.lastName,
       this.email,
-      this.dateOfBirth});
+      this.dateOfBirth})
+      : super._();
 
   @override
   final String id;
@@ -243,7 +244,7 @@ class _$_UserModel with DiagnosticableTreeMixin implements _UserModel {
       __$$_UserModelCopyWithImpl<_$_UserModel>(this, _$identity);
 }
 
-abstract class _UserModel implements UserModel {
+abstract class _UserModel extends UserModel {
   const factory _UserModel(
       {required final String id,
       final String? phoneNumber,
@@ -252,6 +253,7 @@ abstract class _UserModel implements UserModel {
       final String? lastName,
       final String? email,
       final DateTime? dateOfBirth}) = _$_UserModel;
+  const _UserModel._() : super._();
 
   @override
   String get id;

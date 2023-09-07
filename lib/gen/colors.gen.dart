@@ -55,6 +55,9 @@ class MintColors {
   /// Color: #F5F6F8
   static const Color scaffold = Color(0xFFF5F6F8);
 
+  /// Color: #B2D7FF
+  static const Color selectedMessageBlue = Color(0xFFB2D7FF);
+
   /// Color: #3269E1
   static const Color stepperBlue = Color(0xFF3269E1);
 

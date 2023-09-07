@@ -1,0 +1,76 @@
+import 'package:flutter/material.dart';
+
+import '../../../../../domain/entity/user_model/user_model.dart';
+import '../../../../../gen/assets.gen.dart';
+import '../../../../../l10n/l10n.dart';
+import '../../../../../theme/mint_text_styles.dart';
+import '../../../../widgets/svg_icon_widget.dart';
+
+class ChatAppBar extends StatelessWidget {
+  const ChatAppBar({
+    required this.user,
+    required this.isOnline,
+    super.key,
+  });
+
+  final UserModel user;
+  final bool isOnline;
+
+  @override
+  Widget build(BuildContext context) {
+    final photo = user.photoUrl;
+    final l10n = context.l10n;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Theme.of(context).dividerColor),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: 20,
+          bottom: 20,
+          left: 20,
+          right: 30,
+        ),
+        child: Row(
+          children: <Widget>[
+            CircleAvatar(
+              radius: 20,
+              backgroundColor: Theme.of(context).hintColor.withOpacity(0.6),
+              backgroundImage: photo != null ? NetworkImage(photo) : null,
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  user.fullName ?? context.l10n.patient,
+                  style: MintTextStyles.semiBold16,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  (isOnline ? l10n.online : l10n.offline).toLowerCase(),
+                  style: const TextStyle(fontSize: 12),
+                )
+              ],
+            ),
+            const Spacer(),
+            const SizedBox(width: 10),
+            SvgIconWidget(
+              genImage: Assets.svg.phoneIcon,
+              width: 22,
+              height: 22,
+            ),
+            const SizedBox(width: 40),
+            SvgIconWidget(
+              genImage: Assets.svg.actionsVertical,
+              width: 22,
+              height: 22,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

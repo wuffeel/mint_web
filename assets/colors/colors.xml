@@ -17,4 +17,5 @@
     <color name="completedStatus">#E8EFF5</color>
     <color name="dark">#323544</color>
     <color name="dividerGrey">#EAEAEA</color>
+    <color name="selectedMessageBlue">#B2D7FF</color>
 </resources>
