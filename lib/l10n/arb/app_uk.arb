@@ -76,5 +76,9 @@
   "applyScheduleForOtherWeekdays": "Застосувати графік до інших днів",
   "start": "Початок",
   "end": "Кінець",
-  "schedule": "Графік"
+  "schedule": "Графік",
+  "online": "Онлайн",
+  "offline": "Офлайн",
+  "message": "Повідомлення",
+  "today": "Сьогодні"
 }

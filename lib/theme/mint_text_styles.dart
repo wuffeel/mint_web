@@ -44,20 +44,11 @@ class MintTextStyles {
     color: MintColors.errorColor,
   );
 
-  static const figure = TextStyle(
-    fontSize: 15,
-    height: 1.3,
-  );
+  static const figure = TextStyle(fontSize: 15, height: 1.3);
 
-  static const tagBig = TextStyle(
-    fontSize: 16,
-    height: 1.3,
-  );
+  static const tagBig = TextStyle(fontSize: 16, height: 1.3);
 
-  static const tagSmall = TextStyle(
-    fontSize: 13,
-    height: 1.4,
-  );
+  static const tagSmall = TextStyle(fontSize: 13, height: 1.4);
 
   static const medium16 = TextStyle(
     fontSize: 16,
@@ -69,4 +60,16 @@ class MintTextStyles {
     height: 1.5,
     color: MintColors.lightGrey,
   );
+
+  static const semiBold16 = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+  );
+
+  static const semiBold18 = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+  );
+
+  static const regular14 = TextStyle(fontSize: 14);
 }

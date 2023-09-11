@@ -14,8 +14,15 @@ import 'package:flutter/services.dart';
 class $AssetsSvgGen {
   const $AssetsSvgGen();
 
+  /// File path: assets/svg/actions_vertical.svg
+  SvgGenImage get actionsVertical =>
+      const SvgGenImage('assets/svg/actions_vertical.svg');
+
   /// File path: assets/svg/arrow_down.svg
   SvgGenImage get arrowDown => const SvgGenImage('assets/svg/arrow_down.svg');
+
+  /// File path: assets/svg/attach_icon.svg
+  SvgGenImage get attachIcon => const SvgGenImage('assets/svg/attach_icon.svg');
 
   /// File path: assets/svg/back_button.svg
   SvgGenImage get backButton => const SvgGenImage('assets/svg/back_button.svg');
@@ -26,11 +33,21 @@ class $AssetsSvgGen {
   /// File path: assets/svg/cross_icon.svg
   SvgGenImage get crossIcon => const SvgGenImage('assets/svg/cross_icon.svg');
 
+  /// File path: assets/svg/emoji_icon.svg
+  SvgGenImage get emojiIcon => const SvgGenImage('assets/svg/emoji_icon.svg');
+
   /// File path: assets/svg/filter_icon.svg
   SvgGenImage get filterIcon => const SvgGenImage('assets/svg/filter_icon.svg');
 
+  /// File path: assets/svg/microphone_icon.svg
+  SvgGenImage get microphoneIcon =>
+      const SvgGenImage('assets/svg/microphone_icon.svg');
+
   /// File path: assets/svg/mint_logo.svg
   SvgGenImage get mintLogo => const SvgGenImage('assets/svg/mint_logo.svg');
+
+  /// File path: assets/svg/phone_icon.svg
+  SvgGenImage get phoneIcon => const SvgGenImage('assets/svg/phone_icon.svg');
 
   /// File path: assets/svg/refresh_icon.svg
   SvgGenImage get refreshIcon =>
@@ -41,12 +58,17 @@ class $AssetsSvgGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
+        actionsVertical,
         arrowDown,
+        attachIcon,
         backButton,
         bellIcon,
         crossIcon,
+        emojiIcon,
         filterIcon,
+        microphoneIcon,
         mintLogo,
+        phoneIcon,
         refreshIcon,
         sortIcon
       ];

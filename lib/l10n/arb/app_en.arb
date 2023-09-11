@@ -76,5 +76,9 @@
   "applyScheduleForOtherWeekdays": "Apply schedule for other weekdays",
   "start": "Start",
   "end": "End",
-  "schedule": "Schedule"
+  "schedule": "Schedule",
+  "online": "Online",
+  "offline": "Offline",
+  "message": "Message",
+  "today": "Today"
 }
