@@ -1,8 +1,8 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:mint_core/mint_core.dart';
 
-import '../../../../domain/entity/user_model/user_model.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../theme/mint_text_styles.dart';
 import 'widgets/chat_app_bar.dart';

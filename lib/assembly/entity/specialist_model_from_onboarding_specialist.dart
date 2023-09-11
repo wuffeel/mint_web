@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
+import 'package:mint_core/mint_assembly.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../domain/entity/onboarding_specialist/onboarding_specialist.dart';
-import '../../domain/entity/specialist_model/specialist_model.dart';
-import '../factory.dart';
 
 @Injectable(as: Factory<SpecialistModel, OnboardingSpecialist>)
 class SpecialistModelFromOnboardingSpecialist

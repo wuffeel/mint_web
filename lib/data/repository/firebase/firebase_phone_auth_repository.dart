@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mint_core/mint_module.dart';
 
 import '../abstract/phone_auth_repository.dart';
-import 'firebase_initializer.dart';
 
 @LazySingleton(as: PhoneAuthRepository)
 class FirebasePhoneAuthRepository implements PhoneAuthRepository {

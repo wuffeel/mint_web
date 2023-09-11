@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
+import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_module.dart';
 
-import '../../model/specialist_model_dto/specialist_model_dto.dart';
 import '../abstract/specialist_repository.dart';
-import 'firebase_initializer.dart';
 
 @Injectable(as: SpecialistRepository)
 class FirebaseSpecialistRepository implements SpecialistRepository {
