@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mint_core/mint_utils.dart';
 
 import '../../../../../l10n/l10n.dart';
-import '../../../../../utils/date_time_utils.dart';
 
 class ChatDateHeader extends StatelessWidget {
   const ChatDateHeader({required this.date, required this.text, super.key});

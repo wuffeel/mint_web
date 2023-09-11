@@ -4,13 +4,13 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_utils.dart';
 
 import '../../../backbone/consultation_status.dart';
 import '../../../domain/controller/user_controller.dart';
 import '../../../domain/entity/patient_book/patient_book.dart';
 import '../../../domain/entity/patient_filter.dart';
 import '../../../domain/usecase/fetch_patient_book_list_use_case.dart';
-import '../../../utils/date_time_utils.dart';
 
 part 'patients_event.dart';
 
