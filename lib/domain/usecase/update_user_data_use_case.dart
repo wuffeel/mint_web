@@ -1,7 +1,6 @@
 import 'package:injectable/injectable.dart';
-
-import '../entity/user_model/user_model.dart';
-import '../service/abstract/user_service.dart';
+import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_module.dart';
 
 @injectable
 class UpdateUserDataUseCase {

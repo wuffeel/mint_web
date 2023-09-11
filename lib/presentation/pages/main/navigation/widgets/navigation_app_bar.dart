@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:mint_core/mint_utils.dart';
 
 import '../../../../../gen/assets.gen.dart';
 import '../../../../../gen/colors.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../../router/app_router.gr.dart';
-import '../../../../../utils/extended_widget_list.dart';
 import '../../../../widgets/mint_logo.dart';
 import 'navigation_link.dart';
 

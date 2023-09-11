@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_module.dart';
 
 import '../../model/patient_book_dto/patient_book_dto.dart';
-import '../../model/user_model_dto/user_model_dto.dart';
 import '../abstract/booking_repository.dart';
-import 'firebase_initializer.dart';
 
 @Injectable(as: BookingRepository)
 class FirebaseBookingRepository implements BookingRepository {

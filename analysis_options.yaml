@@ -22,8 +22,8 @@ analyzer:
     # test_coverage
     - test/.test_coverage.dart
 
-    # get_it
-    - '**/*.config.dart'
+    # injectable
+    - '**.config.dart'
 
     # Firebase
     - '**firebase_options*'

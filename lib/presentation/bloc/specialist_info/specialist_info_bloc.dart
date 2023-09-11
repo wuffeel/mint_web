@@ -3,11 +3,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../../domain/controller/specialist_controller.dart';
 import '../../../domain/controller/user_controller.dart';
-import '../../../domain/entity/specialist_model/specialist_model.dart';
-import '../../../domain/entity/user_model/user_model.dart';
 import '../../../domain/usecase/fetch_specialist_data_use_case.dart';
 
 part 'specialist_info_event.dart';

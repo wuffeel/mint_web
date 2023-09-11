@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
+import 'package:mint_core/mint_core.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../entity/user_model/user_model.dart';
 
 @lazySingleton
 class UserController {

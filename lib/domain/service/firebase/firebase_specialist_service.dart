@@ -1,9 +1,8 @@
 import 'package:injectable/injectable.dart';
+import 'package:mint_core/mint_assembly.dart';
+import 'package:mint_core/mint_core.dart';
 
-import '../../../assembly/factory.dart';
-import '../../../data/model/specialist_model_dto/specialist_model_dto.dart';
 import '../../../data/repository/abstract/specialist_repository.dart';
-import '../../entity/specialist_model/specialist_model.dart';
 import '../abstract/specialist_service.dart';
 
 @Injectable(as: SpecialistService)

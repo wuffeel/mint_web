@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mint_core/mint_utils.dart';
 
 import '../../../domain/entity/onboarding/onboarding.dart';
 import '../../../domain/usecase/fetch_specializations_use_case.dart';
-import '../../../utils/date_time_utils.dart';
 
 part 'onboarding_event.dart';
 

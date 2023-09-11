@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mint_core/mint_utils.dart';
 
-import '../../../../../utils/extended_widget_list.dart';
 import 'weekday_container.dart';
 
 class AvailabilityWeekdayList extends StatelessWidget {

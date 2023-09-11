@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mint_core/mint_utils.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../../../../backbone/work_day_validation_messages.dart';
 import '../../../../../domain/entity/onboarding/onboarding.dart';
 import '../../../../../l10n/l10n.dart';
-import '../../../../../utils/date_time_utils.dart';
 import '../../../../bloc/specialist/specialist_bloc.dart';
 import 'availability_weekday_apply_dialog.dart';
 import 'availability_weekday_list.dart';

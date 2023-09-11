@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../../../utils/date_time_utils.dart';
+import 'package:mint_core/mint_utils.dart';
 
 part 'patient_book_dto.freezed.dart';
 
@@ -11,17 +10,9 @@ part 'patient_book_dto.g.dart';
 class PatientBookDto with _$PatientBookDto {
   const factory PatientBookDto({
     required String id,
-    @JsonKey(
-      fromJson: DateTimeUtils.convertToDateTime,
-      toJson: DateTimeUtils.dateTimeToJson,
-    )
-    required DateTime bookTime,
+    @DateTimeConverter() required DateTime bookTime,
     required int durationMinutes,
-    @JsonKey(
-      fromJson: DateTimeUtils.convertToDateTime,
-      toJson: DateTimeUtils.dateTimeToJson,
-    )
-    required DateTime endTime,
+    @DateTimeConverter() required DateTime endTime,
     String? phoneNumber,
     String? firstName,
     String? lastName,

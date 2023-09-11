@@ -3,20 +3,18 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mint_core/mint_assembly.dart' as assembly;
+import 'package:mint_core/mint_core.dart';
 
-import '../../../assembly/factory.dart' as assembly;
 import '../../../domain/controller/specialist_controller.dart';
 import '../../../domain/controller/user_controller.dart';
 import '../../../domain/entity/onboarding/onboarding.dart';
 import '../../../domain/entity/onboarding_specialist/onboarding_specialist.dart';
-import '../../../domain/entity/specialist_model/specialist_model.dart';
-import '../../../domain/entity/user_model/user_model.dart';
 import '../../../domain/usecase/add_new_specialist_use_case.dart';
 import '../../../domain/usecase/add_work_info_data_use_case.dart';
 import '../../../domain/usecase/update_user_data_use_case.dart';
 
 part 'specialist_event.dart';
-
 part 'specialist_state.dart';
 
 @injectable

@@ -30,7 +30,6 @@ class AppRouter extends $AppRouter {
                 AutoRoute(path: 'home', page: HomeRoute.page),
                 AutoRoute(path: 'patients', page: PatientsRoute.page),
                 AutoRoute(path: 'appointments', page: AppointmentsRoute.page),
-                AutoRoute(path: 'messages', page: MessagesRoute.page),
                 RedirectRoute(path: '', redirectTo: 'home'),
               ],
             ),

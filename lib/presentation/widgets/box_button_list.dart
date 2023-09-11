@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mint_core/mint_utils.dart';
 
-import '../../utils/layout_utils.dart';
 import 'mint_selection_button.dart';
 
 class BoxButtonList<T> extends StatelessWidget {

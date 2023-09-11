@@ -1,6 +1,5 @@
 import 'package:injectable/injectable.dart';
-
-import '../service/abstract/user_service.dart';
+import 'package:mint_core/mint_module.dart';
 
 @injectable
 class LogOutUseCase {

@@ -1,4 +1,4 @@
-import '../../model/specialist_model_dto/specialist_model_dto.dart';
+import 'package:mint_core/mint_core.dart';
 
 abstract class SpecialistRepository {
   Future<List<String>> fetchAvailableSpecializations();
