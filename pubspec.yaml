@@ -30,7 +30,7 @@ dependencies:
   json_annotation: ^4.8.1
   meta: ^1.9.1
   mint_core:
-    path: ../mint_core
+    path: '../../packages/mint_core'
   reactive_forms: ^16.1.0
   reactive_forms_annotations: ^4.0.0
   rxdart: ^0.27.7
