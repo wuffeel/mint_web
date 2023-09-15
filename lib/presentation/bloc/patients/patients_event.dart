@@ -8,9 +8,10 @@ class PatientsFetchBookListRequested extends PatientsEvent {}
 class PatientsRefreshRequested extends PatientsEvent {}
 
 class PatientsSortRequested<T> extends PatientsEvent {
-  PatientsSortRequested(this.getField, {required this.ascending});
+  PatientsSortRequested({this.getField, this.ascending = true});
 
-  final Comparable<T> Function(PatientBook d) getField;
+  /// If null, sort option returns to default.
+  final Comparable<T> Function(PatientBook d)? getField;
   final bool ascending;
 }
 

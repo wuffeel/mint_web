@@ -5,6 +5,8 @@ class PatientsState {
   int get rowsLimit => 8;
 }
 
+class PatientsInitial extends PatientsState {}
+
 class PatientsBookListLoadSuccess extends PatientsState {
   PatientsBookListLoadSuccess({
     this.bookList = const [],
@@ -33,9 +35,9 @@ class PatientsBookListLoadSuccess extends PatientsState {
 
 class PatientsFetchBookListLoading extends PatientsBookListLoadSuccess {
   PatientsFetchBookListLoading({
-    required super.bookList,
-    required super.hasReachedEnd,
-    required super.filter,
+    super.bookList,
+    super.hasReachedEnd,
+    super.filter,
   });
 }
 
@@ -43,14 +45,14 @@ class PatientsFetchBookListSuccess extends PatientsBookListLoadSuccess {
   PatientsFetchBookListSuccess({
     required super.bookList,
     required super.hasReachedEnd,
-    required super.filter,
+    super.filter,
   });
 }
 
 class PatientsFetchBookListFailure extends PatientsBookListLoadSuccess {
   PatientsFetchBookListFailure({
-    required super.bookList,
-    required super.hasReachedEnd,
-    required super.filter,
+    super.bookList,
+    super.hasReachedEnd,
+    super.filter,
   });
 }
