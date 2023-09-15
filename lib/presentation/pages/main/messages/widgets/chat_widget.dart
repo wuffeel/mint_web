@@ -209,7 +209,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                           _emojiPanelHidden = !_emojiPanelHidden;
                         });
                       },
-                      onAttach: _handleAttachmentPressed,
+                      onAttach: () {},
                       onAudioStop: (audioMessage) {
                         context
                             .read<ChatBloc>()
@@ -227,6 +227,8 @@ class _ChatWidgetState extends State<ChatWidget> {
                         ),
                       );
                     },
+                    // 3 minutes
+                    groupMessagesThreshold: 180000,
                     // 24 hours
                     dateHeaderThreshold: 86400000,
                     emojiEnlargementBehavior: _emojiEnlargementBehavior,
