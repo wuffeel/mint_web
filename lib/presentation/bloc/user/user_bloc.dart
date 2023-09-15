@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 
-import '../../../domain/controller/user_controller.dart';
 import '../../../domain/usecase/fetch_user_use_case.dart';
 import '../../../domain/usecase/log_out_use_case.dart';
 

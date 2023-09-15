@@ -8,5 +8,6 @@ class UpdateUserDataUseCase {
 
   final UserService _service;
 
-  Future<UserModel> call(UserModel user) => _service.updateUserData(user);
+  Future<UserModel> call(UserModel user, {FileData? photoData}) =>
+      _service.updateUserData(user, photoData: photoData);
 }

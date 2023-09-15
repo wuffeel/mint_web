@@ -5,9 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
 import 'package:mint_core/mint_assembly.dart' as assembly;
+import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 import '../../../domain/controller/specialist_controller.dart';
-import '../../../domain/controller/user_controller.dart';
 import '../../../domain/entity/onboarding/onboarding.dart';
 import '../../../domain/entity/onboarding_specialist/onboarding_specialist.dart';
 import '../../../domain/usecase/add_new_specialist_use_case.dart';
@@ -75,20 +75,10 @@ class SpecialistBloc extends Bloc<SpecialistEvent, SpecialistState> {
       emit(SpecialistAddNewLoading());
       final onboardingSpec =
           _onboardingSpecialistFromOnboarding.create(event.onboarding);
-
       if (onboardingSpec == null) return;
 
-      final specialistModel =
-          _specialistModelFromOnboarding.create(onboardingSpec);
-      final userModel = _userModelFromOnboarding.create(onboardingSpec);
-
-      await _addSpecialistWithIdUseCase(user.id, specialistModel);
-      await _addWorkInfoDataUseCase(user.id, onboardingSpec.workInfo);
-
-      final phone = user.phoneNumber;
-      final userData = await _updateUserDataUseCase(
-        userModel.copyWith(id: user.id, phoneNumber: phone),
-      );
+      final specialistModel = await _updateSpecialistData(user, onboardingSpec);
+      final userData = await _updateUserData(user, onboardingSpec);
 
       _specialistController.addToSpecialistStream(specialistModel);
       _userController.addToUserStream(userData);
@@ -96,5 +86,36 @@ class SpecialistBloc extends Bloc<SpecialistEvent, SpecialistState> {
       debugPrint('SpecialistAddNewFailure: $error');
       emit(SpecialistAddNewFailure());
     }
+  }
+
+  /// Converts [onboardingSpecialist] to [SpecialistModel] and calls use case
+  /// events to update specialist data and work info in database.
+  ///
+  /// Returns converted [onboardingSpecialist].
+  Future<SpecialistModel> _updateSpecialistData(
+    UserModel user,
+    OnboardingSpecialist onboardingSpecialist,
+  ) async {
+    final specialistModel = _specialistModelFromOnboarding.create(
+      onboardingSpecialist,
+    );
+    await Future.wait([
+      _addSpecialistWithIdUseCase(user.id, specialistModel),
+      _addWorkInfoDataUseCase(user.id, onboardingSpecialist.workInfo),
+    ]);
+
+    return specialistModel;
+  }
+
+  /// Converts [onboardingSpecialist] to [UserModel] and calls use case
+  /// event to update user data in database.
+  ///
+  /// Returns converted [onboardingSpecialist].
+  Future<UserModel> _updateUserData(
+    UserModel user,
+    OnboardingSpecialist onboardingSpecialist,
+  ) async {
+    final userModel = _userModelFromOnboarding.create(onboardingSpecialist);
+    return _updateUserDataUseCase(userModel.copyWith(id: user.id));
   }
 }
