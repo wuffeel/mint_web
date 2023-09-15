@@ -209,7 +209,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                           _emojiPanelHidden = !_emojiPanelHidden;
                         });
                       },
-                      onAttach: () {},
+                      onAttach: _handleAttachmentPressed,
                       onAudioStop: (audioMessage) {
                         context
                             .read<ChatBloc>()
