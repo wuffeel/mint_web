@@ -26,7 +26,9 @@ class MainWrapperPage extends AutoRouter with AutoRouteWrapper {
     SpecialistInfoState state,
   ) {
     if (state is SpecialistInfoFetchSuccess) {
-      context.router.navigate(const NavigationRoute());
+      if (!context.router.currentPath.startsWith('/main/navigation')) {
+        context.router.navigate(const NavigationRoute());
+      }
     }
     if (state is SpecialistInfoNotFound) {
       context.router.navigate(const OnboardingRoute());
