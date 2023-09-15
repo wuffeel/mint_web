@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 import '../../../../../gen/assets.gen.dart';
+import '../../../../../gen/fonts.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../widgets/svg_icon_widget.dart';
 
 class ChatBottomBar extends StatefulWidget {
   const ChatBottomBar({
     required this.controller,
+    required this.focusNode,
     required this.onSend,
     required this.onEmoji,
     required this.onAttach,
@@ -18,9 +20,10 @@ class ChatBottomBar extends StatefulWidget {
   });
 
   final TextEditingController controller;
+  final FocusNode focusNode;
   final VoidCallback onSend;
   final VoidCallback onEmoji;
-  final VoidCallback onAttach;
+  final void Function(GlobalKey) onAttach;
   final void Function(types.PartialAudio) onAudioStop;
   final bool isEmojiSelected;
   final VoidCallback? onTextFieldTap;
@@ -56,6 +59,7 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
           Expanded(
             child: _ChatToolbar(
               messageController: _textController,
+              messageFocusNode: widget.focusNode,
               onAttachTap: widget.onAttach,
               onSendTap: widget.onSend,
               onEmojiTap: widget.onEmoji,
@@ -81,9 +85,10 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
   }
 }
 
-class _ChatToolbar extends StatelessWidget {
+class _ChatToolbar extends StatefulWidget {
   const _ChatToolbar({
     required this.messageController,
+    required this.messageFocusNode,
     required this.onAttachTap,
     required this.onSendTap,
     required this.onEmojiTap,
@@ -93,7 +98,8 @@ class _ChatToolbar extends StatelessWidget {
   });
 
   final TextEditingController messageController;
-  final VoidCallback onAttachTap;
+  final FocusNode messageFocusNode;
+  final void Function(GlobalKey) onAttachTap;
   final VoidCallback onSendTap;
   final VoidCallback onEmojiTap;
   final bool isEmojiSelected;
@@ -101,51 +107,66 @@ class _ChatToolbar extends StatelessWidget {
   final VoidCallback? onTextFieldTap;
 
   @override
+  State<_ChatToolbar> createState() => _ChatToolbarState();
+}
+
+class _ChatToolbarState extends State<_ChatToolbar> {
+  final _attachKey = GlobalKey();
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
         IconButton(
-          onPressed: onAttachTap,
+          key: _attachKey,
+          onPressed: () => widget.onAttachTap(_attachKey),
           icon: SvgIconWidget(
             Assets.svg.attachIcon,
             color: Theme.of(context).hintColor.withOpacity(0.6),
           ),
         ),
         Expanded(
-          child: TextField(
-            onTap: onTextFieldTap,
-            controller: messageController,
+          child: TextFormField(
+            onFieldSubmitted: (text) {
+              if (text.isNotEmpty) widget.onSendTap();
+            },
+            onTap: widget.onTextFieldTap,
+            controller: widget.messageController,
+            focusNode: widget.messageFocusNode,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(40),
               ),
+              filled: true,
+              fillColor: Theme.of(context).scaffoldBackgroundColor,
+              hoverColor: Colors.transparent,
               suffixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 6),
                     child: IconButton(
-                      onPressed: onEmojiTap,
+                      onPressed: widget.onEmojiTap,
                       constraints: const BoxConstraints(),
                       icon: SvgIconWidget(
                         Assets.svg.emojiIcon,
-                        color: isEmojiSelected
+                        color: widget.isEmojiSelected
                             ? Theme.of(context).colorScheme.primary
                             : Theme.of(context).hintColor.withOpacity(0.6),
                       ),
                     ),
                   ),
                   Visibility(
-                    visible: isSendButtonVisible,
+                    visible: widget.isSendButtonVisible,
                     maintainAnimation: true,
                     maintainState: true,
                     child: AnimatedOpacity(
                       duration: const Duration(milliseconds: 300),
-                      opacity: isSendButtonVisible ? 1 : 0,
+                      opacity: widget.isSendButtonVisible ? 1 : 0,
                       child: IconButton(
                         constraints: const BoxConstraints(),
-                        onPressed: onSendTap,
+                        onPressed: widget.onSendTap,
                         icon: Icon(
                           Icons.send,
                           color: Theme.of(context).colorScheme.primary,
@@ -156,6 +177,9 @@ class _ChatToolbar extends StatelessWidget {
                 ],
               ),
               hintText: context.l10n.message,
+            ),
+            style: const TextStyle(
+              fontFamilyFallback: [MintFontFamily.notoColorEmoji],
             ),
           ),
         ),

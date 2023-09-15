@@ -11,6 +11,7 @@ dependencies:
   bloc: ^8.1.2
   cloud_firestore: ^4.9.0
   data_table_2: ^2.5.7
+  emoji_picker_flutter: ^1.6.1
   firebase_auth: ^4.8.0
   firebase_core: ^2.15.1
   firebase_storage: ^11.2.6
@@ -101,3 +102,7 @@ flutter:
           weight: 800
         - asset: assets/fonts/inter/Inter-Black.ttf
           weight: 900
+    - family: NotoColorEmoji
+      fonts:
+        - asset: assets/fonts/noto_color_emoji/NotoColorEmoji-Regular.ttf
+          weight: 400

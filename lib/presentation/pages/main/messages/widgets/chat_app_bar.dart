@@ -4,6 +4,7 @@ import 'package:mint_core/mint_core.dart';
 import '../../../../../gen/assets.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../../theme/mint_text_styles.dart';
+import '../../../../widgets/mint_circle_avatar.dart';
 import '../../../../widgets/svg_icon_widget.dart';
 
 class ChatAppBar extends StatelessWidget {
@@ -18,7 +19,6 @@ class ChatAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final photo = user.photoUrl;
     final l10n = context.l10n;
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -27,18 +27,14 @@ class ChatAppBar extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(
-          top: 20,
-          bottom: 20,
-          left: 20,
-          right: 30,
-        ),
+        padding:
+            const EdgeInsets.only(top: 20, bottom: 20, left: 20, right: 30),
         child: Row(
           children: <Widget>[
-            CircleAvatar(
+            MintCircleAvatar(
               radius: 20,
-              backgroundColor: Theme.of(context).hintColor.withOpacity(0.6),
-              backgroundImage: photo != null ? NetworkImage(photo) : null,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              photoUrl: user.photoUrl,
             ),
             const SizedBox(width: 10),
             Column(

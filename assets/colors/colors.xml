@@ -18,4 +18,6 @@
     <color name="dark">#323544</color>
     <color name="dividerGrey">#EAEAEA</color>
     <color name="selectedMessageBlue">#B2D7FF</color>
+    <color name="chatDateHeaderGrey">#F2F2F2</color>
+    <color name="receiverMessageColor">#EDF3F8</color>
 </resources>

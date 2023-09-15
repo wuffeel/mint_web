@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart';
 
+import '../../../../../gen/colors.gen.dart';
+
 class MessageBubble extends StatelessWidget {
   const MessageBubble({
     required this.message,
@@ -45,7 +47,7 @@ class MessageBubble extends StatelessWidget {
                 Directionality.of(context),
               ),
               color: !isSender || message.type == types.MessageType.image
-                  ? Theme.of(context).colorScheme.secondary
+                  ? MintColors.receiverMessageColor
                   : Theme.of(context).colorScheme.primary,
             ),
             child: ClipRRect(
@@ -71,10 +73,13 @@ class _MessageCreatedAt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final created = createdAt;
     return Text(
-      DateFormat.Hm().format(
-        DateTime.fromMillisecondsSinceEpoch(createdAt ?? 0),
-      ),
+      created != null
+          ? DateFormat.Hm().format(
+              DateTime.fromMillisecondsSinceEpoch(created),
+            )
+          : '',
       style: TextStyle(
         fontSize: 10,
         color: Theme.of(context).hintColor.withOpacity(0.6),

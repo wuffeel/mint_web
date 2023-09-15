@@ -16,6 +16,7 @@ class NavigationPage extends StatelessWidget {
         HomeRoute(),
         PatientsRoute(),
         AppointmentsRoute(),
+        MessagesRoute(),
       ],
       animationDuration: Duration.zero,
       appBarBuilder: (context, tabsRouter) => NavigationAppBar(
