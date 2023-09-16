@@ -26,6 +26,7 @@ class MessagesPage extends StatelessWidget {
               getIt<ChatRoomBloc>()..add(ChatRoomListFetchRequested()),
         ),
         BlocProvider(create: (context) => getIt<ChatBloc>()),
+        BlocProvider(create: (context) => getIt<PresenceMessageBloc>()),
       ],
       child: const _MessagesView(),
     );

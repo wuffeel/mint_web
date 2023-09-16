@@ -136,6 +136,17 @@ class _ChatWidgetState extends State<ChatWidget> {
       );
   }
 
+  void _markMessageAsRead(String messageId) {
+    final chatState = context.read<ChatBloc>().state;
+    if (chatState is! ChatMessageLoading) {
+      final markAsRead = PresenceMessageMarkAsRead(
+        roomId: widget.room.id,
+        messageId: messageId,
+      );
+      context.read<PresenceMessageBloc>().add(markAsRead);
+    }
+  }
+
   /// Determines whether [userId] is current user
   bool _isSender(String userId) => _user.id == userId;
 
@@ -151,6 +162,8 @@ class _ChatWidgetState extends State<ChatWidget> {
         _emojiEnlargementBehavior != ui.EmojiEnlargementBehavior.never &&
             message is types.TextMessage &&
             ui.isConsistsOfEmojis(_emojiEnlargementBehavior, message);
+
+    if (!isSender) _markMessageAsRead(message.id);
 
     return MessageBubble(
       isLast: isLast,
