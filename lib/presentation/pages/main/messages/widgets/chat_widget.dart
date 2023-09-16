@@ -163,7 +163,9 @@ class _ChatWidgetState extends State<ChatWidget> {
             message is types.TextMessage &&
             ui.isConsistsOfEmojis(_emojiEnlargementBehavior, message);
 
-    if (!isSender) _markMessageAsRead(message.id);
+    final status = message.status;
+    final seen = status != null && status != types.Status.seen;
+    if (!isSender && !seen) _markMessageAsRead(message.id);
 
     return MessageBubble(
       isLast: isLast,
