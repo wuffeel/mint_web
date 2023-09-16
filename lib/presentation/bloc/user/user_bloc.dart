@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_module.dart';
 
 import '../../../domain/usecase/fetch_user_use_case.dart';
 import '../../../domain/usecase/log_out_use_case.dart';
@@ -19,14 +20,17 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     this._userController,
     this._fetchUserUseCase,
     this._logOutUseCase,
+    this._initializeUserPresenceUseCase,
   ) : super(UserInitial()) {
     on<UserInitializeRequested>(_userInitializer);
+    on<UserInitializePresenceRequested>(_onUserInitializePresence);
     on<UserFetchRequested>(_onFetchUser);
     on<UserLogOutRequested>(_onLogOut);
   }
 
   final FetchUserUseCase _fetchUserUseCase;
   final LogOutUseCase _logOutUseCase;
+  final InitializeUserPresenceUseCase _initializeUserPresenceUseCase;
 
   final UserController _userController;
 
@@ -39,6 +43,22 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       onData: (user) =>
           user != null ? UserAuthenticated(user) : UserUnauthenticated(),
     );
+  }
+
+  Future<void> _onUserInitializePresence(
+    UserInitializePresenceRequested event,
+    Emitter<UserState> emit,
+  ) async {
+    final state = this.state;
+    if (state is! UserAuthenticated) return;
+    final user = state.user;
+    try {
+      await _initializeUserPresenceUseCase(user.id);
+      emit(UserInitializePresenceSuccess(user));
+    } catch (error) {
+      debugPrint('UserInitializePresenceFailure: $error');
+      emit(UserInitializePresenceFailure(user));
+    }
   }
 
   Future<void> _onFetchUser(

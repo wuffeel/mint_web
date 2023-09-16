@@ -46,7 +46,8 @@ class MainWrapperPage extends AutoRouter with AutoRouteWrapper {
         BlocProvider(
           create: (context) => getIt<UserBloc>()
             ..add(UserInitializeRequested())
-            ..add(UserFetchRequested()),
+            ..add(UserFetchRequested())
+            ..add(UserInitializePresenceRequested()),
         ),
       ],
       child: MultiBlocListener(
