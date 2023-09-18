@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -260,6 +261,16 @@ class _ChatWidgetState extends State<ChatWidget> {
                     onSendPressed: (_) {
                       // TODO(wuffel): implemented in customBottomWidget
                     },
+                    scrollToUnreadOptions: ui.ScrollToUnreadOptions(
+                      lastReadMessageId: state.messages.lastWhereOrNull((msg) {
+                        final status = msg.status;
+                        if (msg.author.id == _user.id) return false;
+                        return status != null && status != types.Status.seen;
+                      })?.id,
+                      scrollDelay: const Duration(milliseconds: 20),
+                      scrollDuration: const Duration(milliseconds: 100),
+                      scrollOnOpen: true,
+                    ),
                     theme: MintChatTheme(context),
                     user: _user,
                   ),
