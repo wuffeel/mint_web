@@ -25,6 +25,8 @@ class ChatAppBar extends StatelessWidget {
     if (presence.isOnline) return l10n.online.toLowerCase();
 
     final lastSeen = presence.lastSeen;
+    if (lastSeen == null) return '';
+
     final lastSeenTime = DateFormat.Hm().format(lastSeen);
 
     final now = DateTime.now();

@@ -219,6 +219,7 @@ class _ChatBlock extends StatelessWidget {
     final patient = room.users.firstWhere((user) => user.id != senderId);
     return _ChatBlockContainer(
       child: Column(
+        key: ValueKey(patient.id),
         children: <Widget>[
           BlocProvider(
             create: (context) => getIt<ChatPresenceBloc>()
