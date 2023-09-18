@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../l10n/l10n.dart';
+
 class ChatAttachBottomSheet extends StatelessWidget {
   const ChatAttachBottomSheet({
     required this.onImageAttach,
@@ -13,6 +15,7 @@ class ChatAttachBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Wrap(
       children: [
         TextButton(
@@ -20,10 +23,9 @@ class ChatAttachBottomSheet extends StatelessWidget {
             context.router.pop();
             onImageAttach();
           },
-          child: const Align(
+          child: Align(
             alignment: AlignmentDirectional.centerStart,
-            // TODO(wuffeel): add localization
-            child: Text('Attach image'),
+            child: Text(l10n.attachImage),
           ),
         ),
         TextButton(
@@ -31,17 +33,16 @@ class ChatAttachBottomSheet extends StatelessWidget {
             context.router.pop();
             onFileAttach();
           },
-          child: const Align(
+          child: Align(
             alignment: AlignmentDirectional.centerStart,
-            child: Text('Attach file'),
+            child: Text(l10n.attachFile),
           ),
         ),
         TextButton(
           onPressed: context.router.pop,
-          child: const Align(
+          child: Align(
             alignment: AlignmentDirectional.centerStart,
-            // TODO(wuffeel): add localization
-            child: Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
         ),
       ],

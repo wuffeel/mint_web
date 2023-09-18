@@ -73,8 +73,7 @@ class MessageTile extends StatelessWidget {
                     Text(
                       message != null
                           ? _getLastMessageContent(message)
-                          // TODO(wuffeel): add localization
-                          : 'No messages yet',
+                          : l10n.noMessagesYet,
                       overflow: TextOverflow.ellipsis,
                       style: MintTextStyles.regular14,
                       maxLines: 1,

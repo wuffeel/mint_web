@@ -83,5 +83,9 @@
   "today": "Today",
   "resetSorting": "Reset sorting",
   "lastSeen": "Last seen",
-  "delete": "Delete"
+  "delete": "Delete",
+  "attachImage": "Attach image",
+  "attachFile": "Attach file",
+  "cancel": "Cancel",
+  "noMessagesYet": "No messages yet"
 }

@@ -50,26 +50,26 @@ class _ChatWidgetState extends State<ChatWidget> {
     final size = renderBox.size;
     final offset = renderBox.localToGlobal(Offset.zero);
     final left = offset.dx + size.width;
+    final l10n = context.l10n;
     showMenu<void>(
       context: context,
       position:
           // TODO(wuffeel): investigate for better solution
           RelativeRect.fromLTRB(left, offset.dy, offset.dx + size.width, 0),
       items: [
-        // TODO(wuffeel): add localization
         PopupMenuItem<String>(
           value: 'image',
           onTap: _handleImageSelection,
-          child: const Text('Attach image'),
+          child: Text(l10n.attachImage),
         ),
         PopupMenuItem<String>(
           value: 'file',
           onTap: _handleFileSelection,
-          child: const Text('Attach file'),
+          child: Text(l10n.attachFile),
         ),
-        const PopupMenuItem<String>(
+        PopupMenuItem<String>(
           value: 'cancel',
-          child: Text('Cancel'),
+          child: Text(l10n.cancel),
         ),
       ],
     );
