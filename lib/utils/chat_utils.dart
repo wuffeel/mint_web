@@ -22,8 +22,7 @@ class ChatUtils {
     final items = <PopupMenuEntry<void>>[
       PopupMenuItem(
         onTap: () => onDelete(message),
-        // TODO(wuffeel): add localization
-        child: const Text('Delete', style: MintTextStyles.headline1),
+        child: Text(l10n.delete, style: MintTextStyles.headline1),
       ),
     ];
 

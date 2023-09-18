@@ -82,5 +82,6 @@
   "message": "Message",
   "today": "Today",
   "resetSorting": "Reset sorting",
-  "lastSeen": "Last seen"
+  "lastSeen": "Last seen",
+  "delete": "Delete"
 }
