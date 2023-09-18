@@ -22,7 +22,7 @@ class ChatAppBar extends StatelessWidget {
   String _getStatusByPresence(BuildContext context, UserPresence? presence) {
     final l10n = context.l10n;
     if (presence == null) return l10n.offline.toLowerCase();
-    if (presence.isOnline) return l10n.online;
+    if (presence.isOnline) return l10n.online.toLowerCase();
 
     final lastSeen = presence.lastSeen;
     final lastSeenTime = DateFormat.Hm().format(lastSeen);
