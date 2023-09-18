@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_utils.dart';
 
 import '../../../../../gen/assets.gen.dart';
 import '../../../../../l10n/l10n.dart';
@@ -22,8 +23,23 @@ class ChatAppBar extends StatelessWidget {
     final l10n = context.l10n;
     if (presence == null) return l10n.offline.toLowerCase();
     if (presence.isOnline) return l10n.online;
-    final lastSeenTime = DateFormat.Hm().format(presence.lastSeen);
-    return '${l10n.lastSeen.toLowerCase()} - $lastSeenTime';
+
+    final lastSeen = presence.lastSeen;
+    final lastSeenTime = DateFormat.Hm().format(lastSeen);
+
+    final now = DateTime.now();
+    final isYesterday = DateTimeUtils.isSameDay(
+      now,
+      DateTime(lastSeen.year, lastSeen.month, lastSeen.day - 1),
+    );
+
+    if (isYesterday) {
+      return '${l10n.lastSeen} ${l10n.yesterday} - $lastSeenTime'.toLowerCase();
+    } else if (now.difference(lastSeen).inDays == 0) {
+      return '${l10n.lastSeen} - $lastSeenTime'.toLowerCase();
+    } else {
+      return '${l10n.lastSeen} ${l10n.recently}'.toLowerCase();
+    }
   }
 
   @override

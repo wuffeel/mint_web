@@ -87,5 +87,7 @@
   "attachImage": "Attach image",
   "attachFile": "Attach file",
   "cancel": "Cancel",
-  "noMessagesYet": "No messages yet"
+  "noMessagesYet": "No messages yet",
+  "recently": "Recently",
+  "yesterday": "Yesterday"
 }

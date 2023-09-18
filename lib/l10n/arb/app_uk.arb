@@ -87,5 +87,7 @@
   "attachImage": "Прикріпити зображення",
   "attachFile": "Прикріпити файл",
   "cancel": "Скасувати",
-  "noMessagesYet": "Ще немає повідомлень"
+  "noMessagesYet": "Ще немає повідомлень",
+  "recently": "Нещодавно",
+  "yesterday": "Вчора"
 }
