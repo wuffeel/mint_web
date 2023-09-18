@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -137,14 +139,11 @@ class _ChatWidgetState extends State<ChatWidget> {
   }
 
   void _markMessageAsRead(String messageId) {
-    final chatState = context.read<ChatBloc>().state;
-    if (chatState is! ChatMessageLoading) {
-      final markAsRead = PresenceMessageMarkAsRead(
-        roomId: widget.room.id,
-        messageId: messageId,
-      );
-      context.read<PresenceMessageBloc>().add(markAsRead);
-    }
+    final markAsRead = PresenceMessageMarkAsRead(
+      roomId: widget.room.id,
+      messageId: messageId,
+    );
+    context.read<PresenceMessageBloc>().add(markAsRead);
   }
 
   /// Determines whether [userId] is current user
@@ -164,7 +163,7 @@ class _ChatWidgetState extends State<ChatWidget> {
             ui.isConsistsOfEmojis(_emojiEnlargementBehavior, message);
 
     final status = message.status;
-    final seen = status != null && status != types.Status.seen;
+    final seen = status != null && status == types.Status.seen;
     if (!isSender && !seen) _markMessageAsRead(message.id);
 
     return MessageBubble(
