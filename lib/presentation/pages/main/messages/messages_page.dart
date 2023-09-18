@@ -8,6 +8,7 @@ import 'package:mint_core/mint_module.dart';
 
 import '../../../../l10n/l10n.dart';
 import '../../../../theme/mint_text_styles.dart';
+import '../../../bloc/chat_presence/chat_presence_bloc.dart';
 import '../../../bloc/chat_room/chat_room_bloc.dart';
 import 'widgets/chat_app_bar.dart';
 import 'widgets/chat_widget.dart';
@@ -125,7 +126,9 @@ class _MessagesBlockContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
-          right: BorderSide(color: Theme.of(context).dividerColor),
+          right: BorderSide(
+            color: Theme.of(context).dividerColor,
+          ),
         ),
       ),
       child: Column(
@@ -217,14 +220,23 @@ class _ChatBlock extends StatelessWidget {
     return _ChatBlockContainer(
       child: Column(
         children: <Widget>[
-          ChatAppBar(
-            user: UserModel(
-              id: patient.id,
-              firstName: patient.firstName,
-              lastName: patient.lastName,
-              photoUrl: patient.imageUrl,
+          BlocProvider(
+            create: (context) => getIt<ChatPresenceBloc>()
+              ..add(ChatPresenceUserRequested(patient.id)),
+            child: BlocBuilder<ChatPresenceBloc, ChatPresenceState>(
+              builder: (context, state) {
+                return ChatAppBar(
+                  user: UserModel(
+                    id: patient.id,
+                    firstName: patient.firstName,
+                    lastName: patient.lastName,
+                    photoUrl: patient.imageUrl,
+                  ),
+                  presence:
+                      state is ChatPresenceUserSuccess ? state.presence : null,
+                );
+              },
             ),
-            isOnline: false,
           ),
           Expanded(child: ChatWidget(room: room, senderId: senderId)),
         ],

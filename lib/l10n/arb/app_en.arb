@@ -81,5 +81,6 @@
   "offline": "Offline",
   "message": "Message",
   "today": "Today",
-  "resetSorting": "Reset sorting"
+  "resetSorting": "Reset sorting",
+  "lastSeen": "Last seen"
 }

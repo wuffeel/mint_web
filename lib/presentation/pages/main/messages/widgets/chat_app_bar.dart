@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mint_core/mint_core.dart';
 
 import '../../../../../gen/assets.gen.dart';
@@ -10,16 +11,23 @@ import '../../../../widgets/svg_icon_widget.dart';
 class ChatAppBar extends StatelessWidget {
   const ChatAppBar({
     required this.user,
-    required this.isOnline,
+    required this.presence,
     super.key,
   });
 
   final UserModel user;
-  final bool isOnline;
+  final UserPresence? presence;
+
+  String _getStatusByPresence(BuildContext context, UserPresence? presence) {
+    final l10n = context.l10n;
+    if (presence == null) return l10n.offline.toLowerCase();
+    if (presence.isOnline) return l10n.online;
+    final lastSeenTime = DateFormat.Hm().format(presence.lastSeen);
+    return '${l10n.lastSeen.toLowerCase()} - $lastSeenTime';
+  }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
@@ -46,7 +54,7 @@ class ChatAppBar extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  (isOnline ? l10n.online : l10n.offline).toLowerCase(),
+                  _getStatusByPresence(context, presence),
                   style: const TextStyle(fontSize: 12),
                 )
               ],
