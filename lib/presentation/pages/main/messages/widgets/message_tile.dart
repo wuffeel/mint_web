@@ -14,6 +14,7 @@ class MessageTile extends StatelessWidget {
     required this.lastMessage,
     required this.user,
     required this.onTap,
+    this.unreadCount = 0,
     super.key,
   });
 
@@ -21,6 +22,7 @@ class MessageTile extends StatelessWidget {
   final bool isSelected;
   final UserModel user;
   final VoidCallback? onTap;
+  final int unreadCount;
 
   String _getLastMessageContent(types.Message lastMessage) {
     if (lastMessage is types.TextMessage) {
@@ -83,15 +85,56 @@ class MessageTile extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            Text(
-              updatedAt != null
-                  ? DateFormat.Hm()
-                      .format(DateTime.fromMillisecondsSinceEpoch(updatedAt))
-                  : '',
-              style: MintTextStyles.regular14,
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  updatedAt != null
+                      ? DateFormat.Hm().format(
+                          DateTime.fromMillisecondsSinceEpoch(updatedAt),
+                        )
+                      : '',
+                  style: MintTextStyles.regular14,
+                ),
+                if (unreadCount != 0) ...[
+                  const SizedBox(height: 5),
+                  _UnreadMessagesContainer(unreadCount: unreadCount),
+                ],
+              ],
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _UnreadMessagesContainer extends StatelessWidget {
+  const _UnreadMessagesContainer({required this.unreadCount});
+
+  final int unreadCount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 24,
+      height: 24,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primary,
+        shape: BoxShape.circle,
+      ),
+      padding: const EdgeInsets.symmetric(
+        vertical: 3,
+        horizontal: 5,
+      ),
+      child: Text(
+        unreadCount.toString(),
+        style: MintTextStyles.poppins.copyWith(
+          color: Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.w300,
+        ),
+        textAlign: TextAlign.center,
       ),
     );
   }

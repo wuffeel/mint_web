@@ -10,6 +10,7 @@ import '../../../../l10n/l10n.dart';
 import '../../../../theme/mint_text_styles.dart';
 import '../../../bloc/chat_presence/chat_presence_bloc.dart';
 import '../../../bloc/chat_room/chat_room_bloc.dart';
+import '../../../bloc/unread_messages/unread_messages_bloc.dart';
 import 'widgets/chat_app_bar.dart';
 import 'widgets/chat_widget.dart';
 import 'widgets/message_tile.dart';
@@ -159,6 +160,7 @@ class _MessagesBlock extends StatelessWidget {
   final types.Room? selectedRoom;
 
   void _initializeChat(BuildContext context, types.Room room) {
+    context.read<UnreadMessagesBloc>().add(UnreadMessagesResetRequested());
     context.read<ChatBloc>().add(ChatInitializeRequested(room));
   }
 
