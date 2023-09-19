@@ -70,6 +70,7 @@ class MessageTile extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       user.fullName ?? l10n.patient,
+                      maxLines: 2,
                       style: MintTextStyles.semiBold16,
                     ),
                     Text(
