@@ -26,9 +26,6 @@ class AudioRecordBloc extends Bloc<AudioRecordEvent, AudioRecordState> {
   ) : super(AudioRecordInitial()) {
     on<AudioRecordInitializeRequested>(_onInitializeRecorder);
     on<AudioRecordStartRequested>(_onStartRecord);
-    on<AudioRecordProgressChanged>(
-      (event, emit) => AudioRecordInProgress(event.progress),
-    );
     on<AudioRecordStopRequested>(_onStopRecord);
     on<AudioRecordSubscribeForDuration>(_onSubscribeForDuration);
   }

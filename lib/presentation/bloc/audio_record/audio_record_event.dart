@@ -9,10 +9,4 @@ class AudioRecordStartRequested extends AudioRecordEvent {}
 
 class AudioRecordSubscribeForDuration extends AudioRecordEvent {}
 
-class AudioRecordProgressChanged extends AudioRecordEvent {
-  AudioRecordProgressChanged(this.progress);
-
-  final Duration progress;
-}
-
 class AudioRecordStopRequested extends AudioRecordEvent {}
