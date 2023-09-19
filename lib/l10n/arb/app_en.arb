@@ -89,5 +89,6 @@
   "cancel": "Cancel",
   "noMessagesYet": "No messages yet",
   "recently": "Recently",
-  "yesterday": "Yesterday"
+  "yesterday": "Yesterday",
+  "noChatWithPatientsYet": "No chat with patients yet"
 }

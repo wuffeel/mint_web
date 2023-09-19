@@ -8,9 +8,9 @@ import 'package:mint_core/mint_module.dart';
 
 import '../../../../l10n/l10n.dart';
 import '../../../../theme/mint_text_styles.dart';
+import '../../../bloc/audio_record/audio_record_bloc.dart';
 import '../../../bloc/chat_presence/chat_presence_bloc.dart';
 import '../../../bloc/chat_room/chat_room_bloc.dart';
-import '../../../bloc/unread_messages/unread_messages_bloc.dart';
 import 'widgets/chat_app_bar.dart';
 import 'widgets/chat_widget.dart';
 import 'widgets/message_tile.dart';
@@ -29,6 +29,10 @@ class MessagesPage extends StatelessWidget {
         ),
         BlocProvider(create: (context) => getIt<ChatBloc>()),
         BlocProvider(create: (context) => getIt<PresenceMessageBloc>()),
+        BlocProvider(
+          create: (context) =>
+              getIt<AudioRecordBloc>()..add(AudioRecordInitializeRequested()),
+        )
       ],
       child: const _MessagesView(),
     );
@@ -59,9 +63,10 @@ class _MessagesView extends StatelessWidget {
                       }
                       if (state is ChatRoomListFetchSuccess) {
                         if (state.roomList.isEmpty) {
-                          return const _MessagesBlockContainer(
+                          return _MessagesBlockContainer(
                             child: Center(
-                              child: Text('No chat with patients yet!'),
+                              // TODO(wuffeel): add localization
+                              child: Text(context.l10n.noChatWithPatientsYet),
                             ),
                           );
                         }
@@ -160,7 +165,6 @@ class _MessagesBlock extends StatelessWidget {
   final types.Room? selectedRoom;
 
   void _initializeChat(BuildContext context, types.Room room) {
-    context.read<UnreadMessagesBloc>().add(UnreadMessagesResetRequested());
     context.read<ChatBloc>().add(ChatInitializeRequested(room));
   }
 

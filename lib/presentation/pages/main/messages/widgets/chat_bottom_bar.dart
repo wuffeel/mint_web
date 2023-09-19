@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mint_core/mint_bloc.dart';
 
 import '../../../../../gen/assets.gen.dart';
 import '../../../../../gen/fonts.gen.dart';
 import '../../../../../l10n/l10n.dart';
+import '../../../../bloc/audio_record/audio_record_bloc.dart';
 import '../../../../widgets/svg_icon_widget.dart';
 
 class ChatBottomBar extends StatefulWidget {
@@ -24,7 +26,7 @@ class ChatBottomBar extends StatefulWidget {
   final VoidCallback onSend;
   final VoidCallback onEmoji;
   final void Function(GlobalKey) onAttach;
-  final void Function(types.PartialAudio) onAudioStop;
+  final void Function(String audioPath, Duration duration) onAudioStop;
   final bool isEmojiSelected;
   final VoidCallback? onTextFieldTap;
 
@@ -44,43 +46,83 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
     _textController.addListener(_handleSendVisibility);
   }
 
+  void _audioRecordBlocListener(BuildContext context, AudioRecordState state) {
+    if (state is AudioRecordCompleteSuccess) {
+      context
+          .read<ChatBloc>()
+          .add(ChatSaveAudioRequested(state.audioPath, state.duration));
+    }
+  }
+
   void _handleSendVisibility() {
     setState(() {
       _isSendButtonVisible = _textController.text.trim() != '';
     });
   }
 
+  void _startRecord() {
+    context.read<AudioRecordBloc>().add(AudioRecordStartRequested());
+  }
+
+  void _stopRecord() {
+    context.read<AudioRecordBloc>().add(AudioRecordStopRequested());
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: _ChatToolbar(
-              messageController: _textController,
-              messageFocusNode: widget.focusNode,
-              onAttachTap: widget.onAttach,
-              onSendTap: widget.onSend,
-              onEmojiTap: widget.onEmoji,
-              onTextFieldTap: widget.onTextFieldTap,
-              isEmojiSelected: widget.isEmojiSelected,
-              isSendButtonVisible: _isSendButtonVisible,
-            ),
-          ),
-          Offstage(
-            // TODO(wuffeel): switch on audio record
-            offstage: false,
-            child: IconButton(
-              onPressed: () {},
-              icon: SvgIconWidget(
-                Assets.svg.microphoneIcon,
-                color: Theme.of(context).hintColor.withOpacity(0.6),
+    return BlocConsumer<AudioRecordBloc, AudioRecordState>(
+      listener: _audioRecordBlocListener,
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+          child: Row(
+            children: <Widget>[
+              if (state is! AudioRecordInProgress)
+                Expanded(
+                  child: _ChatToolbar(
+                    messageController: _textController,
+                    messageFocusNode: widget.focusNode,
+                    onAttachTap: widget.onAttach,
+                    onSendTap: widget.onSend,
+                    onEmojiTap: widget.onEmoji,
+                    onTextFieldTap: widget.onTextFieldTap,
+                    isEmojiSelected: widget.isEmojiSelected,
+                    isSendButtonVisible: _isSendButtonVisible,
+                  ),
+                )
+              else ...[
+                const Spacer(),
+                _DurationMinutesText(
+                  state.progress,
+                  color: Colors.black,
+                ),
+              ],
+              Offstage(
+                offstage: state is! AudioRecordInProgress,
+                child: IconButton(
+                  onPressed: _stopRecord,
+                  icon: Icon(
+                    Icons.stop_circle_rounded,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 24,
+                  ),
+                ),
               ),
-            ),
+              Offstage(
+                // TODO(wuffeel): switch on audio record
+                offstage: state is AudioRecordInProgress,
+                child: IconButton(
+                  onPressed: _startRecord,
+                  icon: SvgIconWidget(
+                    Assets.svg.microphoneIcon,
+                    color: Theme.of(context).hintColor.withOpacity(0.6),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -184,6 +226,31 @@ class _ChatToolbarState extends State<_ChatToolbar> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _DurationMinutesText extends StatelessWidget {
+  const _DurationMinutesText(
+    this.duration, {
+    required this.color,
+  });
+
+  final Duration duration;
+  final Color color;
+
+  String _getTimeDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    final twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return '$twoDigitMinutes:$twoDigitSeconds';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      _getTimeDuration(duration),
+      style: TextStyle(fontSize: 14, color: color),
     );
   }
 }

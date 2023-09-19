@@ -89,5 +89,6 @@
   "cancel": "Скасувати",
   "noMessagesYet": "Ще немає повідомлень",
   "recently": "Нещодавно",
-  "yesterday": "Вчора"
+  "yesterday": "Вчора",
+  "noChatWithPatientsYet": "Немає чатів з пацієнтами"
 }
