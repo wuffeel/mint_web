@@ -7,6 +7,7 @@ class WeekdayContainer extends StatelessWidget {
     required this.shortWeekday,
     required this.isSelected,
     this.isInvalid = false,
+    this.isValid = false,
     super.key,
     this.height,
   });
@@ -14,6 +15,7 @@ class WeekdayContainer extends StatelessWidget {
   final String shortWeekday;
   final bool isSelected;
   final bool isInvalid;
+  final bool isValid;
   final double? height;
 
   @override
@@ -23,10 +25,14 @@ class WeekdayContainer extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: isSelected
-            ? MintColors.stepperBlue
+            ? isInvalid
+                ? MintColors.errorColor.withOpacity(0.8)
+                : MintColors.stepperBlue
             : isInvalid
                 ? MintColors.errorColor.withOpacity(0.4)
-                : MintColors.brandBlue4,
+                : isValid
+                    ? Colors.green.withOpacity(0.4)
+                    : MintColors.brandBlue4,
       ),
       duration: const Duration(milliseconds: 200),
       child: Padding(
