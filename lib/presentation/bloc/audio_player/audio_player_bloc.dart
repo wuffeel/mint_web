@@ -116,6 +116,11 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
     }
   }
 
+  // TODO(wuffeel): fix AudioPlayerInProgress for previous playerId triggers on
+  // restarting subscription with new playerId.
+  //
+  // Result of problem: on starting player with new playerId, old playerId
+  // rebuilds with pause icon.
   Future<void> _onSubscribeForDuration(
     AudioPlayerProgressRequested event,
     Emitter<AudioPlayerState> emit,
