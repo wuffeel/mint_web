@@ -27,7 +27,9 @@ class WeekdayContainer extends StatelessWidget {
         color: isSelected
             ? isInvalid
                 ? MintColors.errorColor.withOpacity(0.8)
-                : MintColors.stepperBlue
+                : isValid
+                    ? Colors.green.withOpacity(0.8)
+                    : MintColors.stepperBlue
             : isInvalid
                 ? MintColors.errorColor.withOpacity(0.4)
                 : isValid
