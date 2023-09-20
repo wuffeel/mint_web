@@ -111,7 +111,7 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
     try {
       await _resumePlayerUseCase();
     } catch (error) {
-      debugPrint('AudioPlayerStartFailure: $error');
+      debugPrint('AudioPlayerResumeFailure: $error');
       emit(AudioPlayerFailure(PlayerFailure.start));
     }
   }

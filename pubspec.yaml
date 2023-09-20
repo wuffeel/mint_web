@@ -33,7 +33,7 @@ dependencies:
   injectable: ^2.3.0
   intl: ^0.18.0
   json_annotation: ^4.8.1
-  just_audio: ^0.9.35
+  just_audio: ^0.9.34
   meta: ^1.9.1
   mint_core:
     path: '../../packages/mint_core'
