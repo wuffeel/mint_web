@@ -21,6 +21,12 @@ import 'widgets/message_tile.dart';
 class MessagesPage extends StatelessWidget {
   const MessagesPage({super.key});
 
+  // TODO(wuffeel): find a better solution, too many reads
+  // UseCase: ChatRoomListFetchSuccess triggers too much, - room updates on
+  // every sendMessage when updatedAt of room is updated, and then after
+  // lastMessages fetched, room also updated.
+  // That means, that unread messages fetch triggers for EVERY room in a list
+  // for 2 times
   void _chatRoomBlocListener(BuildContext context, ChatRoomState state) {
     if (state is ChatRoomListFetchSuccess) {
       context.read<UnreadMessagesBloc>().add(
