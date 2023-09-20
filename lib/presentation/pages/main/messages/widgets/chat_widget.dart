@@ -8,6 +8,7 @@ import 'package:mint_core/mint_bloc.dart';
 
 import '../../../../../l10n/l10n.dart';
 import '../../../../../utils/chat_utils.dart';
+import 'audio_message_widget.dart';
 import 'chat_bottom_bar.dart';
 import 'chat_date_header.dart';
 import 'chat_emoji_picker.dart';
@@ -88,7 +89,7 @@ class _ChatWidgetState extends State<ChatWidget> {
   /// type
   void _handleMessageTap(BuildContext _, types.Message message) {
     final shouldOpen = message is types.FileMessage;
-    if (message is types.FileMessage || message is types.AudioMessage) {
+    if (message is types.FileMessage) {
       return context.read<ChatBloc>().add(
             ChatFileLoadRequested(
               message,
@@ -207,9 +208,12 @@ class _ChatWidgetState extends State<ChatWidget> {
                       audio, {
                       required int messageWidth,
                     }) {
-                      return const Padding(
-                        padding: EdgeInsets.all(8),
-                        // TODO(wuffel): add chat audio message UI
+                      return Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: AudioMessageWidget(
+                          message: audio,
+                          isSender: _isSender(audio.author.id),
+                        ),
                       );
                     },
                     bubbleBuilder: _bubbleBuilder,

@@ -8,6 +8,7 @@ import 'package:mint_core/mint_module.dart';
 
 import '../../../../l10n/l10n.dart';
 import '../../../../theme/mint_text_styles.dart';
+import '../../../bloc/audio_player/audio_player_bloc.dart';
 import '../../../bloc/audio_record/audio_record_bloc.dart';
 import '../../../bloc/chat_presence/chat_presence_bloc.dart';
 import '../../../bloc/chat_room/chat_room_bloc.dart';
@@ -32,7 +33,8 @@ class MessagesPage extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               getIt<AudioRecordBloc>()..add(AudioRecordInitializeRequested()),
-        )
+        ),
+        BlocProvider(create: (context) => getIt<AudioPlayerBloc>()),
       ],
       child: const _MessagesView(),
     );

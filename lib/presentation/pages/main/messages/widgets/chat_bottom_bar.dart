@@ -7,6 +7,7 @@ import '../../../../../gen/fonts.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../bloc/audio_record/audio_record_bloc.dart';
 import '../../../../widgets/svg_icon_widget.dart';
+import 'duretion_minutes_text.dart';
 
 class ChatBottomBar extends StatefulWidget {
   const ChatBottomBar({
@@ -92,10 +93,7 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
                 )
               else ...[
                 const Spacer(),
-                _DurationMinutesText(
-                  state.progress,
-                  color: Colors.black,
-                ),
+                DurationMinutesText(state.progress, color: Colors.black),
               ],
               Offstage(
                 offstage: state is! AudioRecordInProgress,
@@ -226,31 +224,6 @@ class _ChatToolbarState extends State<_ChatToolbar> {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _DurationMinutesText extends StatelessWidget {
-  const _DurationMinutesText(
-    this.duration, {
-    required this.color,
-  });
-
-  final Duration duration;
-  final Color color;
-
-  String _getTimeDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    final twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return '$twoDigitMinutes:$twoDigitSeconds';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      _getTimeDuration(duration),
-      style: TextStyle(fontSize: 14, color: color),
     );
   }
 }
