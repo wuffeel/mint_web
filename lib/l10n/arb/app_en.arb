@@ -90,5 +90,7 @@
   "noMessagesYet": "No messages yet",
   "recently": "Recently",
   "yesterday": "Yesterday",
-  "noChatWithPatientsYet": "No chat with patients yet"
+  "noChatWithPatientsYet": "No chat with patients yet",
+  "voiceMessage": "Voice message",
+  "imageMessage": "Image"
 }

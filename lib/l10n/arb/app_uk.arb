@@ -90,5 +90,7 @@
   "noMessagesYet": "Ще немає повідомлень",
   "recently": "Нещодавно",
   "yesterday": "Вчора",
-  "noChatWithPatientsYet": "Немає чатів з пацієнтами"
+  "noChatWithPatientsYet": "Немає чатів з пацієнтами",
+  "voiceMessage": "Голосове повідомлення",
+  "imageMessage": "Зображення"
 }

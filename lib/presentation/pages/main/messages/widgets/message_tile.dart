@@ -24,15 +24,19 @@ class MessageTile extends StatelessWidget {
   final VoidCallback? onTap;
   final int unreadCount;
 
-  String _getLastMessageContent(types.Message lastMessage) {
+  String _getLastMessageContent(
+    BuildContext context,
+    types.Message lastMessage,
+  ) {
+    final l10n = context.l10n;
     if (lastMessage is types.TextMessage) {
       return lastMessage.text;
     } else if (lastMessage is types.ImageMessage) {
-      return lastMessage.name;
+      return l10n.imageMessage;
     } else if (lastMessage is types.FileMessage) {
       return lastMessage.name;
     } else if (lastMessage is types.AudioMessage) {
-      return lastMessage.name;
+      return l10n.voiceMessage;
     }
     return '';
   }
@@ -75,7 +79,7 @@ class MessageTile extends StatelessWidget {
                     ),
                     Text(
                       message != null
-                          ? _getLastMessageContent(message)
+                          ? _getLastMessageContent(context, message)
                           : l10n.noMessagesYet,
                       overflow: TextOverflow.ellipsis,
                       style: MintTextStyles.regular14,
