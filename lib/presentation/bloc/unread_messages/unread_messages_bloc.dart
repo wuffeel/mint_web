@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:injectable/injectable.dart';
 import 'package:mint_core/mint_module.dart';
 
@@ -26,11 +27,20 @@ class UnreadMessagesBloc
     Emitter<UnreadMessagesState> emit,
   ) async {
     try {
-      final unreadCount = await _fetchUnreadMessagesCountUseCase(
-        event.roomId,
-        event.otherUserId,
-      );
-      emit(UnreadMessagesFetchSuccess(unreadCount));
+      final futures = event.roomList.map((room) async {
+        final otherUserId = room.users
+            .firstWhere((element) => element.id != event.currentUserId)
+            .id;
+
+        final unreadCount =
+            await _fetchUnreadMessagesCountUseCase(room.id, otherUserId);
+
+        return MapEntry(otherUserId, unreadCount);
+      });
+
+      final results = await Future.wait(futures);
+      final unreadMap = Map<String, int>.fromEntries(results);
+      emit(UnreadMessagesFetchSuccess(unreadMap));
     } catch (error) {
       debugPrint('UnreadMessagesFetchFailure: $error');
     }

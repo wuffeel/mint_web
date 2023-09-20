@@ -12,6 +12,7 @@ import '../../../bloc/audio_player/audio_player_bloc.dart';
 import '../../../bloc/audio_record/audio_record_bloc.dart';
 import '../../../bloc/chat_presence/chat_presence_bloc.dart';
 import '../../../bloc/chat_room/chat_room_bloc.dart';
+import '../../../bloc/unread_messages/unread_messages_bloc.dart';
 import 'widgets/chat_app_bar.dart';
 import 'widgets/chat_widget.dart';
 import 'widgets/message_tile.dart';
@@ -19,6 +20,14 @@ import 'widgets/message_tile.dart';
 @RoutePage()
 class MessagesPage extends StatelessWidget {
   const MessagesPage({super.key});
+
+  void _chatRoomBlocListener(BuildContext context, ChatRoomState state) {
+    if (state is ChatRoomListFetchSuccess) {
+      context.read<UnreadMessagesBloc>().add(
+        UnreadMessagesFetchRequested(state.roomList, state.senderId),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +44,12 @@ class MessagesPage extends StatelessWidget {
               getIt<AudioRecordBloc>()..add(AudioRecordInitializeRequested()),
         ),
         BlocProvider(create: (context) => getIt<AudioPlayerBloc>()),
+        BlocProvider(create: (context) => getIt<UnreadMessagesBloc>()),
       ],
-      child: const _MessagesView(),
+      child: BlocListener<ChatRoomBloc, ChatRoomState>(
+        listener: _chatRoomBlocListener,
+        child: const _MessagesView(),
+      ),
     );
   }
 }
@@ -170,6 +183,12 @@ class _MessagesBlock extends StatelessWidget {
     context.read<ChatBloc>().add(ChatInitializeRequested(room));
   }
 
+  int _getUnreadCount(UnreadMessagesState state, String userId) {
+    return state is UnreadMessagesFetchSuccess
+        ? state.unreadMap[userId] ?? 0
+        : 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentRoom = selectedRoom;
@@ -180,20 +199,25 @@ class _MessagesBlock extends StatelessWidget {
           final room = roomList[index];
           final user = room.users.firstWhere((e) => e.id != senderId);
           final isSelected = currentRoom != null && currentRoom.id == room.id;
-          return MessageTile(
-            isSelected: isSelected,
-            lastMessage: (room.lastMessages?.isNotEmpty ?? false)
-                ? room.lastMessages?.last
-                : null,
-            user: UserModel(
-              id: user.id,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              photoUrl: user.imageUrl,
-            ),
-            onTap: !isSelected
-                ? () => _initializeChat(context, roomList[index])
-                : null,
+          return BlocBuilder<UnreadMessagesBloc, UnreadMessagesState>(
+            builder: (context, state) {
+              return MessageTile(
+                isSelected: isSelected,
+                lastMessage: (room.lastMessages?.isNotEmpty ?? false)
+                    ? room.lastMessages?.last
+                    : null,
+                user: UserModel(
+                  id: user.id,
+                  firstName: user.firstName,
+                  lastName: user.lastName,
+                  photoUrl: user.imageUrl,
+                ),
+                onTap: !isSelected
+                    ? () => _initializeChat(context, roomList[index])
+                    : null,
+                unreadCount: _getUnreadCount(state, user.id),
+              );
+            },
           );
         },
         itemCount: roomList.length,

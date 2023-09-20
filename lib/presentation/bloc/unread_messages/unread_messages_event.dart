@@ -4,10 +4,10 @@ part of 'unread_messages_bloc.dart';
 abstract class UnreadMessagesEvent {}
 
 class UnreadMessagesFetchRequested extends UnreadMessagesEvent {
-  UnreadMessagesFetchRequested(this.roomId, this.otherUserId);
+  UnreadMessagesFetchRequested(this.roomList, this.currentUserId);
 
-  final String roomId;
-  final String otherUserId;
+  final List<types.Room> roomList;
+  final String currentUserId;
 }
 
 class UnreadMessagesResetRequested extends UnreadMessagesEvent {}

@@ -6,9 +6,9 @@ abstract class UnreadMessagesState {}
 class UnreadMessagesInitial extends UnreadMessagesState {}
 
 class UnreadMessagesFetchSuccess extends UnreadMessagesState {
-  UnreadMessagesFetchSuccess(this.unreadCount);
+  UnreadMessagesFetchSuccess(this.unreadMap);
 
-  final int unreadCount;
+  final Map<String, int> unreadMap;
 }
 
 class UnreadMessagesFetchFailure extends UnreadMessagesState {}

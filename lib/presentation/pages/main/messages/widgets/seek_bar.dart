@@ -72,7 +72,7 @@ class SeekBarState extends State<SeekBar> {
           data: _sliderThemeData.copyWith(
             activeTrackColor: Colors.blueAccent,
             inactiveTrackColor: Colors.transparent,
-            thumbColor: Colors.blueAccent
+            thumbColor: Colors.blueAccent,
           ),
           child: Slider(
             max: widget.duration.inMilliseconds.toDouble(),
