@@ -5,6 +5,7 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../domain/usecase/dispose_player_use_case.dart';
 import '../../../domain/usecase/get_player_position_stream_use_case.dart';
@@ -19,7 +20,7 @@ part 'audio_player_event.dart';
 
 part 'audio_player_state.dart';
 
-typedef PositionData = ({Duration position, Duration bufferedPosition});
+enum PlayerFailure { initialize, start, resume, progress, seek, pause, stop }
 
 @injectable
 class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
@@ -77,15 +78,15 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
     Emitter<AudioPlayerState> emit,
   ) {
     final state = this.state;
-    final launchOtherPlayer =
-        state is AudioPlayerInProgress && state.playerId != event.playerId;
 
-    if (launchOtherPlayer) {
-      add(AudioPlayerStartRequested(event.playerId, event.url));
-    } else if (state is AudioPlayerPaused) {
-      add(AudioPlayerResumeRequested(event.playerId));
-    } else if (state is AudioPlayerInProgress) {
-      add(AudioPlayerPauseRequested());
+    if (state is AudioPlayerInProgress) {
+      if (state.playerId != event.playerId) {
+        add(AudioPlayerStartRequested(event.playerId, event.url));
+      } else {
+        state.state.playing
+            ? add(AudioPlayerPauseRequested())
+            : add(AudioPlayerResumeRequested(event.playerId));
+      }
     } else {
       add(AudioPlayerStartRequested(event.playerId, event.url));
     }
@@ -112,7 +113,7 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
       await _resumePlayerUseCase();
     } catch (error) {
       debugPrint('AudioPlayerResumeFailure: $error');
-      emit(AudioPlayerFailure(PlayerFailure.start));
+      emit(AudioPlayerFailure(PlayerFailure.resume));
     }
   }
 
@@ -125,11 +126,18 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
     AudioPlayerProgressRequested event,
     Emitter<AudioPlayerState> emit,
   ) async {
-    return emit.forEach(
+    final playerStream = Rx.combineLatest2(
       _getPlayerPositionStreamUseCase(),
-      onData: (progress) {
-        return AudioPlayerInProgress(event.playerId, progress);
-      },
+      _getPlayerStateStreamUseCase(),
+      (position, playerState) => (position: position, playerState: playerState),
+    );
+    return emit.forEach(
+      playerStream,
+      onData: (player) => AudioPlayerInProgress(
+        event.playerId,
+        player.position,
+        player.playerState,
+      ),
       onError: (error, _) {
         debugPrint('AudioPlayerProgressFailure: $error');
         return AudioPlayerFailure(PlayerFailure.progress);
@@ -157,7 +165,6 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
     if (state is! AudioPlayerInProgress) return;
     try {
       await _pausePlayerUseCase();
-      emit(AudioPlayerPaused(state.playerId, state.position));
     } catch (error) {
       debugPrint('AudioPlayerStopFailure: $error');
       emit(AudioPlayerFailure(PlayerFailure.pause));
@@ -173,7 +180,7 @@ class AudioPlayerBloc extends Bloc<AudioPlayerEvent, AudioPlayerState> {
       emit(AudioPlayerStopSuccess());
     } catch (error) {
       debugPrint('AudioPlayerStopFailure: $error');
-      emit(AudioPlayerFailure(PlayerFailure.pause));
+      emit(AudioPlayerFailure(PlayerFailure.stop));
     }
   }
 }

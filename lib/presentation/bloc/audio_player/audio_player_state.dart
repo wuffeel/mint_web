@@ -1,7 +1,5 @@
 part of 'audio_player_bloc.dart';
 
-enum PlayerFailure { initialize, start, progress, seek, pause }
-
 @immutable
 abstract class AudioPlayerState {}
 
@@ -14,14 +12,11 @@ class AudioPlayerFailure extends AudioPlayerState {
 }
 
 class AudioPlayerInProgress extends AudioPlayerState {
-  AudioPlayerInProgress(this.playerId, this.position);
+  AudioPlayerInProgress(this.playerId, this.position, this.state);
 
   final String playerId;
   final Duration position;
-}
-
-class AudioPlayerPaused extends AudioPlayerInProgress {
-  AudioPlayerPaused(super.playerId, super.position);
+  final PlayerState state;
 }
 
 class AudioPlayerStopSuccess extends AudioPlayerState {}

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 import '../../../../bloc/audio_player/audio_player_bloc.dart';
-import 'duretion_minutes_text.dart';
+import 'duration_minutes_text.dart';
 import 'seek_bar.dart';
 
 class AudioMessageWidget extends StatefulWidget {
@@ -45,9 +45,9 @@ class _AudioMessageWidgetState extends State<AudioMessageWidget>
     super.build(context);
     return BlocBuilder<AudioPlayerBloc, AudioPlayerState>(
       builder: (context, state) {
-        final isPlaying = state is AudioPlayerInProgress &&
+        final isInProgress = state is AudioPlayerInProgress &&
             state.playerId == widget.message.id;
-        final isPaused = state is AudioPlayerPaused;
+        final isPlaying = isInProgress && state.state.playing;
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -56,7 +56,7 @@ class _AudioMessageWidgetState extends State<AudioMessageWidget>
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               child: Icon(
-                isPlaying && !isPaused ? Icons.pause : Icons.play_arrow,
+                isPlaying ? Icons.pause : Icons.play_arrow,
                 color: _getProperOpaqueColor(),
               ),
             ),
@@ -67,13 +67,14 @@ class _AudioMessageWidgetState extends State<AudioMessageWidget>
               children: <Widget>[
                 SeekBar(
                   duration: widget.message.duration,
-                  position: isPlaying ? state.position : Duration.zero,
-                  onChanged: isPlaying ? (_) {} : null,
-                  onChangeEnd:
-                      isPlaying ? (value) => _handleSeek(context, value) : null,
+                  position: isInProgress ? state.position : Duration.zero,
+                  onChanged: isInProgress ? (_) {} : null,
+                  onChangeEnd: isInProgress
+                      ? (value) => _handleSeek(context, value)
+                      : null,
                 ),
                 const SizedBox(height: 4),
-                if (isPlaying)
+                if (isInProgress)
                   DurationMinutesText(
                     state.position,
                     color: _getProperOpaqueColor(),

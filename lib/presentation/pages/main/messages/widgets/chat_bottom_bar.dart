@@ -7,7 +7,7 @@ import '../../../../../gen/fonts.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../bloc/audio_record/audio_record_bloc.dart';
 import '../../../../widgets/svg_icon_widget.dart';
-import 'duretion_minutes_text.dart';
+import 'duration_minutes_text.dart';
 
 class ChatBottomBar extends StatefulWidget {
   const ChatBottomBar({
