@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class SeekBar extends StatefulWidget {
@@ -33,8 +31,24 @@ class SeekBarState extends State<SeekBar> {
     );
   }
 
+  void _onChanged(double value) {
+    setState(() {
+      _dragValue = value;
+    });
+    widget.onChanged?.call(Duration(milliseconds: value.round()));
+  }
+
+  void _onChangeEnd(double value) {
+    widget.onChangeEnd?.call(Duration(milliseconds: value.round()));
+    _dragValue = null;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final duration = widget.duration.inMilliseconds.toDouble();
+    final position = widget.position.inMilliseconds.toDouble();
+    final onChanged = widget.onChanged != null ? _onChanged : null;
+    final onChangeEnd = widget.onChangeEnd != null ? _onChangeEnd : null;
     return Stack(
       children: <Widget>[
         SliderTheme(
@@ -45,26 +59,10 @@ class SeekBarState extends State<SeekBar> {
           ),
           child: ExcludeSemantics(
             child: Slider(
-              max: widget.duration.inMilliseconds.toDouble(),
-              value: min(
-                widget.position.inMilliseconds.toDouble(),
-                widget.duration.inMilliseconds.toDouble(),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  _dragValue = value;
-                });
-                if (widget.onChanged != null) {
-                  widget.onChanged?.call(Duration(milliseconds: value.round()));
-                }
-              },
-              onChangeEnd: (value) {
-                if (widget.onChangeEnd != null) {
-                  widget.onChangeEnd
-                      ?.call(Duration(milliseconds: value.round()));
-                }
-                _dragValue = null;
-              },
+              max: duration,
+              value: position.clamp(0.0, duration),
+              onChanged: onChanged,
+              onChangeEnd: onChangeEnd,
             ),
           ),
         ),
@@ -75,25 +73,11 @@ class SeekBarState extends State<SeekBar> {
             thumbColor: Colors.blueAccent,
           ),
           child: Slider(
-            max: widget.duration.inMilliseconds.toDouble(),
-            value: min(
-              _dragValue ?? widget.position.inMilliseconds.toDouble(),
-              widget.duration.inMilliseconds.toDouble(),
-            ),
-            onChanged: (value) {
-              setState(() {
-                _dragValue = value;
-              });
-              if (widget.onChanged != null) {
-                widget.onChanged?.call(Duration(milliseconds: value.round()));
-              }
-            },
-            onChangeEnd: (value) {
-              if (widget.onChangeEnd != null) {
-                widget.onChangeEnd?.call(Duration(milliseconds: value.round()));
-              }
-              _dragValue = null;
-            },
+            max: duration,
+            value: (position != 0 ? (_dragValue ?? position) : position)
+                .clamp(0.0, duration),
+            onChanged: onChanged,
+            onChangeEnd: onChangeEnd,
           ),
         ),
       ],

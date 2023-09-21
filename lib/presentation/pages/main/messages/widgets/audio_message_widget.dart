@@ -68,6 +68,7 @@ class _AudioMessageWidgetState extends State<AudioMessageWidget>
                 SeekBar(
                   duration: widget.message.duration,
                   position: isPlaying ? state.position : Duration.zero,
+                  onChanged: isPlaying ? (_) {} : null,
                   onChangeEnd:
                       isPlaying ? (value) => _handleSeek(context, value) : null,
                 ),
