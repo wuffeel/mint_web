@@ -73,8 +73,9 @@ class SpecialistBloc extends Bloc<SpecialistEvent, SpecialistState> {
 
     try {
       emit(SpecialistAddNewLoading());
-      final onboardingSpec =
-          _onboardingSpecialistFromOnboarding.create(event.onboarding);
+      final onboardingSpec = _onboardingSpecialistFromOnboarding
+          .create(event.onboarding)
+          ?.copyWith(phoneNumber: user.phoneNumber);
       if (onboardingSpec == null) return;
 
       final specialistModel = await _updateSpecialistData(user, onboardingSpec);
