@@ -63,26 +63,30 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
     if (user == null) return;
     try {
       emit(PatientsFetchBookListLoading());
-      var bookList = await _fetchPatientBookListUseCase(
-        user.id,
-        // lastBookingId: _lastPatientBookId,
-        // limit: _paginationLimit,
-      );
-      if (bookList.isNotEmpty) {
-        bookList = bookList
-          ..sort(
-            (a, b) => _compareBookingTimes(a.bookTime, b.bookTime),
-          );
-      }
-      emit(
-        PatientsFetchBookListSuccess(
-          bookList: [...bookList],
-          hasReachedEnd: bookList.length < _paginationLimit,
+      return emit.forEach(
+        await _fetchPatientBookListUseCase(
+          user.id,
+          // lastBookingId: _lastPatientBookId,
+          // limit: _paginationLimit,
         ),
+        onData: (bookList) {
+          var books = [...bookList];
+          if (bookList.isNotEmpty) {
+            books = books
+              ..sort(
+                (a, b) => _compareBookingTimes(a.bookTime, b.bookTime),
+              );
+          }
+
+          // if (bookList.isNotEmpty) {
+          //   _lastPatientBookId = bookList.last.id;
+          // }
+          return PatientsFetchBookListSuccess(
+            bookList: books,
+            hasReachedEnd: bookList.length < _paginationLimit,
+          );
+        },
       );
-      // if (bookList.isNotEmpty) {
-      //   _lastPatientBookId = bookList.last.id;
-      // }
     } catch (error) {
       debugPrint('PatientsFetchBookListFailure: $error');
       emit(PatientsFetchBookListFailure());

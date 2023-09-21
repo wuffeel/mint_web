@@ -18,16 +18,17 @@ class FirebaseBookingService implements BookingService {
   final Factory<PatientBook, PatientBookDto> _patientBookFromDto;
 
   @override
-  Future<List<PatientBook>> getPatientBookings(
+  Future<Stream<List<PatientBook>>> getPatientBookings(
     String specialistId, {
     String? lastBookingId,
     int? limit,
   }) async {
-    final bookingsDto = await _bookingRepository.getPatientBookings(
+    final bookingsStream = await _bookingRepository.getPatientBookings(
       specialistId,
       lastBookingId: lastBookingId,
       limit: limit,
     );
-    return bookingsDto.map(_patientBookFromDto.create).toList();
+    return bookingsStream
+        .asyncMap((e) => e.map(_patientBookFromDto.create).toList());
   }
 }
