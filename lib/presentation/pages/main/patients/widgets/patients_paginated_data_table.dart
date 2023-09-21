@@ -23,8 +23,6 @@ class PatientsPaginatedDataTable extends StatefulWidget {
 class _PatientsPaginatedDataTableState
     extends State<PatientsPaginatedDataTable> {
   bool _sortAscending = true;
-
-  /// Index of date column
   int? _sortColumnIndex;
 
   void _sort<T>(
