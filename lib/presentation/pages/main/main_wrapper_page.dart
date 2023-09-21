@@ -21,11 +21,13 @@ class MainWrapperPage extends AutoRouter with AutoRouteWrapper {
     }
   }
 
+  /// Triggers only if previous [state] is not [SpecialistInfoFetchSuccess]
   void _specialistInfoBlocListener(
     BuildContext context,
     SpecialistInfoState state,
   ) {
     if (state is SpecialistInfoFetchSuccess) {
+      context.read<UserBloc>().add(UserInitializePresenceRequested());
       if (!context.router.currentPath.startsWith('/main/navigation')) {
         context.router.navigate(const NavigationRoute());
       }
@@ -46,8 +48,7 @@ class MainWrapperPage extends AutoRouter with AutoRouteWrapper {
         BlocProvider(
           create: (context) => getIt<UserBloc>()
             ..add(UserInitializeRequested())
-            ..add(UserFetchRequested())
-            ..add(UserInitializePresenceRequested()),
+            ..add(UserFetchRequested()),
         ),
       ],
       child: MultiBlocListener(
