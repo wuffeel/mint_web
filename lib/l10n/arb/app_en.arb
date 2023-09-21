@@ -15,6 +15,7 @@
   "tryAgain": "Try again",
   "toTryAgain": "Try again",
   "tooManyRequestsTryAgainLater": "Too many requests. Try again later",
+  "phoneNumberAssociatedWithOtherUser": "Phone number is associated with other user",
   "invalidPhoneNumber": "Invalid phone number",
   "somethingWentWrong": "Something went wrong",
   "invalidOtpCode": "Invalid verification code",
