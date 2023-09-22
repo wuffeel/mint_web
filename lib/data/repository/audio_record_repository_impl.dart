@@ -9,9 +9,12 @@ import 'abstract/audio_record_repository.dart';
 class AudioRecordRepositoryImpl implements AudioRecordRepository {
   final _recorder = FlutterSoundRecorder();
 
+  /// Suitable bit rate for good audio quality and compact output files.
+  static const int _bitRate = 32000;
+
   @override
   Stream<RecordingDisposition>? get onProgress => _recorder.onProgress;
-  
+
   @override
   Future<void> initializeRecorder() async {
     await _recorder.openRecorder();
@@ -27,13 +30,13 @@ class AudioRecordRepositoryImpl implements AudioRecordRepository {
   Future<void> startRecorder() {
     return _recorder.startRecorder(
       codec: Codec.opusWebM,
-      sampleRate: 44000,
+      bitRate: _bitRate,
       toFile: 'audio.webm',
     );
   }
 
   @override
   Future<String?> stopRecorder() async {
-   return _recorder.stopRecorder();
+    return _recorder.stopRecorder();
   }
 }
