@@ -1,25 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mint_core/mint_core.dart';
+import 'package:mint_core/mint_utils.dart';
 
 import '../../../../../gen/assets.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../../theme/mint_text_styles.dart';
+import '../../../../widgets/mint_circle_avatar.dart';
 import '../../../../widgets/svg_icon_widget.dart';
 
 class ChatAppBar extends StatelessWidget {
   const ChatAppBar({
     required this.user,
-    required this.isOnline,
+    required this.presence,
     super.key,
   });
 
   final UserModel user;
-  final bool isOnline;
+  final UserPresence? presence;
+
+  String _getStatusByPresence(BuildContext context, UserPresence? presence) {
+    final l10n = context.l10n;
+    if (presence == null) return l10n.offline.toLowerCase();
+    if (presence.isOnline) return l10n.online.toLowerCase();
+
+    final lastSeen = presence.lastSeen;
+    if (lastSeen == null) return '';
+
+    final lastSeenTime = DateFormat.Hm().format(lastSeen);
+
+    final now = DateTime.now();
+    final isYesterday = DateTimeUtils.isSameDay(
+      now,
+      DateTime(lastSeen.year, lastSeen.month, lastSeen.day - 1),
+    );
+
+    if (isYesterday) {
+      return '${l10n.lastSeen} ${l10n.yesterday} - $lastSeenTime'.toLowerCase();
+    } else if (now.difference(lastSeen).inDays == 0) {
+      return '${l10n.lastSeen} - $lastSeenTime'.toLowerCase();
+    } else {
+      return '${l10n.lastSeen} ${l10n.recently}'.toLowerCase();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final photo = user.photoUrl;
-    final l10n = context.l10n;
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
@@ -27,18 +53,14 @@ class ChatAppBar extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(
-          top: 20,
-          bottom: 20,
-          left: 20,
-          right: 30,
-        ),
+        padding:
+            const EdgeInsets.only(top: 20, bottom: 20, left: 20, right: 30),
         child: Row(
           children: <Widget>[
-            CircleAvatar(
+            MintCircleAvatar(
               radius: 20,
-              backgroundColor: Theme.of(context).hintColor.withOpacity(0.6),
-              backgroundImage: photo != null ? NetworkImage(photo) : null,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              photoUrl: user.photoUrl,
             ),
             const SizedBox(width: 10),
             Column(
@@ -50,7 +72,7 @@ class ChatAppBar extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  (isOnline ? l10n.online : l10n.offline).toLowerCase(),
+                  _getStatusByPresence(context, presence),
                   style: const TextStyle(fontSize: 12),
                 )
               ],

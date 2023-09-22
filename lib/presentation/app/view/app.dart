@@ -21,6 +21,7 @@ class App extends StatelessWidget {
         fontFamily: MintFontFamily.inter,
         inputDecorationTheme: MintThemeData.inputDecoration,
         hintColor: MintColors.hintColor,
+        primaryColor: Colors.black,
         scaffoldBackgroundColor: MintColors.scaffold,
         textTheme: MintThemeData.textTheme,
       ),

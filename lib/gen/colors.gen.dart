@@ -19,6 +19,9 @@ class MintColors {
   /// Color: #C7D5FB
   static const Color brandBlue4 = Color(0xFFC7D5FB);
 
+  /// Color: #F2F2F2
+  static const Color chatDateHeaderGrey = Color(0xFFF2F2F2);
+
   /// Color: #E8EFF5
   static const Color completedStatus = Color(0xFFE8EFF5);
 
@@ -51,6 +54,9 @@ class MintColors {
 
   /// Color: #007AFF
   static const Color primaryBlueColor = Color(0xFF007AFF);
+
+  /// Color: #EDF3F8
+  static const Color receiverMessageColor = Color(0xFFEDF3F8);
 
   /// Color: #F5F6F8
   static const Color scaffold = Color(0xFFF5F6F8);

@@ -3,14 +3,15 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 import 'package:mint_core/mint_utils.dart';
 
 import '../../../backbone/consultation_status.dart';
-import '../../../domain/controller/user_controller.dart';
 import '../../../domain/entity/patient_book/patient_book.dart';
 import '../../../domain/entity/patient_filter.dart';
 import '../../../domain/usecase/fetch_patient_book_list_use_case.dart';
+import '../../../utils/consultation_status_util.dart';
 
 part 'patients_event.dart';
 
@@ -21,7 +22,7 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
   PatientsBloc(
     this._fetchPatientBookListUseCase,
     this._userController,
-  ) : super(PatientsBookListLoadSuccess()) {
+  ) : super(PatientsInitial()) {
     _subscribeToUserChange();
     on<PatientsFetchBookListRequested>(_onFetchBookList);
     on<PatientsRefreshRequested>(_onRefresh);
@@ -44,6 +45,7 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
   void _subscribeToUserChange() {
     _userSubscription = _userController.user.listen((user) {
       _currentUser = user;
+      if (state is PatientsInitial) add(PatientsFetchBookListRequested());
     });
   }
 
@@ -58,49 +60,29 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
     Emitter<PatientsState> emit,
   ) async {
     final user = _currentUser;
-    final state = this.state;
-    if (user == null || state is! PatientsBookListLoadSuccess) return;
+    if (user == null) return;
     try {
-      emit(
-        PatientsFetchBookListLoading(
-          bookList: state.bookList,
-          hasReachedEnd: state.hasReachedEnd,
-          filter: state.filter,
+      emit(PatientsFetchBookListLoading());
+      return emit.forEach(
+        await _fetchPatientBookListUseCase(
+          user.id,
+          // lastBookingId: _lastPatientBookId,
+          // limit: _paginationLimit,
         ),
-      );
-      var bookList = await _fetchPatientBookListUseCase(
-        user.id,
-        // lastBookingId: _lastPatientBookId,
-        // limit: _paginationLimit,
-      );
-      if (bookList.isNotEmpty) {
-        bookList = bookList
-          ..sort(
-            (a, b) => b.bookTime.compareTo(a.bookTime),
+        onData: (bookList) {
+          // if (bookList.isNotEmpty) {
+          //   _lastPatientBookId = bookList.last.id;
+          // }
+          return PatientsFetchBookListSuccess(
+            bookList: bookList
+              ..sort((a, b) => _compareBookingTimes(a.bookTime, b.bookTime)),
+            hasReachedEnd: bookList.length < _paginationLimit,
           );
-      }
-      emit(
-        PatientsFetchBookListSuccess(
-          bookList: [
-            ...state.bookList,
-            ...bookList,
-          ],
-          hasReachedEnd: bookList.length < _paginationLimit,
-          filter: state.filter,
-        ),
+        },
       );
-      // if (bookList.isNotEmpty) {
-      //   _lastPatientBookId = bookList.last.id;
-      // }
     } catch (error) {
       debugPrint('PatientsFetchBookListFailure: $error');
-      emit(
-        PatientsFetchBookListFailure(
-          bookList: state.bookList,
-          hasReachedEnd: state.hasReachedEnd,
-          filter: state.filter,
-        ),
-      );
+      emit(PatientsFetchBookListFailure());
     }
   }
 
@@ -123,13 +105,15 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
 
     final sortedBookList = state.bookList
       ..sort(
-        (a, b) {
-          final aValue = getField(a);
-          final bValue = getField(b);
-          return event.ascending
-              ? Comparable.compare(aValue, bValue)
-              : Comparable.compare(bValue, aValue);
-        },
+        getField != null
+            ? (a, b) {
+                final aValue = getField(a);
+                final bValue = getField(b);
+                return event.ascending
+                    ? Comparable.compare(aValue, bValue)
+                    : Comparable.compare(bValue, aValue);
+              }
+            : (a, b) => _compareBookingTimes(a.bookTime, b.bookTime),
       );
 
     emit(
@@ -166,6 +150,23 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
         filter: filter,
       ),
     );
+  }
+
+  int _compareBookingTimes(DateTime a, DateTime b) {
+    final statusA = ConsultationStatusUtil.statusByDateTime(a);
+    final statusB = ConsultationStatusUtil.statusByDateTime(b);
+
+    final statusComparison = statusA.index.compareTo(statusB.index);
+
+    if (statusComparison != 0) {
+      return statusComparison;
+    } else {
+      if (statusA == ConsultationStatus.completed) {
+        return b.compareTo(a);
+      } else {
+        return a.compareTo(b);
+      }
+    }
   }
 
   List<PatientBook> _filterBookList(

@@ -56,7 +56,16 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     return firestore
         .collection(_workInfoCollection)
         .doc('info_$specialistId')
-        .set(workInfoMap);
+        .set({
+      'bookingDaysAdvance': 30,
+      'consultationMinutes': 60,
+      // Array of dates that are excluded from available for booking.
+      'exclusions': const <DateTime>[],
+      // Array of vacation start/end times.
+      // Example: [{'start': Aug 13, 'end': Aug 20}, ...]
+      'vacations': const <Map<String, DateTime>>[],
+      'workHours': workInfoMap,
+    });
   }
 
   @override

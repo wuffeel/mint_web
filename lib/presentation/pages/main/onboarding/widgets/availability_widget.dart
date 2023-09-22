@@ -56,12 +56,21 @@ class _AvailabilityWidgetState extends State<AvailabilityWidget> {
     );
   }
 
+  bool _validWeekdayPredicate(int index) {
+    final workDayFormList = widget.workDayFormList;
+    final startTime = workDayFormList[index].startTimeControl?.value;
+    final endTime = workDayFormList[index].endTimeControl?.value;
+    return widget.control.controls[index].valid &&
+        (startTime != null && endTime != null);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     String required(Object error) => l10n.fieldIsRequired;
     final arrayControl = widget.control;
-    final currentForm = widget.workDayFormList[widget.currentIndex];
+    final workDayFormList = widget.workDayFormList;
+    final currentForm = workDayFormList[widget.currentIndex];
     return ReactiveForm(
       key: ValueKey(widget.currentIndex),
       formGroup: widget.formControl,
@@ -88,7 +97,8 @@ class _AvailabilityWidgetState extends State<AvailabilityWidget> {
                         shortWeekdays: _shortWeekdays,
                         onWeekdaySelect: widget.onWorkDayIndexChange,
                         invalidWeekdayPredicate: (index) =>
-                            !widget.control.controls[index].valid,
+                            !arrayControl.controls[index].valid,
+                        validWeekdayPredicate: _validWeekdayPredicate,
                       ),
                       const SizedBox(height: 28),
                       _ReactiveTimePicker(

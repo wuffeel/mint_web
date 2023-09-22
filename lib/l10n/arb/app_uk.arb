@@ -15,6 +15,7 @@
   "toTryAgain": "Спробувати знову",
   "tryAgain": "Спробуйте ще раз",
   "tooManyRequestsTryAgainLater": "Забагато запитів. Спробуйте пізніше",
+  "phoneNumberAssociatedWithOtherUser": "Номер телефону пов'язано з іншим користувачем",
   "invalidPhoneNumber": "Недійсний номер телефону",
   "somethingWentWrong": "Щось пішло не так",
   "invalidOtpCode": "Недійсний код підтвердження",
@@ -80,5 +81,17 @@
   "online": "Онлайн",
   "offline": "Офлайн",
   "message": "Повідомлення",
-  "today": "Сьогодні"
+  "today": "Сьогодні",
+  "resetSorting": "Скинути сортування",
+  "lastSeen": "Був(-ла) в мережі",
+  "delete": "Видалити",
+  "attachImage": "Прикріпити зображення",
+  "attachFile": "Прикріпити файл",
+  "cancel": "Скасувати",
+  "noMessagesYet": "Ще немає повідомлень",
+  "recently": "Нещодавно",
+  "yesterday": "Вчора",
+  "noChatWithPatientsYet": "Немає чатів з пацієнтами",
+  "voiceMessage": "Голосове повідомлення",
+  "imageMessage": "Зображення"
 }

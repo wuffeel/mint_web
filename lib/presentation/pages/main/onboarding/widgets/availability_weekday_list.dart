@@ -9,6 +9,7 @@ class AvailabilityWeekdayList extends StatelessWidget {
     required this.shortWeekdays,
     required this.onWeekdaySelect,
     required this.invalidWeekdayPredicate,
+    required this.validWeekdayPredicate,
     super.key,
   });
 
@@ -16,6 +17,7 @@ class AvailabilityWeekdayList extends StatelessWidget {
   final List<String> shortWeekdays;
   final void Function(int) onWeekdaySelect;
   final bool Function(int) invalidWeekdayPredicate;
+  final bool Function(int) validWeekdayPredicate;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class AvailabilityWeekdayList extends StatelessWidget {
                 shortWeekday: shortWeekday,
                 isSelected: index == currentWeekday,
                 isInvalid: invalidWeekdayPredicate(index),
+                isValid: validWeekdayPredicate(index),
                 height: 48,
               ),
             ),

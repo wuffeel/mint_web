@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mint_core/mint_core.dart';
 
 import '../../../domain/usecase/verify_otp_use_case.dart';
 import '../../../domain/usecase/verify_phone_use_case.dart';
@@ -94,6 +95,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthVerifyPhoneInvalidNumber());
     } else if (error.toString().contains('too-many-requests')) {
       emit(AuthVerifyPhoneTooManyRequests());
+    } else if (error is AuthUserTypeException) {
+      emit(AuthVerifyPhoneWrongUserType());
     } else {
       emit(AuthVerifyPhoneFailure());
     }

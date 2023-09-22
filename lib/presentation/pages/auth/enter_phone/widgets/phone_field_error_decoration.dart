@@ -34,6 +34,13 @@ class PhoneFieldErrorDecoration extends StatelessWidget {
             child: child,
           );
         }
+        if (state is AuthVerifyPhoneWrongUserType) {
+          return TextFieldErrorDecoration(
+            errorText: l10n.phoneNumberAssociatedWithOtherUser,
+            borderRadius: borderRadius,
+            child: child,
+          );
+        }
         return child;
       },
     );

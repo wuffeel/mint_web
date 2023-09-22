@@ -9,7 +9,7 @@ class FetchPatientBookListUseCase {
 
   final BookingService _service;
 
-  Future<List<PatientBook>> call(
+  Future<Stream<List<PatientBook>>> call(
     String specialistId, {
     String? lastBookingId,
     int? limit,

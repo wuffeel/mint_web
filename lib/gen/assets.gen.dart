@@ -56,6 +56,10 @@ class $AssetsSvgGen {
   /// File path: assets/svg/sort_icon.svg
   SvgGenImage get sortIcon => const SvgGenImage('assets/svg/sort_icon.svg');
 
+  /// File path: assets/svg/user_placeholder.svg
+  SvgGenImage get userPlaceholder =>
+      const SvgGenImage('assets/svg/user_placeholder.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
         actionsVertical,
@@ -70,7 +74,8 @@ class $AssetsSvgGen {
         mintLogo,
         phoneIcon,
         refreshIcon,
-        sortIcon
+        sortIcon,
+        userPlaceholder
       ];
 }
 

@@ -20,3 +20,11 @@ class UserAuthenticated extends UserState {
 class UserLogOutFailure extends UserAuthenticated {
   UserLogOutFailure(super.user);
 }
+
+class UserInitializePresenceSuccess extends UserAuthenticated {
+  UserInitializePresenceSuccess(super.user);
+}
+
+class UserInitializePresenceFailure extends UserAuthenticated {
+  UserInitializePresenceFailure(super.user);
+}

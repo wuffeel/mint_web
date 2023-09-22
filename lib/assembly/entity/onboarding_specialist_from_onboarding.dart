@@ -18,8 +18,8 @@ class OnboardingSpecialistFromOnboarding
   /// //  {
   /// //    'Monday':
   /// //    {
-  /// //      'startTime': '8:00 AM',
-  /// //      'endTime': '5:00 PM',
+  /// //      'start': '8:00 AM',
+  /// //      'end': '5:00 PM',
   /// //    },
   /// //  }
   /// final workInfoMap = _getWorkInfoMap(workInfoList);
@@ -38,10 +38,10 @@ class OnboardingSpecialistFromOnboarding
       final endTimeHour = endTime.hour;
       final endTimeMinute = endTime.minute;
       workInfoMap[workDay.weekday] = {
-        'startTime': DateFormat.jm('en_US').format(
+        'start': DateFormat.jm('en_US').format(
           DateTime(1, 1, 1, startTimeHour, startTimeMinute),
         ),
-        'endTime': DateFormat.jm('en_US').format(
+        'end': DateFormat.jm('en_US').format(
           DateTime(1, 1, 1, endTimeHour, endTimeMinute),
         ),
       };

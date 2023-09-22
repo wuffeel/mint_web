@@ -16,7 +16,7 @@ class FirebaseBookingRepository implements BookingRepository {
   final FirebaseInitializer _firebaseInitializer;
 
   @override
-  Future<List<PatientBookDto>> getPatientBookings(
+  Future<Stream<List<PatientBookDto>>> getPatientBookings(
     String specialistId, {
     String? lastBookingId,
     int? limit,
@@ -39,37 +39,40 @@ class FirebaseBookingRepository implements BookingRepository {
       query = query.startAfterDocument(doc);
     }
 
-    final bookingsSnapshot =
-        await query.get();
+    final bookingsSnapshots = query.snapshots();
 
-    final bookings = await _fetchBookingsWithUserDetails(
-      bookingsSnapshot.docs,
-      firestore,
-    );
-
-    return bookings.whereType<PatientBookDto>().toList();
+    return _fetchBookingsWithUserDetails(bookingsSnapshots, firestore);
   }
 
-  Future<List<PatientBookDto?>> _fetchBookingsWithUserDetails(
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> bookingDocs,
+  Future<Stream<List<PatientBookDto>>> _fetchBookingsWithUserDetails(
+    Stream<QuerySnapshot<Map<String, dynamic>>> bookingSnaps,
     FirebaseFirestore firestore,
   ) async {
-    return Future.wait(
-      bookingDocs.map((book) async {
+    return bookingSnaps.asyncMap((snap) async {
+      final patientBookings = <PatientBookDto>[];
+      for (final book in snap.docs) {
         final data = book.data();
         final userId = data['userId'] as String?;
-        if (userId == null) return null;
+
+        if (userId == null) continue;
+
         final userCollection = firestore.collection(_userCollection);
         final userDoc = await userCollection.doc(userId).get();
         final userData = userDoc.data();
-        if (userData == null) return null;
+
+        if (userData == null) continue;
+
         final user = UserModelDto.fromJsonWithId(userData, userDoc.id);
-        return PatientBookDto.fromJsonWithId(data, book.id).copyWith(
+
+        final patientBooking =
+            PatientBookDto.fromJsonWithId(data, book.id).copyWith(
           firstName: user.firstName,
           lastName: user.lastName,
           phoneNumber: user.phoneNumber,
         );
-      }),
-    );
+        patientBookings.add(patientBooking);
+      }
+      return patientBookings;
+    });
   }
 }

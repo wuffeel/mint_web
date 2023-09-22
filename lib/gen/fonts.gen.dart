@@ -13,6 +13,9 @@ class MintFontFamily {
   /// Font family: Inter
   static const String inter = 'Inter';
 
+  /// Font family: NotoColorEmoji
+  static const String notoColorEmoji = 'NotoColorEmoji';
+
   /// Font family: Poppins
   static const String poppins = 'Poppins';
 

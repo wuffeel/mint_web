@@ -22,17 +22,18 @@ class PatientsPaginatedDataTable extends StatefulWidget {
 
 class _PatientsPaginatedDataTableState
     extends State<PatientsPaginatedDataTable> {
-  bool _sortAscending = false;
-
-  /// Index of date column
-  int? _sortColumnIndex = 4;
+  bool _sortAscending = true;
+  int? _sortColumnIndex;
 
   void _sort<T>(
     Comparable<T> Function(PatientBook p) getField,
     int columnIndex,
     bool ascending,
   ) {
-    final sortEvent = PatientsSortRequested(getField, ascending: ascending);
+    final sortEvent = PatientsSortRequested(
+      getField: getField,
+      ascending: ascending,
+    );
     context.read<PatientsBloc>().add(sortEvent);
     setState(() {
       _sortColumnIndex = columnIndex;
@@ -40,8 +41,17 @@ class _PatientsPaginatedDataTableState
     });
   }
 
+  void _clearSort() {
+    context.read<PatientsBloc>().add(PatientsSortRequested<void>());
+    setState(() => _sortColumnIndex = null);
+  }
+
   void _onRefresh() {
     context.read<PatientsBloc>().add(PatientsRefreshRequested());
+    setState(() {
+      _sortColumnIndex = null;
+      _sortAscending = true;
+    });
   }
 
   @override
@@ -67,6 +77,11 @@ class _PatientsPaginatedDataTableState
                     onPressed: _onRefresh,
                     icon: const Icon(Icons.refresh),
                   ),
+                  if (_sortColumnIndex != null)
+                    TextButton(
+                      onPressed: _clearSort,
+                      child: Text(l10n.resetSorting),
+                    ),
                 ],
                 empty: const _NoConsultationsFound(),
                 renderEmptyRowsInTheEnd: false,
