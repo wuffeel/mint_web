@@ -53,21 +53,24 @@ class FirebaseBookingRepository implements BookingRepository {
       for (final book in snap.docs) {
         final data = book.data();
         final userId = data['userId'] as String?;
-        if (userId != null) {
-          final userCollection = firestore.collection(_userCollection);
-          final userDoc = await userCollection.doc(userId).get();
-          final userData = userDoc.data();
-          if (userData != null) {
-            final user = UserModelDto.fromJsonWithId(userData, userDoc.id);
-            final patientBooking =
-                PatientBookDto.fromJsonWithId(data, book.id).copyWith(
-              firstName: user.firstName,
-              lastName: user.lastName,
-              phoneNumber: user.phoneNumber,
-            );
-            patientBookings.add(patientBooking);
-          }
-        }
+
+        if (userId == null) continue;
+
+        final userCollection = firestore.collection(_userCollection);
+        final userDoc = await userCollection.doc(userId).get();
+        final userData = userDoc.data();
+
+        if (userData == null) continue;
+
+        final user = UserModelDto.fromJsonWithId(userData, userDoc.id);
+
+        final patientBooking =
+            PatientBookDto.fromJsonWithId(data, book.id).copyWith(
+          firstName: user.firstName,
+          lastName: user.lastName,
+          phoneNumber: user.phoneNumber,
+        );
+        patientBookings.add(patientBooking);
       }
       return patientBookings;
     });
