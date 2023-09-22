@@ -70,19 +70,12 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
           // limit: _paginationLimit,
         ),
         onData: (bookList) {
-          var books = [...bookList];
-          if (bookList.isNotEmpty) {
-            books = books
-              ..sort(
-                (a, b) => _compareBookingTimes(a.bookTime, b.bookTime),
-              );
-          }
-
           // if (bookList.isNotEmpty) {
           //   _lastPatientBookId = bookList.last.id;
           // }
           return PatientsFetchBookListSuccess(
-            bookList: books,
+            bookList: bookList
+              ..sort((a, b) => _compareBookingTimes(a.bookTime, b.bookTime)),
             hasReachedEnd: bookList.length < _paginationLimit,
           );
         },
