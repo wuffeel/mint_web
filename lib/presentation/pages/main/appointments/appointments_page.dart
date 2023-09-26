@@ -16,8 +16,7 @@ class AppointmentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          getIt<AppointmentsBloc>()..add(AppointmentsFetchBookListRequested()),
+      create: (context) => getIt<AppointmentsBloc>(),
       child: const _AppointmentsView(),
     );
   }

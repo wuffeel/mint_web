@@ -19,8 +19,7 @@ class PatientsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          getIt<PatientsBloc>()..add(PatientsFetchBookListRequested()),
+      create: (context) => getIt<PatientsBloc>(),
       child: const _PatientsView(),
     );
   }
