@@ -13,6 +13,7 @@ class PatientBookDto with _$PatientBookDto {
     @DateTimeConverter() required DateTime bookTime,
     required int durationMinutes,
     @DateTimeConverter() required DateTime endTime,
+    @Default('') String notes,
     String? phoneNumber,
     String? firstName,
     String? lastName,

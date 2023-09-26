@@ -20,6 +20,7 @@ mixin _$PatientBook {
   DateTime get bookTime => throw _privateConstructorUsedError;
   int get durationMinutes => throw _privateConstructorUsedError;
   DateTime get endTime => throw _privateConstructorUsedError;
+  String get notes => throw _privateConstructorUsedError;
   String? get phoneNumber => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
@@ -40,6 +41,7 @@ abstract class $PatientBookCopyWith<$Res> {
       DateTime bookTime,
       int durationMinutes,
       DateTime endTime,
+      String notes,
       String? phoneNumber,
       String? firstName,
       String? lastName});
@@ -62,6 +64,7 @@ class _$PatientBookCopyWithImpl<$Res, $Val extends PatientBook>
     Object? bookTime = null,
     Object? durationMinutes = null,
     Object? endTime = null,
+    Object? notes = null,
     Object? phoneNumber = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
@@ -83,6 +86,10 @@ class _$PatientBookCopyWithImpl<$Res, $Val extends PatientBook>
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      notes: null == notes
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String,
       phoneNumber: freezed == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
@@ -112,6 +119,7 @@ abstract class _$$_PatientBookCopyWith<$Res>
       DateTime bookTime,
       int durationMinutes,
       DateTime endTime,
+      String notes,
       String? phoneNumber,
       String? firstName,
       String? lastName});
@@ -132,6 +140,7 @@ class __$$_PatientBookCopyWithImpl<$Res>
     Object? bookTime = null,
     Object? durationMinutes = null,
     Object? endTime = null,
+    Object? notes = null,
     Object? phoneNumber = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
@@ -153,6 +162,10 @@ class __$$_PatientBookCopyWithImpl<$Res>
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      notes: null == notes
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String,
       phoneNumber: freezed == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
@@ -177,6 +190,7 @@ class _$_PatientBook with DiagnosticableTreeMixin implements _PatientBook {
       required this.bookTime,
       required this.durationMinutes,
       required this.endTime,
+      required this.notes,
       this.phoneNumber,
       this.firstName,
       this.lastName});
@@ -190,6 +204,8 @@ class _$_PatientBook with DiagnosticableTreeMixin implements _PatientBook {
   @override
   final DateTime endTime;
   @override
+  final String notes;
+  @override
   final String? phoneNumber;
   @override
   final String? firstName;
@@ -198,7 +214,7 @@ class _$_PatientBook with DiagnosticableTreeMixin implements _PatientBook {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PatientBook(id: $id, bookTime: $bookTime, durationMinutes: $durationMinutes, endTime: $endTime, phoneNumber: $phoneNumber, firstName: $firstName, lastName: $lastName)';
+    return 'PatientBook(id: $id, bookTime: $bookTime, durationMinutes: $durationMinutes, endTime: $endTime, notes: $notes, phoneNumber: $phoneNumber, firstName: $firstName, lastName: $lastName)';
   }
 
   @override
@@ -210,6 +226,7 @@ class _$_PatientBook with DiagnosticableTreeMixin implements _PatientBook {
       ..add(DiagnosticsProperty('bookTime', bookTime))
       ..add(DiagnosticsProperty('durationMinutes', durationMinutes))
       ..add(DiagnosticsProperty('endTime', endTime))
+      ..add(DiagnosticsProperty('notes', notes))
       ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
       ..add(DiagnosticsProperty('firstName', firstName))
       ..add(DiagnosticsProperty('lastName', lastName));
@@ -226,6 +243,7 @@ class _$_PatientBook with DiagnosticableTreeMixin implements _PatientBook {
             (identical(other.durationMinutes, durationMinutes) ||
                 other.durationMinutes == durationMinutes) &&
             (identical(other.endTime, endTime) || other.endTime == endTime) &&
+            (identical(other.notes, notes) || other.notes == notes) &&
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber) &&
             (identical(other.firstName, firstName) ||
@@ -236,7 +254,7 @@ class _$_PatientBook with DiagnosticableTreeMixin implements _PatientBook {
 
   @override
   int get hashCode => Object.hash(runtimeType, id, bookTime, durationMinutes,
-      endTime, phoneNumber, firstName, lastName);
+      endTime, notes, phoneNumber, firstName, lastName);
 
   @JsonKey(ignore: true)
   @override
@@ -251,6 +269,7 @@ abstract class _PatientBook implements PatientBook {
       required final DateTime bookTime,
       required final int durationMinutes,
       required final DateTime endTime,
+      required final String notes,
       final String? phoneNumber,
       final String? firstName,
       final String? lastName}) = _$_PatientBook;
@@ -263,6 +282,8 @@ abstract class _PatientBook implements PatientBook {
   int get durationMinutes;
   @override
   DateTime get endTime;
+  @override
+  String get notes;
   @override
   String? get phoneNumber;
   @override
