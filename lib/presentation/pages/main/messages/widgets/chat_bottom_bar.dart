@@ -107,7 +107,6 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
                 ),
               ),
               Offstage(
-                // TODO(wuffeel): switch on audio record
                 offstage: state is AudioRecordInProgress,
                 child: IconButton(
                   onPressed: _startRecord,
