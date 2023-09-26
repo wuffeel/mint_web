@@ -51,9 +51,13 @@ class FirebasePhoneAuthRepository implements PhoneAuthRepository {
     final userSnap =
         await userCollection.where('phoneNumber', isEqualTo: phoneNumber).get();
     if (userSnap.docs.isNotEmpty) {
-      final user = userSnap.docs.first;
-      final type = user.data()['type'];
-      if (type != UserType.specialist.name) throw AuthUserTypeException();
+      final userData = userSnap.docs.first.data();
+      final type = userData['type'] as String?;
+      if (type == null) {
+        return;
+      } else if (type != UserType.specialist.name) {
+        throw AuthUserTypeException();
+      }
     }
   }
 }
