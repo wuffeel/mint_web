@@ -93,5 +93,8 @@
   "yesterday": "Yesterday",
   "noChatWithPatientsYet": "No chat with patients yet",
   "voiceMessage": "Voice message",
-  "imageMessage": "Image"
+  "imageMessage": "Image",
+  "overview": "Overview",
+  "day": "Day",
+  "week": "Week"
 }

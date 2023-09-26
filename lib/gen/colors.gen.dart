@@ -13,6 +13,9 @@ import 'package:flutter/material.dart';
 class MintColors {
   MintColors._();
 
+  /// Color: #CCD4DE
+  static const Color appointmentsAppBarBorder = Color(0xFFCCD4DE);
+
   /// Color: #787E99
   static const Color bellGrey = Color(0xFF787E99);
 

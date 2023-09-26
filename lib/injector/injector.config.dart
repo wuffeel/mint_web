@@ -15,17 +15,17 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:mint_core/mint_assembly.dart' as _i17;
 import 'package:mint_core/mint_bloc.dart' as _i54;
-import 'package:mint_core/mint_core.dart' as _i21;
+import 'package:mint_core/mint_core.dart' as _i18;
 import 'package:mint_core/mint_module.dart' as _i3;
 import 'package:mint_web/assembly/entity/onboarding_specialist_from_onboarding.dart'
-    as _i20;
-import 'package:mint_web/assembly/entity/patient_book_from_dto.dart' as _i25;
-import 'package:mint_web/assembly/entity/specialist_model_from_onboarding_specialist.dart'
     as _i22;
+import 'package:mint_web/assembly/entity/patient_book_from_dto.dart' as _i26;
+import 'package:mint_web/assembly/entity/specialist_model_from_onboarding_specialist.dart'
+    as _i23;
 import 'package:mint_web/assembly/entity/user_model_from_onboarding_specialist.dart'
-    as _i26;
+    as _i20;
 import 'package:mint_web/data/model/patient_book_dto/patient_book_dto.dart'
-    as _i24;
+    as _i25;
 import 'package:mint_web/data/repository/abstract/audio_playback_repository.dart'
     as _i4;
 import 'package:mint_web/data/repository/abstract/audio_record_repository.dart'
@@ -47,10 +47,10 @@ import 'package:mint_web/data/repository/firebase/firebase_phone_auth_repository
 import 'package:mint_web/data/repository/firebase/firebase_specialist_repository.dart'
     as _i43;
 import 'package:mint_web/domain/controller/specialist_controller.dart' as _i41;
-import 'package:mint_web/domain/entity/onboarding/onboarding.dart' as _i19;
+import 'package:mint_web/domain/entity/onboarding/onboarding.dart' as _i21;
 import 'package:mint_web/domain/entity/onboarding_specialist/onboarding_specialist.dart'
-    as _i18;
-import 'package:mint_web/domain/entity/patient_book/patient_book.dart' as _i23;
+    as _i19;
+import 'package:mint_web/domain/entity/patient_book/patient_book.dart' as _i24;
 import 'package:mint_web/domain/service/abstract/audio_playback_service.dart'
     as _i6;
 import 'package:mint_web/domain/service/abstract/audio_record_service.dart'
@@ -103,6 +103,8 @@ import 'package:mint_web/domain/usecase/stop_recorder_use_case.dart' as _i50;
 import 'package:mint_web/domain/usecase/update_user_data_use_case.dart' as _i52;
 import 'package:mint_web/domain/usecase/verify_otp_use_case.dart' as _i55;
 import 'package:mint_web/domain/usecase/verify_phone_use_case.dart' as _i56;
+import 'package:mint_web/presentation/bloc/appointments/appointments_bloc.dart'
+    as _i72;
 import 'package:mint_web/presentation/bloc/audio_player/audio_player_bloc.dart'
     as _i59;
 import 'package:mint_web/presentation/bloc/audio_record/audio_record_bloc.dart'
@@ -151,13 +153,13 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i15.DisposePlayerUseCase(gh<_i6.AudioPlaybackService>()));
     gh.factory<_i16.DisposeRecorderUseCase>(
         () => _i16.DisposeRecorderUseCase(gh<_i10.AudioRecordService>()));
-    gh.factory<_i17.Factory<_i18.OnboardingSpecialist?, _i19.Onboarding>>(
-        () => _i20.OnboardingSpecialistFromOnboarding());
-    gh.factory<_i17.Factory<_i21.SpecialistModel, _i18.OnboardingSpecialist>>(
-        () => _i22.SpecialistModelFromOnboardingSpecialist());
-    gh.factory<_i17.Factory<_i23.PatientBook, _i24.PatientBookDto>>(
-        () => _i25.UserModelFromOnboardingSpecialist());
-    gh.factory<_i17.Factory<_i21.UserModel, _i18.OnboardingSpecialist>>(
+    gh.factory<_i17.Factory<_i18.UserModel, _i19.OnboardingSpecialist>>(
+        () => _i20.UserModelFromOnboardingSpecialist());
+    gh.factory<_i17.Factory<_i19.OnboardingSpecialist?, _i21.Onboarding>>(
+        () => _i22.OnboardingSpecialistFromOnboarding());
+    gh.factory<_i17.Factory<_i18.SpecialistModel, _i19.OnboardingSpecialist>>(
+        () => _i23.SpecialistModelFromOnboardingSpecialist());
+    gh.factory<_i17.Factory<_i24.PatientBook, _i25.PatientBookDto>>(
         () => _i26.UserModelFromOnboardingSpecialist());
     gh.factory<_i27.FetchChatRoomListUseCase>(
         () => _i27.FetchChatRoomListUseCase(gh<_i3.ChatService>()));
@@ -190,9 +192,9 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i44.SpecialistService>(() => _i45.FirebaseSpecialistService(
           gh<_i42.SpecialistRepository>(),
           gh<
-              _i17.Factory<_i46.Future<_i21.SpecialistModel>,
-                  _i21.SpecialistModelDto>>(),
-          gh<_i17.Factory<_i21.SpecialistModelDto, _i21.SpecialistModel>>(),
+              _i17.Factory<_i46.Future<_i18.SpecialistModel>,
+                  _i18.SpecialistModelDto>>(),
+          gh<_i17.Factory<_i18.SpecialistModelDto, _i18.SpecialistModel>>(),
         ));
     gh.factory<_i47.StartPlayerUseCase>(
         () => _i47.StartPlayerUseCase(gh<_i6.AudioPlaybackService>()));
@@ -207,7 +209,7 @@ extension GetItInjectableX on _i1.GetIt {
     gh.factory<_i52.UpdateUserDataUseCase>(
         () => _i52.UpdateUserDataUseCase(gh<_i3.UserService>()));
     gh.factory<_i53.UserBloc>(() => _i53.UserBloc(
-          gh<_i54.UserController<_i21.UserModel?>>(),
+          gh<_i54.UserController<_i18.UserModel?>>(),
           gh<_i28.FetchUserUseCase>(),
           gh<_i33.LogOutUseCase>(),
           gh<_i3.InitializeUserPresenceUseCase>(),
@@ -243,11 +245,11 @@ extension GetItInjectableX on _i1.GetIt {
         ));
     gh.factory<_i62.BookingService>(() => _i63.FirebaseBookingService(
           gh<_i12.BookingRepository>(),
-          gh<_i17.Factory<_i23.PatientBook, _i24.PatientBookDto>>(),
+          gh<_i17.Factory<_i24.PatientBook, _i25.PatientBookDto>>(),
         ));
     gh.factory<_i64.ChatRoomBloc>(() => _i64.ChatRoomBloc(
           gh<_i27.FetchChatRoomListUseCase>(),
-          gh<_i54.UserController<_i21.UserModel?>>(),
+          gh<_i54.UserController<_i18.UserModel?>>(),
         ));
     gh.factory<_i65.FetchPatientBookListUseCase>(
         () => _i65.FetchPatientBookListUseCase(gh<_i62.BookingService>()));
@@ -259,22 +261,27 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i68.OnboardingBloc(gh<_i67.FetchSpecializationsUseCase>()));
     gh.factory<_i69.PatientsBloc>(() => _i69.PatientsBloc(
           gh<_i65.FetchPatientBookListUseCase>(),
-          gh<_i54.UserController<_i21.UserModel?>>(),
+          gh<_i54.UserController<_i18.UserModel?>>(),
         ));
     gh.factory<_i70.SpecialistBloc>(() => _i70.SpecialistBloc(
           gh<_i57.AddSpecialistWithIdUseCase>(),
           gh<_i52.UpdateUserDataUseCase>(),
           gh<_i58.AddWorkInfoDataUseCase>(),
-          gh<_i17.Factory<_i18.OnboardingSpecialist?, _i19.Onboarding>>(),
-          gh<_i17.Factory<_i21.SpecialistModel, _i18.OnboardingSpecialist>>(),
-          gh<_i17.Factory<_i21.UserModel, _i18.OnboardingSpecialist>>(),
-          gh<_i54.UserController<_i21.UserModel?>>(),
+          gh<_i17.Factory<_i19.OnboardingSpecialist?, _i21.Onboarding>>(),
+          gh<_i17.Factory<_i18.SpecialistModel, _i19.OnboardingSpecialist>>(),
+          gh<_i17.Factory<_i18.UserModel, _i19.OnboardingSpecialist>>(),
+          gh<_i54.UserController<_i18.UserModel?>>(),
           gh<_i41.SpecialistController>(),
         ));
     gh.factory<_i71.SpecialistInfoBloc>(() => _i71.SpecialistInfoBloc(
           gh<_i66.FetchSpecialistDataUseCase>(),
           gh<_i41.SpecialistController>(),
-          gh<_i54.UserController<_i21.UserModel?>>(),
+          gh<_i54.UserController<_i18.UserModel?>>(),
+        ));
+    gh.factory<_i72.AppointmentsBloc>(() => _i72.AppointmentsBloc(
+          gh<_i65.FetchPatientBookListUseCase>(),
+          gh<_i54.UserController<_i18.UserModel?>>(),
+          gh<_i3.GetExcludedDaysByIdUseCase>(),
         ));
     return this;
   }

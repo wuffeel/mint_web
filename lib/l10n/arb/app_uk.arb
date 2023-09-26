@@ -93,5 +93,8 @@
   "yesterday": "Вчора",
   "noChatWithPatientsYet": "Немає чатів з пацієнтами",
   "voiceMessage": "Голосове повідомлення",
-  "imageMessage": "Зображення"
+  "imageMessage": "Зображення",
+  "overview": "Огляд",
+  "day": "День",
+  "week": "Тиждень"
 }
