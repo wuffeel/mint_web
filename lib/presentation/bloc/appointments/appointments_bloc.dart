@@ -104,7 +104,12 @@ class AppointmentsBloc extends Bloc<AppointmentsEvent, AppointmentsState> {
       );
     } catch (error) {
       debugPrint('AppointmentsFetchBlackoutDatesFailure: $error');
-      emit(state.copyWith(isBlackoutDatesFailure: true));
+      emit(
+        state.copyWith(
+          isBlackoutDatesLoading: false,
+          isBlackoutDatesFailure: true,
+        ),
+      );
     }
   }
 
