@@ -10,6 +10,7 @@ import '../../../../../gen/colors.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../../theme/mint_text_styles.dart';
 import '../../../../bloc/patients/patients_bloc.dart';
+import '../../../../widgets/error_try_again.dart';
 import 'consultation_status_widget.dart';
 
 class PatientsPaginatedDataTable extends StatefulWidget {
@@ -47,11 +48,7 @@ class _PatientsPaginatedDataTableState
   }
 
   void _onRefresh() {
-    context.read<PatientsBloc>().add(PatientsRefreshRequested());
-    setState(() {
-      _sortColumnIndex = null;
-      _sortAscending = true;
-    });
+    context.read<PatientsBloc>().add(PatientsFetchBookListRequested());
   }
 
   @override
@@ -60,8 +57,8 @@ class _PatientsPaginatedDataTableState
     return SelectionArea(
       child: BlocBuilder<PatientsBloc, PatientsState>(
         builder: (context, state) {
-          if (state is PatientsFetchBookListLoading) {
-            return const Center(child: CircularProgressIndicator());
+          if (state is PatientsFetchBookListFailure) {
+            return Center(child: ErrorTryAgain(onRefresh: _onRefresh));
           }
           if (state is PatientsBookListLoadSuccess) {
             return Theme(
@@ -71,62 +68,63 @@ class _PatientsPaginatedDataTableState
                   thumbVisibility: MaterialStateProperty.all(true),
                 ),
               ),
-              child: PaginatedDataTable2(
-                actions: [
-                  IconButton(
-                    onPressed: _onRefresh,
-                    icon: const Icon(Icons.refresh),
+              child: _PatientsListLoadingWrapper(
+                state: state,
+                child: PaginatedDataTable2(
+                  actions: <Widget>[
+                    if (_sortColumnIndex != null)
+                      TextButton(
+                        onPressed: _clearSort,
+                        child: Text(l10n.resetSorting),
+                      ),
+                  ],
+                  empty: const _NoConsultationsFound(),
+                  renderEmptyRowsInTheEnd: false,
+                  headingTextStyle: MintTextStyles.medium16.copyWith(
+                    height: 1.3,
                   ),
-                  if (_sortColumnIndex != null)
-                    TextButton(
-                      onPressed: _clearSort,
-                      child: Text(l10n.resetSorting),
+                  header: const Text(''),
+                  dataRowHeight: 75,
+                  dataTextStyle: MintTextStyles.figure.copyWith(
+                    color: MintColors.dark,
+                  ),
+                  minWidth: 900,
+                  rowsPerPage: state.rowsLimit,
+                  columns: <DataColumn>[
+                    const DataColumn2(
+                      label: Center(child: Text('#')),
+                      numeric: true,
+                      size: ColumnSize.S,
+                      fixedWidth: 120,
                     ),
-                ],
-                empty: const _NoConsultationsFound(),
-                renderEmptyRowsInTheEnd: false,
-                headingTextStyle: MintTextStyles.medium16.copyWith(height: 1.3),
-                header: const Text(''),
-                dataRowHeight: 75,
-                dataTextStyle: MintTextStyles.figure.copyWith(
-                  color: MintColors.dark,
-                ),
-                minWidth: 900,
-                rowsPerPage: state.rowsLimit,
-                columns: <DataColumn>[
-                  const DataColumn2(
-                    label: Center(child: Text('#')),
-                    numeric: true,
-                    size: ColumnSize.S,
-                    fixedWidth: 120,
-                  ),
-                  DataColumn2(label: Text(l10n.fullName), size: ColumnSize.L),
-                  DataColumn2(
-                    label: Text(l10n.contactPhone),
-                    size: ColumnSize.L,
-                  ),
-                  DataColumn2(
-                    label: Text(l10n.time),
-                  ),
-                  DataColumn2(
-                    label: Text(l10n.date),
-                    onSort: (columnIndex, ascending) => _sort(
-                      (p) => p.bookTime,
-                      columnIndex,
-                      ascending,
+                    DataColumn2(label: Text(l10n.fullName), size: ColumnSize.L),
+                    DataColumn2(
+                      label: Text(l10n.contactPhone),
+                      size: ColumnSize.L,
                     ),
+                    DataColumn2(
+                      label: Text(l10n.time),
+                    ),
+                    DataColumn2(
+                      label: Text(l10n.date),
+                      onSort: (columnIndex, ascending) => _sort(
+                        (p) => p.bookTime,
+                        columnIndex,
+                        ascending,
+                      ),
+                    ),
+                    DataColumn2(
+                      label: Center(child: Text(l10n.status)),
+                    ),
+                  ],
+                  sortAscending: _sortAscending,
+                  sortColumnIndex: _sortColumnIndex,
+                  source: _BookingDataTableSource(
+                    context,
+                    state.filter.isEmpty
+                        ? state.bookList
+                        : state.filteredBookList,
                   ),
-                  DataColumn2(
-                    label: Center(child: Text(l10n.status)),
-                  ),
-                ],
-                sortAscending: _sortAscending,
-                sortColumnIndex: _sortColumnIndex,
-                source: _BookingDataTableSource(
-                  context,
-                  state.filter.isEmpty
-                      ? state.bookList
-                      : state.filteredBookList,
                 ),
               ),
             );
@@ -218,5 +216,30 @@ class _NoConsultationsFound extends StatelessWidget {
         style: MintTextStyles.title,
       ),
     );
+  }
+}
+
+class _PatientsListLoadingWrapper extends StatelessWidget {
+  const _PatientsListLoadingWrapper({required this.state, required this.child});
+
+  final PatientsState state;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final state = this.state;
+    return state is PatientsFetchBookListLoading
+        ? Stack(
+            children: <Widget>[
+              child,
+              Positioned.fill(
+                child: ColoredBox(
+                  color: Colors.black.withOpacity(0.08),
+                  child: const Center(child: CircularProgressIndicator()),
+                ),
+              ),
+            ],
+          )
+        : child;
   }
 }

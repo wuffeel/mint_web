@@ -7,8 +7,6 @@ class PatientsInitializeSubscriptionRequested extends PatientsEvent {}
 
 class PatientsFetchBookListRequested extends PatientsEvent {}
 
-class PatientsRefreshRequested extends PatientsEvent {}
-
 class PatientsSortRequested<T> extends PatientsEvent {
   PatientsSortRequested({this.getField, this.ascending = true});
 

@@ -5,8 +5,6 @@ class PatientsState {
   int get rowsLimit => 8;
 }
 
-class PatientsInitial extends PatientsState {}
-
 class PatientsBookListLoadSuccess extends PatientsState {
   PatientsBookListLoadSuccess({
     this.bookList = const [],

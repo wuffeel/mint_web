@@ -24,11 +24,10 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
     this._fetchPatientBookListUseCase,
     this._userController,
     this._bookingController,
-  ) : super(PatientsInitial()) {
+  ) : super(PatientsFetchBookListLoading()) {
     _subscribeToUserChange();
     on<PatientsInitializeSubscriptionRequested>(_onInitializeSubscription);
     on<PatientsFetchBookListRequested>(_onFetchBookList);
-    on<PatientsRefreshRequested>(_onRefresh);
     on<PatientsSortRequested<dynamic>>(_onSort);
     on<PatientsFilterChanged>(_onFilter);
   }
@@ -103,14 +102,6 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
       debugPrint('PatientsFetchBookListFailure: $error');
       emit(PatientsFetchBookListFailure());
     }
-  }
-
-  void _onRefresh(
-    PatientsRefreshRequested event,
-    Emitter<PatientsState> emit,
-  ) {
-    emit(PatientsBookListLoadSuccess());
-    add(PatientsFetchBookListRequested());
   }
 
   void _onSort(
