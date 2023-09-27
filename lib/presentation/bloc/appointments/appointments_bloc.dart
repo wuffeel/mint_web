@@ -22,7 +22,7 @@ class AppointmentsBloc extends Bloc<AppointmentsEvent, AppointmentsState> {
     this._userController,
     this._bookingController,
     this._getExcludedDaysByIdUseCase,
-  ) : super(const AppointmentsState()) {
+  ) : super(const AppointmentsState(isAppointmentsLoading: true)) {
     _subscribeToUserChange();
     on<AppointmentsInitializeSubscriptionRequested>(_onInitializeSubscription);
     on<AppointmentsFetchBlackoutDatesRequested>(_onFetchBlackoutDates);
