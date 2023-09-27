@@ -212,12 +212,7 @@ class _MessagesBlock extends StatelessWidget {
                 lastMessage: (room.lastMessages?.isNotEmpty ?? false)
                     ? room.lastMessages?.last
                     : null,
-                user: UserModel(
-                  id: user.id,
-                  firstName: user.firstName,
-                  lastName: user.lastName,
-                  photoUrl: user.imageUrl,
-                ),
+                user: user,
                 onTap: !isSelected
                     ? () => _initializeChat(context, roomList[index])
                     : null,

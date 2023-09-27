@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart';
-import 'package:mint_core/mint_core.dart';
 
 import '../../../../../gen/colors.gen.dart';
 import '../../../../../l10n/l10n.dart';
@@ -20,7 +19,7 @@ class MessageTile extends StatelessWidget {
 
   final types.Message? lastMessage;
   final bool isSelected;
-  final UserModel user;
+  final types.User user;
   final VoidCallback? onTap;
   final int unreadCount;
 
@@ -40,6 +39,10 @@ class MessageTile extends StatelessWidget {
     }
     return '';
   }
+
+  String? get _fullName => user.firstName != null && user.lastName != null
+      ? '${user.firstName} ${user.lastName}'
+      : null;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +65,7 @@ class MessageTile extends StatelessWidget {
             MintCircleAvatar(
               radius: 28,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              photoUrl: user.photoUrl,
+              photoUrl: user.imageUrl,
             ),
             const SizedBox(width: 14),
             Expanded(
@@ -73,7 +76,7 @@ class MessageTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      user.fullName ?? l10n.patient,
+                      _fullName ?? l10n.patient,
                       maxLines: 2,
                       style: MintTextStyles.semiBold16,
                     ),
