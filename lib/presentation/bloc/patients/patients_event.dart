@@ -3,6 +3,8 @@ part of 'patients_bloc.dart';
 @immutable
 abstract class PatientsEvent {}
 
+class PatientsInitializeSubscriptionRequested extends PatientsEvent {}
+
 class PatientsFetchBookListRequested extends PatientsEvent {}
 
 class PatientsRefreshRequested extends PatientsEvent {}

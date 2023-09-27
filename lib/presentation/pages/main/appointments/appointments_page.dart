@@ -6,6 +6,7 @@ import 'package:mint_core/mint_module.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../../bloc/appointments/appointments_bloc.dart';
+import '../../../widgets/error_try_again.dart';
 import 'widgets/appointments_calendar.dart';
 import 'widgets/appointments_view_bar.dart';
 
@@ -16,7 +17,8 @@ class AppointmentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<AppointmentsBloc>(),
+      create: (context) => getIt<AppointmentsBloc>()
+        ..add(AppointmentsInitializeSubscriptionRequested()),
       child: const _AppointmentsView(),
     );
   }
@@ -78,6 +80,10 @@ class _AppointmentsViewState extends State<_AppointmentsView> {
     setState(() => _focusedDate = date);
   }
 
+  void _onTryAgain() {
+    context.read<AppointmentsBloc>().add(AppointmentsTryAgainRequested());
+  }
+
   @override
   void dispose() {
     _calendarController
@@ -94,19 +100,20 @@ class _AppointmentsViewState extends State<_AppointmentsView> {
           widthFactor: 0.83,
           child: BlocBuilder<AppointmentsBloc, AppointmentsState>(
             builder: (context, state) {
-              if (state is AppointmentsLoading) {
-                return const Center(child: CircularProgressIndicator());
+              if (state.isAppointmentsFailure || state.isBlackoutDatesFailure) {
+                return Center(child: ErrorTryAgain(onRefresh: _onTryAgain));
               }
-              if (state is AppointmentsFetchBookListSuccess) {
-                return Column(
-                  children: <Widget>[
-                    const SizedBox(height: 30),
-                    AppointmentsViewBar(
-                      view: _calendarController.view,
-                      onViewChange: (view) => _calendarController.view = view,
-                    ),
-                    const SizedBox(height: 24),
-                    Expanded(
+              return Column(
+                children: <Widget>[
+                  const SizedBox(height: 30),
+                  AppointmentsViewBar(
+                    view: _calendarController.view,
+                    onViewChange: (view) => _calendarController.view = view,
+                  ),
+                  const SizedBox(height: 24),
+                  Expanded(
+                    child: _BlackoutDatesLoadingWrapper(
+                      state: state,
                       child: AppointmentsCalendar(
                         controller: _calendarController,
                         bookingList: state.bookingList,
@@ -115,15 +122,43 @@ class _AppointmentsViewState extends State<_AppointmentsView> {
                         onFocusedDateChange: _onFocusedDateChange,
                       ),
                     ),
-                    const SizedBox(height: 50),
-                  ],
-                );
-              }
-              return const SizedBox.shrink();
+                  ),
+                  const SizedBox(height: 50),
+                ],
+              );
             },
           ),
         ),
       ),
+    );
+  }
+}
+
+class _BlackoutDatesLoadingWrapper extends StatelessWidget {
+  const _BlackoutDatesLoadingWrapper({
+    required this.state,
+    required this.child,
+  });
+
+  final AppointmentsState state;
+  final Widget child;
+
+  static const double _appointmentsHeaderHeight = 60;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        child,
+        if (state.isBlackoutDatesLoading || state.isAppointmentsLoading)
+          Positioned.fill(
+            top: _appointmentsHeaderHeight,
+            child: ColoredBox(
+              color: Colors.black.withOpacity(0.08),
+              child: const Center(child: CircularProgressIndicator()),
+            ),
+          ),
+      ],
     );
   }
 }
