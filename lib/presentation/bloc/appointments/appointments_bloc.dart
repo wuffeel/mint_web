@@ -47,7 +47,7 @@ class AppointmentsBloc extends Bloc<AppointmentsEvent, AppointmentsState> {
       if (!state.isBlackoutDatesFetchTriggered) {
         add(AppointmentsFetchBlackoutDatesRequested());
       }
-      if (!_bookingController.hasValue) {
+      if (!_bookingController.hasValue || !_bookingController.hasListener) {
         add(AppointmentsFetchBookListRequested());
       }
     });

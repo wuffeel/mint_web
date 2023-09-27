@@ -52,7 +52,7 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
     _userSubscription = _userController.user.listen((user) {
       _currentUser = user;
 
-      if (!_bookingController.hasValue) {
+      if (!_bookingController.hasValue || !_bookingController.hasListener) {
         add(PatientsFetchBookListRequested());
       }
     });

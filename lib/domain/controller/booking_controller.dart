@@ -13,6 +13,8 @@ class BookingController {
 
   bool get hasValue => _bookingController.hasValue;
 
+  bool get hasListener => _bookingController.hasListener;
+
   void addToBookingStream(List<PatientBook> booking) =>
       _bookingController.add(booking);
 }
