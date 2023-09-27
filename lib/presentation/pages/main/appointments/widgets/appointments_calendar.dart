@@ -45,13 +45,15 @@ class AppointmentsCalendar extends StatelessWidget {
   /// view property accordingly.
   void _onCalendarTap(CalendarTapDetails details) {
     final view = controller.view;
-    final isAppointmentTap =
-        details.targetElement == CalendarElement.appointment;
+    final targetElement = details.targetElement;
+
+    final isCalendarCell = targetElement == CalendarElement.calendarCell;
+    final isAppointmentTap = targetElement == CalendarElement.appointment;
 
     final date = details.date;
     if (date != null) onFocusedDateChange(date);
 
-    if (view == CalendarView.month) {
+    if (view == CalendarView.month && isCalendarCell) {
       controller.view = CalendarView.day;
       if (date != null) _setControllerDate(date);
     } else if (view != CalendarView.schedule && isAppointmentTap) {
@@ -86,50 +88,58 @@ class AppointmentsCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
-    return SfCalendar(
-      controller: controller,
-      dataSource: _AppointmentDataSource(_bookingToAppointmentList(context)),
-      appointmentBuilder: (_, details) => AppointmentCard(
-        details: details,
-        isFocused: _isFocusedAppointment(details),
-      ),
-      blackoutDates: blackoutDates,
-      // Monday
-      firstDayOfWeek: 1,
-      headerStyle: const CalendarHeaderStyle(
-        textAlign: TextAlign.center,
-        textStyle: TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.w500,
+    return DecoratedBox(
+      decoration: const BoxDecoration(color: Colors.white),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: SfCalendar(
+          controller: controller,
+          dataSource: _AppointmentDataSource(
+            _bookingToAppointmentList(context),
+          ),
+          appointmentBuilder: (_, details) => AppointmentCard(
+            details: details,
+            isFocused: _isFocusedAppointment(details),
+          ),
+          blackoutDates: blackoutDates,
+          // Monday
+          firstDayOfWeek: 1,
+          headerStyle: const CalendarHeaderStyle(
+            textAlign: TextAlign.center,
+            textStyle: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          onTap: _onCalendarTap,
+          maxDate: DateTime(now.year, now.month, now.day + 31),
+          minDate: now,
+          monthViewSettings: const MonthViewSettings(
+            appointmentDisplayCount: 20,
+            dayFormat: 'EEEE',
+            monthCellStyle: MonthCellStyle(
+              leadingDatesTextStyle: TextStyle(fontSize: 17),
+              textStyle: TextStyle(fontSize: 17),
+              trailingDatesTextStyle: TextStyle(fontSize: 17),
+            ),
+          ),
+          scheduleViewSettings: const ScheduleViewSettings(
+            appointmentItemHeight: 70,
+            hideEmptyScheduleWeek: true,
+          ),
+          showNavigationArrow: true,
+          todayTextStyle: const TextStyle(fontSize: 17),
+          viewHeaderStyle: ViewHeaderStyle(
+            dayTextStyle: MintTextStyles.gilroy.copyWith(
+              color: MintColors.bellGrey,
+              fontSize: 13.5,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          viewHeaderHeight: 60,
+          viewNavigationMode: ViewNavigationMode.none,
         ),
       ),
-      onTap: _onCalendarTap,
-      maxDate: DateTime(now.year, now.month, now.day + 31),
-      minDate: now,
-      monthViewSettings: const MonthViewSettings(
-        appointmentDisplayCount: 20,
-        dayFormat: 'EEEE',
-        monthCellStyle: MonthCellStyle(
-          leadingDatesTextStyle: TextStyle(fontSize: 17),
-          textStyle: TextStyle(fontSize: 17),
-          trailingDatesTextStyle: TextStyle(fontSize: 17),
-        ),
-      ),
-      scheduleViewSettings: const ScheduleViewSettings(
-        appointmentItemHeight: 70,
-        hideEmptyScheduleWeek: true,
-      ),
-      showNavigationArrow: true,
-      todayTextStyle: const TextStyle(fontSize: 17),
-      viewHeaderStyle: ViewHeaderStyle(
-        dayTextStyle: MintTextStyles.gilroy.copyWith(
-          color: MintColors.bellGrey,
-          fontSize: 13.5,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-      viewHeaderHeight: 60,
-      viewNavigationMode: ViewNavigationMode.none,
     );
   }
 }
