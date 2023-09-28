@@ -5,9 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as ui;
 import 'package:mint_core/mint_bloc.dart';
+import 'package:mint_core/mint_utils.dart';
 
 import '../../../../../l10n/l10n.dart';
-import '../../../../../utils/chat_utils.dart';
+import '../../../../../theme/mint_text_styles.dart';
 import 'audio_message_widget.dart';
 import 'chat_bottom_bar.dart';
 import 'chat_date_header.dart';
@@ -111,14 +112,20 @@ class _ChatWidgetState extends State<ChatWidget> {
   /// Shows pop-up menu on [_tapPosition] with 'Edit' and 'Delete' actions
   void _showMessageActionsMenu(BuildContext context, types.Message message) {
     if (_isSender(message.author.id)) {
+      final l10n = context.l10n;
       return ChatUtils.showMessageActionsMenu(
         context,
         message,
         _tapPosition,
-        onDelete: (message) {
-          context.read<ChatBloc>().add(ChatDeleteMessageRequested(message));
-          context.router.pop();
-        },
+        items: <PopupMenuEntry<void>>[
+          PopupMenuItem(
+            onTap: () {
+              context.read<ChatBloc>().add(ChatDeleteMessageRequested(message));
+              context.router.pop();
+            },
+            child: Text(l10n.delete, style: MintTextStyles.headline1),
+          ),
+        ],
       );
     }
   }

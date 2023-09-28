@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:intl/intl.dart';
 import 'package:mint_core/mint_utils.dart';
 
 import '../../../../../gen/colors.gen.dart';
@@ -41,22 +40,6 @@ class MessageTile extends StatelessWidget {
       return l10n.voiceMessage;
     }
     return '';
-  }
-
-  String _getUpdatedAtDateTime(BuildContext context, int updatedAt) {
-    final updatedDate = DateTime.fromMillisecondsSinceEpoch(updatedAt);
-    final now = DateTime.now();
-    final isToday = DateTimeUtils.isSameDay(now, updatedDate);
-    final daysDifference = now.difference(updatedDate).inDays;
-    final locale = context.l10n.localeName;
-
-    if (isToday) {
-      return DateFormat.Hm(locale).format(updatedDate);
-    } else if (daysDifference < 7) {
-      return DateFormat.E(locale).format(updatedDate);
-    } else {
-      return DateFormat.yMd(locale).format(updatedDate);
-    }
   }
 
   String? get _fullName => user.firstName != null && user.lastName != null
@@ -121,7 +104,10 @@ class MessageTile extends StatelessWidget {
                 children: <Widget>[
                   if (lastDate != null)
                     Text(
-                      _getUpdatedAtDateTime(context, lastDate),
+                      ChatUtils.chatRoomLastDateToString(
+                        lastDate,
+                        locale: l10n.localeName,
+                      ),
                       style: MintTextStyles.regular14,
                     ),
                   if (unreadCount != 0)
