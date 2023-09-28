@@ -215,6 +215,7 @@ class _MessagesBlock extends StatelessWidget {
                     ? () => _initializeChat(context, roomList[index])
                     : null,
                 unreadCount: _getUnreadCount(state, user.id),
+                roomLastDate: room.updatedAt ?? room.createdAt,
               );
             },
           );
