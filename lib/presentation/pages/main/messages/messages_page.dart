@@ -11,7 +11,6 @@ import '../../../../theme/mint_text_styles.dart';
 import '../../../bloc/audio_player/audio_player_bloc.dart';
 import '../../../bloc/audio_record/audio_record_bloc.dart';
 import '../../../bloc/chat_presence/chat_presence_bloc.dart';
-import '../../../bloc/unread_messages/unread_messages_bloc.dart';
 import 'widgets/chat_app_bar.dart';
 import 'widgets/chat_widget.dart';
 import 'widgets/message_tile.dart';
