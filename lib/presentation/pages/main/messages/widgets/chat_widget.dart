@@ -88,12 +88,11 @@ class _ChatWidgetState extends State<ChatWidget> {
   /// Used to handle file open attached to [message] with [types.FileMessage]
   /// type
   void _handleMessageTap(BuildContext _, types.Message message) {
-    final shouldOpen = message is types.FileMessage;
     if (message is types.FileMessage) {
       return context.read<ChatBloc>().add(
             ChatFileLoadRequested(
               message,
-              shouldOpen: shouldOpen,
+              shouldOpen: false,
             ),
           );
     }
