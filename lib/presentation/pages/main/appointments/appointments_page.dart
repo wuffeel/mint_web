@@ -94,40 +94,38 @@ class _AppointmentsViewState extends State<_AppointmentsView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: FractionallySizedBox(
-          widthFactor: 0.83,
-          child: BlocBuilder<AppointmentsBloc, AppointmentsState>(
-            builder: (context, state) {
-              if (state.isAppointmentsFailure || state.isBlackoutDatesFailure) {
-                return Center(child: ErrorTryAgain(onRefresh: _onTryAgain));
-              }
-              return Column(
-                children: <Widget>[
-                  const SizedBox(height: 30),
-                  AppointmentsViewBar(
-                    view: _calendarController.view,
-                    onViewChange: (view) => _calendarController.view = view,
-                  ),
-                  const SizedBox(height: 24),
-                  Expanded(
-                    child: _BlackoutDatesLoadingWrapper(
-                      state: state,
-                      child: AppointmentsCalendar(
-                        controller: _calendarController,
-                        bookingList: state.bookingList,
-                        blackoutDates: state.blackoutDates,
-                        focusedDate: _focusedDate,
-                        onFocusedDateChange: _onFocusedDateChange,
-                      ),
+    return Center(
+      child: FractionallySizedBox(
+        widthFactor: 0.83,
+        child: BlocBuilder<AppointmentsBloc, AppointmentsState>(
+          builder: (context, state) {
+            if (state.isAppointmentsFailure || state.isBlackoutDatesFailure) {
+              return Center(child: ErrorTryAgain(onRefresh: _onTryAgain));
+            }
+            return Column(
+              children: <Widget>[
+                const SizedBox(height: 30),
+                AppointmentsViewBar(
+                  view: _calendarController.view,
+                  onViewChange: (view) => _calendarController.view = view,
+                ),
+                const SizedBox(height: 24),
+                Expanded(
+                  child: _BlackoutDatesLoadingWrapper(
+                    state: state,
+                    child: AppointmentsCalendar(
+                      controller: _calendarController,
+                      bookingList: state.bookingList,
+                      blackoutDates: state.blackoutDates,
+                      focusedDate: _focusedDate,
+                      onFocusedDateChange: _onFocusedDateChange,
                     ),
                   ),
-                  const SizedBox(height: 50),
-                ],
-              );
-            },
-          ),
+                ),
+                const SizedBox(height: 50),
+              ],
+            );
+          },
         ),
       ),
     );

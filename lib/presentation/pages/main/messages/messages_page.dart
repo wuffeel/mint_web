@@ -63,74 +63,72 @@ class _MessagesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: FractionallySizedBox(
-          widthFactor: 0.8,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 33,
-                  child: BlocBuilder<ChatRoomBloc, ChatRoomState>(
-                    builder: (context, state) {
-                      if (state is ChatRoomListLoading) {
-                        return const _MessagesBlockContainer(
-                          child: Center(child: CircularProgressIndicator()),
+    return Center(
+      child: FractionallySizedBox(
+        widthFactor: 0.8,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 33,
+                child: BlocBuilder<ChatRoomBloc, ChatRoomState>(
+                  builder: (context, state) {
+                    if (state is ChatRoomListLoading) {
+                      return const _MessagesBlockContainer(
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+                    if (state is ChatRoomListFetchSuccess) {
+                      if (state.roomList.isEmpty) {
+                        return _MessagesBlockContainer(
+                          child: Center(
+                            // TODO(wuffeel): add localization
+                            child: Text(context.l10n.noChatWithPatientsYet),
+                          ),
                         );
                       }
-                      if (state is ChatRoomListFetchSuccess) {
-                        if (state.roomList.isEmpty) {
-                          return _MessagesBlockContainer(
-                            child: Center(
-                              // TODO(wuffeel): add localization
-                              child: Text(context.l10n.noChatWithPatientsYet),
-                            ),
+                      return BlocBuilder<ChatBloc, ChatState>(
+                        builder: (context, chatState) {
+                          return _MessagesBlock(
+                            roomList: state.roomList,
+                            senderId: state.senderId,
+                            selectedRoom:
+                                chatState is ChatFetchMessagesSuccess
+                                    ? chatState.room
+                                    : null,
                           );
-                        }
-                        return BlocBuilder<ChatBloc, ChatState>(
-                          builder: (context, chatState) {
-                            return _MessagesBlock(
-                              roomList: state.roomList,
-                              senderId: state.senderId,
-                              selectedRoom:
-                                  chatState is ChatFetchMessagesSuccess
-                                      ? chatState.room
-                                      : null,
-                            );
-                          },
-                        );
-                      }
-                      return const SizedBox.expand(
-                        child: _MessagesBlockContainer(),
+                        },
                       );
-                    },
-                  ),
+                    }
+                    return const SizedBox.expand(
+                      child: _MessagesBlockContainer(),
+                    );
+                  },
                 ),
-                Expanded(
-                  flex: 66,
-                  child: BlocBuilder<ChatBloc, ChatState>(
-                    builder: (context, state) {
-                      if (state is ChatLoading) {
-                        return const _ChatBlockContainer(
-                          child: Center(child: CircularProgressIndicator()),
-                        );
-                      }
-                      if (state is ChatFetchMessagesSuccess) {
-                        return _ChatBlock(
-                          room: state.room,
-                          senderId: state.senderId,
-                        );
-                      }
-                      return const SizedBox.expand(
-                        child: _ChatBlockContainer(),
+              ),
+              Expanded(
+                flex: 66,
+                child: BlocBuilder<ChatBloc, ChatState>(
+                  builder: (context, state) {
+                    if (state is ChatLoading) {
+                      return const _ChatBlockContainer(
+                        child: Center(child: CircularProgressIndicator()),
                       );
-                    },
-                  ),
+                    }
+                    if (state is ChatFetchMessagesSuccess) {
+                      return _ChatBlock(
+                        room: state.room,
+                        senderId: state.senderId,
+                      );
+                    }
+                    return const SizedBox.expand(
+                      child: _ChatBlockContainer(),
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
