@@ -31,18 +31,20 @@ class _PatientsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: FractionallySizedBox(
-        widthFactor: 0.83,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            SizedBox(height: 36),
-            _PatientsToolbar(),
-            SizedBox(height: 16),
-            Flexible(child: PatientsPaginatedDataTable()),
-            SizedBox(height: 65),
-          ],
+    return const SelectionArea(
+      child: Center(
+        child: FractionallySizedBox(
+          widthFactor: 0.83,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              SizedBox(height: 36),
+              _PatientsToolbar(),
+              SizedBox(height: 16),
+              Flexible(child: PatientsPaginatedDataTable()),
+              SizedBox(height: 65),
+            ],
+          ),
         ),
       ),
     );

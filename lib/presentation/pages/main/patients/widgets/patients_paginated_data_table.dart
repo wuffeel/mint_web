@@ -54,84 +54,82 @@ class _PatientsPaginatedDataTableState
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return SelectionArea(
-      child: BlocBuilder<PatientsBloc, PatientsState>(
-        builder: (context, state) {
-          if (state is PatientsFetchBookListFailure) {
-            return Center(child: ErrorTryAgain(onRefresh: _onRefresh));
-          }
-          if (state is PatientsBookListLoadSuccess) {
-            return Theme(
-              data: ThemeData(
-                scrollbarTheme: ScrollbarThemeData(
-                  thickness: MaterialStateProperty.all(5),
-                  thumbVisibility: MaterialStateProperty.all(true),
+    return BlocBuilder<PatientsBloc, PatientsState>(
+      builder: (context, state) {
+        if (state is PatientsFetchBookListFailure) {
+          return Center(child: ErrorTryAgain(onRefresh: _onRefresh));
+        }
+        if (state is PatientsBookListLoadSuccess) {
+          return Theme(
+            data: ThemeData(
+              scrollbarTheme: ScrollbarThemeData(
+                thickness: MaterialStateProperty.all(5),
+                thumbVisibility: MaterialStateProperty.all(true),
+              ),
+            ),
+            child: _PatientsListLoadingWrapper(
+              state: state,
+              child: PaginatedDataTable2(
+                actions: <Widget>[
+                  if (_sortColumnIndex != null)
+                    TextButton(
+                      onPressed: _clearSort,
+                      child: Text(l10n.resetSorting),
+                    ),
+                ],
+                empty: const _NoConsultationsFound(),
+                renderEmptyRowsInTheEnd: false,
+                headingTextStyle: MintTextStyles.medium16.copyWith(
+                  height: 1.3,
+                ),
+                header: const Text(''),
+                dataRowHeight: 75,
+                dataTextStyle: MintTextStyles.figure.copyWith(
+                  color: MintColors.dark,
+                ),
+                minWidth: 900,
+                rowsPerPage: state.rowsLimit,
+                columns: <DataColumn>[
+                  const DataColumn2(
+                    label: Center(child: Text('#')),
+                    numeric: true,
+                    size: ColumnSize.S,
+                    fixedWidth: 120,
+                  ),
+                  DataColumn2(label: Text(l10n.fullName), size: ColumnSize.L),
+                  DataColumn2(
+                    label: Text(l10n.contactPhone),
+                    size: ColumnSize.L,
+                  ),
+                  DataColumn2(
+                    label: Text(l10n.time),
+                  ),
+                  DataColumn2(
+                    label: Text(l10n.date),
+                    onSort: (columnIndex, ascending) => _sort(
+                      (p) => p.bookTime,
+                      columnIndex,
+                      ascending,
+                    ),
+                  ),
+                  DataColumn2(
+                    label: Center(child: Text(l10n.status)),
+                  ),
+                ],
+                sortAscending: _sortAscending,
+                sortColumnIndex: _sortColumnIndex,
+                source: _BookingDataTableSource(
+                  context,
+                  state.filter.isEmpty
+                      ? state.bookList
+                      : state.filteredBookList,
                 ),
               ),
-              child: _PatientsListLoadingWrapper(
-                state: state,
-                child: PaginatedDataTable2(
-                  actions: <Widget>[
-                    if (_sortColumnIndex != null)
-                      TextButton(
-                        onPressed: _clearSort,
-                        child: Text(l10n.resetSorting),
-                      ),
-                  ],
-                  empty: const _NoConsultationsFound(),
-                  renderEmptyRowsInTheEnd: false,
-                  headingTextStyle: MintTextStyles.medium16.copyWith(
-                    height: 1.3,
-                  ),
-                  header: const Text(''),
-                  dataRowHeight: 75,
-                  dataTextStyle: MintTextStyles.figure.copyWith(
-                    color: MintColors.dark,
-                  ),
-                  minWidth: 900,
-                  rowsPerPage: state.rowsLimit,
-                  columns: <DataColumn>[
-                    const DataColumn2(
-                      label: Center(child: Text('#')),
-                      numeric: true,
-                      size: ColumnSize.S,
-                      fixedWidth: 120,
-                    ),
-                    DataColumn2(label: Text(l10n.fullName), size: ColumnSize.L),
-                    DataColumn2(
-                      label: Text(l10n.contactPhone),
-                      size: ColumnSize.L,
-                    ),
-                    DataColumn2(
-                      label: Text(l10n.time),
-                    ),
-                    DataColumn2(
-                      label: Text(l10n.date),
-                      onSort: (columnIndex, ascending) => _sort(
-                        (p) => p.bookTime,
-                        columnIndex,
-                        ascending,
-                      ),
-                    ),
-                    DataColumn2(
-                      label: Center(child: Text(l10n.status)),
-                    ),
-                  ],
-                  sortAscending: _sortAscending,
-                  sortColumnIndex: _sortColumnIndex,
-                  source: _BookingDataTableSource(
-                    context,
-                    state.filter.isEmpty
-                        ? state.bookList
-                        : state.filteredBookList,
-                  ),
-                ),
-              ),
-            );
-          }
-          return const SizedBox.shrink();
-        },
-      ),
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 }
