@@ -9,6 +9,8 @@ class MintThemeData {
     error: MintColors.errorColor,
   );
 
+  static const dividerTheme = DividerThemeData(thickness: 1, space: 1);
+
   static final elevatedButton = ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: MintColors.primaryBlueColor,

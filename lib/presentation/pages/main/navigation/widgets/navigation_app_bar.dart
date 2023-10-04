@@ -1,11 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mint_core/mint_utils.dart';
 
 import '../../../../../gen/assets.gen.dart';
 import '../../../../../gen/colors.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../../router/app_router.gr.dart';
+import '../../../../bloc/user/user_bloc.dart';
+import '../../../../widgets/mint_circle_avatar.dart';
 import '../../../../widgets/mint_logo.dart';
 import 'navigation_link.dart';
 
@@ -108,9 +111,35 @@ class _UserToolbar extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 30),
-        const CircleAvatar(
-          radius: 21,
-          backgroundColor: MintColors.bellGrey,
+        BlocBuilder<UserBloc, UserState>(
+          builder: (context, state) => PopupMenuButton(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: const Text('Profile'),
+                onTap: () => context.router.navigate(const ProfileRoute()),
+              ),
+              const PopupMenuItem(
+                child: Text(
+                  'Log out',
+                  style: TextStyle(color: MintColors.errorColor),
+                ),
+              ),
+            ],
+            constraints: const BoxConstraints(),
+            offset: const Offset(0, 11),
+            padding: EdgeInsets.zero,
+            position: PopupMenuPosition.under,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            tooltip: '',
+            child: MintCircleAvatar(
+              radius: 21,
+              backgroundColor: MintColors.bellGrey,
+              iconColor: Theme.of(context).colorScheme.secondary,
+              photoUrl: state is UserAuthenticated ? state.user.photoUrl : null,
+            ),
+          ),
         )
       ],
     );
