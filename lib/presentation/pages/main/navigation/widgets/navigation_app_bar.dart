@@ -114,11 +114,15 @@ class _UserToolbar extends StatelessWidget {
         BlocBuilder<UserBloc, UserState>(
           builder: (context, state) => PopupMenuButton(
             itemBuilder: (context) => [
-              PopupMenuItem(
+              PopupMenuItem<String>(
+                // TODO(wuffeel): add localization
+                value: 'Profile',
                 child: const Text('Profile'),
                 onTap: () => context.router.navigate(const ProfileRoute()),
               ),
-              const PopupMenuItem(
+              const PopupMenuItem<String>(
+                // TODO(wuffeel): add localization
+                value: 'Log out',
                 child: Text(
                   'Log out',
                   style: TextStyle(color: MintColors.errorColor),
