@@ -32,14 +32,14 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              DecoratedBox(
+              const DecoratedBox(
                 decoration: BoxDecoration(color: Colors.white),
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: SpecialistDataWidget(specialistModel: null),
+                  padding: EdgeInsets.all(20),
+                  child: SpecialistDataWidget(),
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               MintViewBar(
                 selectedView: _selectedItem,
                 viewItems: _items
@@ -47,7 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     .toList(),
                 onViewChange: (view) => setState(() => _selectedItem = view),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Row(
                 children: List.generate(
                   3,
@@ -62,7 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 )..insertBetween(const SizedBox(width: 30)),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
