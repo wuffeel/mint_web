@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
                     onPressed: () =>
                         context.read<UserBloc>().add(UserLogOutRequested()),
                     child: const Text('Log out'),
-                  )
+                  ),
                 ],
               ),
             ),

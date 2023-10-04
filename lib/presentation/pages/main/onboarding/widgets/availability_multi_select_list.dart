@@ -59,7 +59,7 @@ class _AvailabilityMultiSelectListState
         ElevatedButton(
           onPressed: () => widget.onApply(_selectedWeekdays),
           child: Text(context.l10n.apply),
-        )
+        ),
       ],
     );
   }

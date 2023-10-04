@@ -124,9 +124,11 @@ class _SpecialistPersonalData extends StatelessWidget {
                 ),
                 Text(user?.email ?? '', style: const TextStyle(fontSize: 16)),
                 Text(
-                    (DateTime.now().difference(specialist.experience).inDays /
-                        365).toString(),
-                    style: const TextStyle(fontSize: 16)),
+                  (DateTime.now().difference(specialist.experience).inDays /
+                          365)
+                      .toString(),
+                  style: const TextStyle(fontSize: 16),
+                ),
               ],
             );
           },

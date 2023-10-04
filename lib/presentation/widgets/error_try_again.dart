@@ -42,7 +42,7 @@ class ErrorTryAgain extends StatelessWidget {
             onRefresh: refreshCallback,
             tryAgainStyle: tryAgainStyle,
           ),
-        ]
+        ],
       ],
     );
   }

@@ -155,7 +155,7 @@ class _PatientsToolbar extends StatelessWidget {
               ),
             ),
           ],
-        )
+        ),
       ],
     );
   }

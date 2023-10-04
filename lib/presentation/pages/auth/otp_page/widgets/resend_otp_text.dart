@@ -58,7 +58,7 @@ class ResendOtpText extends StatelessWidget {
                 context.l10n.couldNotResendCodeTryAgain,
                 style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
-            ]
+            ],
           ],
         );
       },

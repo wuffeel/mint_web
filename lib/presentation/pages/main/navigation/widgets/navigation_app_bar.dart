@@ -144,7 +144,7 @@ class _UserToolbar extends StatelessWidget {
               photoUrl: state is UserAuthenticated ? state.user.photoUrl : null,
             ),
           ),
-        )
+        ),
       ],
     );
   }
