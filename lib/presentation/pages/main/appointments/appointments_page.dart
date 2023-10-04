@@ -106,7 +106,7 @@ class _AppointmentsViewState extends State<_AppointmentsView> {
               children: <Widget>[
                 const SizedBox(height: 30),
                 AppointmentsViewBar(
-                  view: _calendarController.view,
+                  selectedView: _calendarController.view,
                   onViewChange: (view) => _calendarController.view = view,
                 ),
                 const SizedBox(height: 24),
