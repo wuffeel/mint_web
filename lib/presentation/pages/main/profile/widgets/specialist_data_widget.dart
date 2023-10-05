@@ -32,7 +32,21 @@ class SpecialistDataWidget extends StatelessWidget {
               Expanded(
                 child: SizedBox(
                   height: 250,
-                  child: _SpecialistInfo(specialist: specialist),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 2,
+                        child: _SpecialistHeaderData(specialist: specialist),
+                      ),
+                      const SizedBox(height: 20),
+                      Expanded(
+                        flex: 3,
+                        child: _SpecialistPersonalData(specialist),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -40,24 +54,6 @@ class SpecialistDataWidget extends StatelessWidget {
         }
         return const _SpecialistDataBlockContainer();
       },
-    );
-  }
-}
-
-class _SpecialistInfo extends StatelessWidget {
-  const _SpecialistInfo({required this.specialist});
-
-  final SpecialistModel specialist;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Expanded(flex: 2,child: _SpecialistHeaderData(specialist: specialist)),
-        Expanded(flex: 3, child: _SpecialistPersonalData(specialist)),
-      ],
     );
   }
 }
@@ -102,7 +98,6 @@ class _SpecialistHeaderData extends StatelessWidget {
   }
 }
 
-
 class _SpecialistPersonalData extends StatelessWidget {
   const _SpecialistPersonalData(this.specialist);
 
@@ -119,6 +114,7 @@ class _SpecialistPersonalData extends StatelessWidget {
         title: l10n.specialities,
         value: specialist.specializations.join(', '),
         icon: Icons.psychology_outlined,
+        maxLines: 2,
       ),
       _SpecialistPersonalDataItem(
         title: l10n.phone,
@@ -177,14 +173,21 @@ class _SpecialistPersonalData extends StatelessWidget {
                   .toList(),
             ),
             const SizedBox(width: 100),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: items.map(
-                (e) {
-                  return Text(e.value, style: const TextStyle(fontSize: 16));
-                },
-              ).toList(),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: items.map(
+                  (e) {
+                    return Text(
+                      e.value,
+                      maxLines: e.maxLines,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 16),
+                    );
+                  },
+                ).toList(),
+              ),
             ),
           ],
         );
@@ -247,9 +250,11 @@ class _SpecialistPersonalDataItem {
     required this.title,
     required this.value,
     this.icon,
+    this.maxLines = 1,
   });
 
   final String title;
   final String value;
   final IconData? icon;
+  final int maxLines;
 }
