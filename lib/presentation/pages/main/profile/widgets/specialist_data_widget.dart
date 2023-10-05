@@ -219,7 +219,7 @@ class _SpecialistPhoto extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         color: Theme.of(context).scaffoldBackgroundColor,
         image: photoUrl != null
-            ? DecorationImage(image: NetworkImage(photoUrl))
+            ? DecorationImage(image: NetworkImage(photoUrl), fit: BoxFit.cover)
             : null,
       ),
       child: photoUrl == null
