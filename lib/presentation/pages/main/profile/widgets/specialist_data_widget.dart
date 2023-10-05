@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:mint_core/mint_core.dart';
 import 'package:mint_core/mint_utils.dart';
 
@@ -116,6 +117,13 @@ class _SpecialistPersonalData extends StatelessWidget {
     UserModel? user,
   ) {
     final l10n = context.l10n;
+    final experienceDate =
+        DateFormat.yMd(l10n.localeName).format(specialist.experience);
+    final experienceYears = ExperienceLocalization.format(
+      date: specialist.experience,
+      locale: l10n.localeName,
+    );
+
     return <_SpecialistPersonalDataItem>[
       _SpecialistPersonalDataItem(
         title: l10n.specialities,
@@ -135,10 +143,7 @@ class _SpecialistPersonalData extends StatelessWidget {
       ),
       _SpecialistPersonalDataItem(
         title: l10n.experience,
-        value: ExperienceLocalization.format(
-          date: specialist.experience,
-          locale: context.l10n.localeName,
-        ),
+        value: '$experienceDate - $experienceYears',
         icon: Icons.work_outline_outlined,
       ),
       _SpecialistPersonalDataItem(
