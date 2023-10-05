@@ -97,5 +97,8 @@
   "overview": "Огляд",
   "day": "День",
   "week": "Тиждень",
-  "specialist": "Спеціаліст"
+  "specialist": "Спеціаліст",
+  "specialities": "Спеціальності",
+  "phone": "Телефон",
+  "price": "Ціна"
 }
