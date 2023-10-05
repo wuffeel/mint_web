@@ -31,23 +31,20 @@ class SpecialistDataWidget extends StatelessWidget {
               _SpecialistPhoto(photoUrl: specialist.photoUrl),
               const SizedBox(width: 20),
               Expanded(
-                child: SizedBox(
-                  height: 250,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 2,
-                        child: _SpecialistHeaderData(specialist: specialist),
-                      ),
-                      const SizedBox(height: 20),
-                      Expanded(
-                        flex: 3,
-                        child: _SpecialistPersonalData(specialist),
-                      ),
-                    ],
-                  ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 2,
+                      child: _SpecialistHeaderData(specialist: specialist),
+                    ),
+                    const SizedBox(height: 20),
+                    Expanded(
+                      flex: 3,
+                      child: _SpecialistPersonalData(specialist),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -250,7 +247,7 @@ class _SpecialistDataBlockContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 250,
+      height: 300,
       width: double.infinity,
       child: ColoredBox(color: Colors.white, child: child),
     );
