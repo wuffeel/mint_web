@@ -78,11 +78,18 @@ class _SpecialistHeaderData extends StatelessWidget {
               specialist.fullName ?? l10n.specialist,
               style: MintTextStyles.headline1,
             ),
-            InkWell(
-              onTap: () {
-                // TODO(wuffeel): add onEdit callback
-              },
-              child: const Icon(Icons.edit),
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                customBorder: const CircleBorder(),
+                onTap: () {
+                  // TODO(wuffeel): add onEdit callback
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Icon(Icons.edit),
+                ),
+              ),
             ),
           ],
         ),
