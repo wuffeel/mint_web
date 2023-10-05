@@ -139,8 +139,7 @@ class _UserToolbar extends StatelessWidget {
             tooltip: '',
             child: MintCircleAvatar(
               radius: 21,
-              backgroundColor: MintColors.bellGrey,
-              iconColor: Theme.of(context).colorScheme.secondary,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               photoUrl: state is UserAuthenticated ? state.user.photoUrl : null,
             ),
           ),
