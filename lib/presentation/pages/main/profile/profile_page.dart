@@ -32,9 +32,12 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              const DecoratedBox(
-                decoration: BoxDecoration(color: Colors.white),
-                child: Padding(
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+                child: const Padding(
                   padding: EdgeInsets.all(20),
                   child: SpecialistDataWidget(),
                 ),
