@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 ///
 /// The [pattern] is a function that takes the input value and returns a
 /// formatted string.
-/// For example, you can use `(value) => '\$$value/hr'` as a pattern to format the input as "$X/hr".
+///
+/// For example, you can use `(value) => '\$$value/hr'` as a pattern to format
+/// the input as "$X/hr".
 ///
 /// If the input text is empty, it is automatically replaced by '0'. This
 /// formatter also handles replacing '0' if it is the first digit of the input.
