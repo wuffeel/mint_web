@@ -1,20 +1,35 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mint_core/mint_module.dart';
 import 'package:mint_core/mint_utils.dart';
 
+import '../../../bloc/specialist_profile/specialist_profile_bloc.dart';
 import '../../../widgets/mint_view_bar.dart';
 import '../../../widgets/scrollable_area.dart';
 import 'widgets/specialist_data_widget.dart';
 
 @RoutePage()
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => getIt<SpecialistProfileBloc>(),
+      child: const _ProfileView(),
+    );
+  }
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfileView extends StatefulWidget {
+  const _ProfileView();
+
+  @override
+  State<_ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<_ProfileView> {
   late String _selectedItem = _items.first;
 
   List<String> get _items => [

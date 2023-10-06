@@ -5,14 +5,45 @@ import 'package:mint_core/mint_core.dart';
 import 'package:mint_core/mint_utils.dart';
 
 import '../../../../../gen/assets.gen.dart';
-import '../../../../../gen/colors.gen.dart';
 import '../../../../../l10n/l10n.dart';
-import '../../../../../theme/mint_text_styles.dart';
 import '../../../../bloc/specialist_info/specialist_info_bloc.dart';
-import '../../../../bloc/user/user_bloc.dart';
+import '../../../../bloc/specialist_profile/specialist_profile_bloc.dart';
+import 'specialist_edit_widget.dart';
+import 'specialist_header_data.dart';
+import 'specialist_personal_data.dart';
 
 class SpecialistDataWidget extends StatelessWidget {
   const SpecialistDataWidget({super.key});
+
+  Widget _specialistInfoBuilder(
+    BuildContext context,
+    SpecialistInfoEnum info,
+    SpecialistModel specialist,
+    UserModel? user,
+  ) {
+    return Text(
+      switch (info) {
+        SpecialistInfoEnum.specialities =>
+          specialist.specializations.join(', '),
+        SpecialistInfoEnum.phone => user?.phoneNumber ?? '',
+        SpecialistInfoEnum.email => user?.email ?? '',
+        SpecialistInfoEnum.experience => _experienceInfo(context, specialist),
+        SpecialistInfoEnum.price => '₴${specialist.price}',
+      },
+      style: const TextStyle(fontSize: 16),
+    );
+  }
+
+  String _experienceInfo(BuildContext context, SpecialistModel specialist) {
+    final l10n = context.l10n;
+    final experienceDate =
+        DateFormat.yMd(l10n.localeName).format(specialist.experience);
+    final experienceYears = ExperienceLocalization.format(
+      date: specialist.experience,
+      locale: l10n.localeName,
+    );
+    return '$experienceDate - $experienceYears';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +68,36 @@ class SpecialistDataWidget extends StatelessWidget {
                   children: <Widget>[
                     Expanded(
                       flex: 2,
-                      child: _SpecialistHeaderData(specialist: specialist),
+                      child: SpecialistHeaderData(specialist: specialist),
                     ),
                     const SizedBox(height: 20),
                     Expanded(
-                      flex: 3,
-                      child: _SpecialistPersonalData(specialist),
+                      flex: 4,
+                      child: BlocSelector<SpecialistProfileBloc,
+                          SpecialistProfileState, SpecialistProfileEditState?>(
+                        selector: (state) =>
+                            state is SpecialistProfileEditState ? state : null,
+                        builder: (context, editState) {
+                          if (editState == null) {
+                            return SpecialistPersonalData(
+                              specialist: specialist,
+                              valueBuilder: _specialistInfoBuilder,
+                            );
+                          }
+                          return SpecialistPersonalData(
+                            specialist: specialist,
+                            valueBuilder: (_, info, __, ___) {
+                              return SpecialistEditWidget(
+                                info,
+                                specialist: editState.specialist,
+                                user: editState.user,
+                                specializations:
+                                    editState.availableSpecializations,
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -51,155 +106,6 @@ class SpecialistDataWidget extends StatelessWidget {
           );
         }
         return const _SpecialistDataBlockContainer();
-      },
-    );
-  }
-}
-
-class _SpecialistHeaderData extends StatelessWidget {
-  const _SpecialistHeaderData({required this.specialist});
-
-  final SpecialistModel specialist;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-              specialist.fullName ?? l10n.specialist,
-              style: MintTextStyles.headline1,
-            ),
-            Material(
-              color: Colors.transparent,
-              child: InkWell(
-                customBorder: const CircleBorder(),
-                onTap: () {
-                  // TODO(wuffeel): add onEdit callback
-                },
-                child: const Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Icon(Icons.edit),
-                ),
-              ),
-            ),
-          ],
-        ),
-        Text(
-          l10n.online,
-          style: MintTextStyles.medium16.copyWith(
-            color: MintColors.primaryBlueColor,
-          ),
-        ),
-        Divider(color: MintColors.hintColor.withOpacity(0.3)),
-      ],
-    );
-  }
-}
-
-class _SpecialistPersonalData extends StatelessWidget {
-  const _SpecialistPersonalData(this.specialist);
-
-  final SpecialistModel specialist;
-
-  List<_SpecialistPersonalDataItem> _items(
-    BuildContext context,
-    SpecialistModel specialist,
-    UserModel? user,
-  ) {
-    final l10n = context.l10n;
-    final experienceDate =
-        DateFormat.yMd(l10n.localeName).format(specialist.experience);
-    final experienceYears = ExperienceLocalization.format(
-      date: specialist.experience,
-      locale: l10n.localeName,
-    );
-
-    return <_SpecialistPersonalDataItem>[
-      _SpecialistPersonalDataItem(
-        title: l10n.specialities,
-        value: specialist.specializations.join(', '),
-        icon: Icons.psychology_outlined,
-        maxLines: 2,
-      ),
-      _SpecialistPersonalDataItem(
-        title: l10n.phone,
-        value: user?.phoneNumber ?? '',
-        icon: Icons.phone_outlined,
-      ),
-      _SpecialistPersonalDataItem(
-        title: l10n.email,
-        value: user?.email ?? '',
-        icon: Icons.email_outlined,
-      ),
-      _SpecialistPersonalDataItem(
-        title: l10n.experience,
-        value: '$experienceDate - $experienceYears',
-        icon: Icons.work_outline_outlined,
-      ),
-      _SpecialistPersonalDataItem(
-        title: l10n.price,
-        value: '₴${specialist.price}',
-        icon: Icons.monetization_on_outlined,
-      ),
-    ];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocSelector<UserBloc, UserState, UserModel?>(
-      selector: (state) => state is UserAuthenticated ? state.user : null,
-      builder: (context, user) {
-        final items =
-            _items(context, specialist, user).where((e) => e.value != '');
-        return Row(
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: items
-                  .map(
-                    (e) => Row(
-                      children: <Widget>[
-                        if (e.icon != null) ...[
-                          Icon(
-                            e.icon,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 18,
-                          ),
-                          const SizedBox(width: 8),
-                        ],
-                        Text('${e.title}:', style: MintTextStyles.medium16),
-                      ],
-                    ),
-                  )
-                  .toList(),
-            ),
-            const SizedBox(width: 100),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: items.map(
-                  (e) {
-                    return Text(
-                      e.value,
-                      maxLines: e.maxLines,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 16),
-                    );
-                  },
-                ).toList(),
-              ),
-            ),
-          ],
-        );
       },
     );
   }
@@ -252,18 +158,4 @@ class _SpecialistDataBlockContainer extends StatelessWidget {
       child: ColoredBox(color: Colors.white, child: child),
     );
   }
-}
-
-class _SpecialistPersonalDataItem {
-  _SpecialistPersonalDataItem({
-    required this.title,
-    required this.value,
-    this.icon,
-    this.maxLines = 1,
-  });
-
-  final String title;
-  final String value;
-  final IconData? icon;
-  final int maxLines;
 }
