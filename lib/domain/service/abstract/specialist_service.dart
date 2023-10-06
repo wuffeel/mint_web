@@ -11,4 +11,10 @@ abstract class SpecialistService {
   );
 
   Future<SpecialistModel?> fetchSpecialistData(String specialistId);
+
+  Future<void> updateSpecialistData(
+    SpecialistModel specialist,
+    UserModel user, {
+    FileData? photoData,
+  });
 }
