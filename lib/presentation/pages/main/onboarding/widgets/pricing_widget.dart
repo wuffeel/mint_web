@@ -70,7 +70,9 @@ class _TextField extends StatelessWidget {
     return TextFormField(
       decoration: InputDecoration(counterText: '', errorText: errorText),
       initialValue: '₴$selectedPricing/hr',
-      inputFormatters: [NumericPatternInputFormatter((value) => '₴$value/hr')],
+      inputFormatters: [
+        NumericPatternInputFormatter(pattern: (value) => '₴$value/hr'),
+      ],
       maxLength: 9,
       onChanged: (pricing) {
         onChange(NumericPatternInputFormatter.getNumericValue(pricing));

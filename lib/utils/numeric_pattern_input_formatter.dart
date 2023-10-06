@@ -10,9 +10,9 @@ import 'package:flutter/services.dart';
 /// If the input text is empty, it is automatically replaced by '0'. This
 /// formatter also handles replacing '0' if it is the first digit of the input.
 class NumericPatternInputFormatter extends TextInputFormatter {
-  NumericPatternInputFormatter(this.pattern);
+  NumericPatternInputFormatter({this.pattern});
 
-  final String Function(String value) pattern;
+  final String Function(String value)? pattern;
 
   /// Parses the numeric value from a given text, ignoring non-digit characters.
   ///
@@ -42,10 +42,11 @@ class NumericPatternInputFormatter extends TextInputFormatter {
       TextEditingValue oldValue,
       TextEditingValue newValue,
       ) {
+    final pattern = this.pattern;
     final numericValue = newValue.text.replaceAll(RegExp('[^0-9]'), '');
 
     final value = _validateNumericValue(numericValue);
-    final formattedValue = pattern(value);
+    final formattedValue = pattern != null ? pattern(value) : value;
 
     final baseOffset = newValue.selection.baseOffset;
     final cursorPosition = _getCursorPosition(
