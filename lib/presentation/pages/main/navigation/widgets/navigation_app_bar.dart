@@ -117,13 +117,15 @@ class _UserToolbar extends StatelessWidget {
               PopupMenuItem<String>(
                 // TODO(wuffeel): add localization
                 value: 'Profile',
-                child: const Text('Profile'),
                 onTap: () => context.router.navigate(const ProfileRoute()),
+                child: const Text('Profile'),
               ),
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 // TODO(wuffeel): add localization
                 value: 'Log out',
-                child: Text(
+                onTap: () =>
+                    context.read<UserBloc>().add(UserLogOutRequested()),
+                child: const Text(
                   'Log out',
                   style: TextStyle(color: MintColors.errorColor),
                 ),
