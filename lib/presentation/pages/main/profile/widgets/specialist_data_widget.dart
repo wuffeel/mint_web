@@ -29,11 +29,17 @@ class _SpecialistDataWidgetState extends State<SpecialistDataWidget> {
     SpecialistModel specialist,
     UserModel? user,
   ) {
+    final l10n = context.l10n;
+
     final dateOfBirth = user?.dateOfBirth;
+    final specializations = specialist.specializations;
+    if (info == SpecialistInfoGroup.specialities &&
+        specializations.isNotEmpty) {
+      return _SpecializationContainerList(specializations);
+    }
     return Text(
       switch (info) {
-        SpecialistInfoGroup.specialities =>
-          specialist.specializations.join(', '),
+        SpecialistInfoGroup.specialities => l10n.noSpecialities,
         SpecialistInfoGroup.phone => user?.phoneNumber ?? '',
         SpecialistInfoGroup.email => user?.email ?? '',
         SpecialistInfoGroup.dateOfBirth =>
@@ -225,6 +231,33 @@ class _SpecialistDataBlockContainer extends StatelessWidget {
       height: 300,
       width: double.infinity,
       child: ColoredBox(color: Colors.white, child: child),
+    );
+  }
+}
+
+class _SpecializationContainerList extends StatelessWidget {
+  const _SpecializationContainerList(this.specializations);
+
+  final List<String> specializations;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: List.generate(
+        specializations.length,
+        (index) => DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Theme.of(context).scaffoldBackgroundColor,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(specializations[index]),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -104,5 +104,6 @@
   "fieldShouldNotBeEmpty": "Field should not be empty",
   "specialization": "Specialization",
   "profile": "Profile",
-  "logOut": "Log out"
+  "logOut": "Log out",
+  "noSpecialities": "No specialities"
 }

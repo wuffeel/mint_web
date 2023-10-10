@@ -105,10 +105,7 @@ class _SpecialistSpecializations extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   if (specialization != null)
-                    Text(
-                      specialization,
-                      style: const TextStyle(fontSize: 16),
-                    )
+                    Text(specialization)
                   else
                     _SpecializationsDropdown(
                       specializations,

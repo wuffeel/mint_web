@@ -104,5 +104,6 @@
   "fieldShouldNotBeEmpty": "Поле не повинно бути порожнім",
   "specialization": "Спеціалізація",
   "profile": "Профіль",
-  "logOut": "Вийти"
+  "logOut": "Вийти",
+  "noSpecialities": "Немає спеціальностей"
 }
