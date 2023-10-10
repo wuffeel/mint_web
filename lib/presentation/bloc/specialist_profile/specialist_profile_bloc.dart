@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mint_core/mint_bloc.dart';
 import 'package:mint_core/mint_core.dart';
@@ -27,6 +28,7 @@ class SpecialistProfileBloc
     on<SpecialistProfileEditRequested>(_onEditSpecialistInfo);
     on<SpecialistProfileEditCancelRequested>(_onEditCancel);
     on<SpecialistProfileEditInfoChanged>(_onEditInfoChange);
+    on<SpecialistProfilePickImageRequested>(_onPickImage);
     on<SpecialistProfileUpdateRequested>(_onUpdateSpecialistInfo);
   }
 
@@ -70,6 +72,7 @@ class SpecialistProfileBloc
         SpecialistProfileEditState(
           specialist,
           user,
+          specialist.specializations,
           availableSpecializations: specializations,
         );
 
@@ -79,7 +82,13 @@ class SpecialistProfileBloc
     }
 
     try {
-      emit(SpecialistProfileSpecializationsLoading(specialist, user));
+      emit(
+        SpecialistProfileSpecializationsLoading(
+          specialist,
+          user,
+          specialist.specializations,
+        ),
+      );
       final specializations = await _fetchSpecializationsUseCase();
       emit(editState(specializations));
     } catch (error) {
@@ -95,11 +104,11 @@ class SpecialistProfileBloc
     final state = this.state;
     if (state is! SpecialistProfileEditState) return;
     emit(
-      SpecialistProfileEditState(
-        event.specialist ?? state.specialist,
-        event.user ?? state.user,
-        availableSpecializations: state.availableSpecializations,
-        photoData: event.photoData ?? state.photoData,
+      state.copyWith(
+        specialist: event.specialist,
+        user: event.user,
+        currentSpecializations: event.currentSpecializations,
+        photoData: event.photoData,
       ),
     );
   }
@@ -115,6 +124,20 @@ class SpecialistProfileBloc
     );
   }
 
+  Future<void> _onPickImage(
+    SpecialistProfilePickImageRequested event,
+    Emitter<SpecialistProfileState> emit,
+  ) async {
+    final state = this.state;
+    if (state is! SpecialistProfileEditState) return;
+
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final bytes = await image?.readAsBytes();
+    if (image == null || bytes == null) return;
+
+    emit(state.copyWith(photoData: FileData(name: image.name, bytes: bytes)));
+  }
+
   Future<void> _onUpdateSpecialistInfo(
     SpecialistProfileUpdateRequested event,
     Emitter<SpecialistProfileState> emit,
@@ -122,13 +145,28 @@ class SpecialistProfileBloc
     final state = this.state;
     if (state is! SpecialistProfileEditState) return;
     try {
-      await _updateSpecialistProfileDataUseCase(
-        state.specialist,
+      final specializations =
+          state.currentSpecializations.whereType<String>().toList();
+      final specialist =
+          state.specialist.copyWith(specializations: specializations);
+
+      emit(
+        SpecialistProfileUpdateLoading(
+          specialist,
+          state.user,
+          state.currentSpecializations,
+          availableSpecializations: state.availableSpecializations,
+          photoData: state.photoData,
+        ),
+      );
+      final photoUrl = await _updateSpecialistProfileDataUseCase(
+        specialist,
         state.user,
         photoData: state.photoData,
       );
-      _specialistController.addToSpecialistStream(state.specialist);
-      _userController.addToUserStream(state.user);
+      _specialistController
+          .addToSpecialistStream(specialist.copyWith(photoUrl: photoUrl));
+      _userController.addToUserStream(state.user.copyWith(photoUrl: photoUrl));
       emit(
         SpecialistProfileUpdateSuccess(
           availableSpecializations: state.availableSpecializations,

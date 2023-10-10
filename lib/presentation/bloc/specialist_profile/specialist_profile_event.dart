@@ -7,6 +7,8 @@ class SpecialistProfileEditRequested extends SpecialistProfileEvent {}
 
 class SpecialistProfileEditCancelRequested extends SpecialistProfileEvent {}
 
+class SpecialistProfilePickImageRequested extends SpecialistProfileEvent {}
+
 class SpecialistProfileUpdateRequested extends SpecialistProfileEvent {}
 
 class SpecialistProfileEditInfoChanged extends SpecialistProfileEvent {
@@ -14,9 +16,11 @@ class SpecialistProfileEditInfoChanged extends SpecialistProfileEvent {
     this.specialist,
     this.user,
     this.photoData,
+    this.currentSpecializations,
   });
 
   final SpecialistModel? specialist;
   final UserModel? user;
   final FileData? photoData;
+  final List<String?>? currentSpecializations;
 }
