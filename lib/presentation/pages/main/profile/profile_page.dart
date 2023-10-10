@@ -32,6 +32,7 @@ class _ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<_ProfileView> {
   late String _selectedItem = _items.first;
 
+  // TODO(wuffeel): add localization
   List<String> get _items => [
         'Overview',
         'Recent tasks',
