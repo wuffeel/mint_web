@@ -100,6 +100,7 @@ class _UserToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Row(
       children: <Widget>[
         Assets.svg.bellIcon.svg(
@@ -115,20 +116,18 @@ class _UserToolbar extends StatelessWidget {
           builder: (context, state) => PopupMenuButton<String>(
             itemBuilder: (context) => [
               PopupMenuItem<String>(
-                // TODO(wuffeel): add localization
-                value: 'Profile',
+                value: l10n.profile,
                 onTap: () => context.router.navigate(const ProfileRoute()),
-                child: const Text('Profile'),
+                child: Text(l10n.profile),
               ),
               const PopupMenuDivider(),
               PopupMenuItem<String>(
-                // TODO(wuffeel): add localization
-                value: 'Log out',
+                value: l10n.logOut,
                 onTap: () =>
                     context.read<UserBloc>().add(UserLogOutRequested()),
-                child: const Text(
-                  'Log out',
-                  style: TextStyle(color: MintColors.errorColor),
+                child: Text(
+                  l10n.logOut,
+                  style: const TextStyle(color: MintColors.errorColor),
                 ),
               ),
             ],

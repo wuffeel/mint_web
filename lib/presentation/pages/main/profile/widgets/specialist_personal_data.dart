@@ -3,17 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mint_core/mint_core.dart';
 import 'package:mint_core/mint_utils.dart';
 
+import '../../../../../backbone/specialist_info_group.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../../theme/mint_text_styles.dart';
 import '../../../../bloc/user/user_bloc.dart';
-
-enum SpecialistInfoEnum {
-  specialities,
-  phone,
-  email,
-  experience,
-  price,
-}
 
 class SpecialistPersonalData extends StatelessWidget {
   const SpecialistPersonalData({
@@ -25,7 +18,7 @@ class SpecialistPersonalData extends StatelessWidget {
   final SpecialistModel specialist;
   final Widget Function(
     BuildContext context,
-    SpecialistInfoEnum infoEnum,
+    SpecialistInfoGroup infoEnum,
     SpecialistModel specialist,
     UserModel? user,
   ) valueBuilder;
@@ -36,35 +29,41 @@ class SpecialistPersonalData extends StatelessWidget {
     UserModel? user,
   ) {
     final l10n = context.l10n;
-    return SpecialistInfoEnum.values
+    return SpecialistInfoGroup.values
         .map(
           (info) => switch (info) {
-            SpecialistInfoEnum.specialities => _SpecialistPersonalDataItem(
+            SpecialistInfoGroup.specialities => _SpecialistPersonalDataItem(
                 info,
                 title: l10n.specialities,
                 value: valueBuilder(context, info, specialist, user),
                 icon: Icons.psychology_outlined,
                 maxLines: 2,
               ),
-            SpecialistInfoEnum.phone => _SpecialistPersonalDataItem(
+            SpecialistInfoGroup.phone => _SpecialistPersonalDataItem(
                 info,
                 title: l10n.phone,
                 value: valueBuilder(context, info, specialist, user),
                 icon: Icons.phone_outlined,
               ),
-            SpecialistInfoEnum.email => _SpecialistPersonalDataItem(
+            SpecialistInfoGroup.email => _SpecialistPersonalDataItem(
                 info,
                 title: l10n.email,
                 value: valueBuilder(context, info, specialist, user),
                 icon: Icons.email_outlined,
               ),
-            SpecialistInfoEnum.experience => _SpecialistPersonalDataItem(
+            SpecialistInfoGroup.dateOfBirth => _SpecialistPersonalDataItem(
+              info,
+              title: l10n.dateOfBirth,
+              value: valueBuilder(context, info, specialist, user),
+              icon: Icons.calendar_today_outlined,
+            ),
+            SpecialistInfoGroup.experience => _SpecialistPersonalDataItem(
                 info,
                 title: l10n.experience,
                 value: valueBuilder(context, info, specialist, user),
                 icon: Icons.work_outline_outlined,
               ),
-            SpecialistInfoEnum.price => _SpecialistPersonalDataItem(
+            SpecialistInfoGroup.price => _SpecialistPersonalDataItem(
                 info,
                 title: l10n.price,
                 value: valueBuilder(context, info, specialist, user),
@@ -82,41 +81,33 @@ class SpecialistPersonalData extends StatelessWidget {
       builder: (context, user) {
         final items = _items(context, specialist, user);
 
-        return Row(
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: items
-                  .map<Widget>(
-                    (e) => Row(
-                      children: <Widget>[
-                        if (e.icon != null) ...[
-                          Icon(
-                            e.icon,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 18,
-                          ),
-                          const SizedBox(width: 8),
-                        ],
-                        Text('${e.title}:', style: MintTextStyles.medium16),
-                      ],
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: items
+              .map<Widget>(
+                (e) => Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    if (e.icon != null) ...[
+                      Icon(
+                        e.icon,
+                        color: Theme.of(context).colorScheme.primary,
+                        size: 18,
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                    SizedBox(
+                      width: 120,
+                      child: Text(
+                        '${e.title}:',
+                        style: MintTextStyles.medium16,
+                      ),
                     ),
-                  )
-                  .toList(),
-            ),
-            const SizedBox(width: 100),
-            Flexible(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(
-                  items.length,
-                  (index) => items[index].value,
+                    Flexible(child: e.value),
+                  ],
                 ),
-              ),
-            ),
-          ],
+              )
+              .toList()..insertBetween(const SizedBox(height: 15)),
         );
       },
     );
@@ -132,7 +123,7 @@ class _SpecialistPersonalDataItem {
     this.maxLines = 1,
   });
 
-  final SpecialistInfoEnum infoEnum;
+  final SpecialistInfoGroup infoEnum;
   final String title;
   final Widget value;
   final IconData? icon;

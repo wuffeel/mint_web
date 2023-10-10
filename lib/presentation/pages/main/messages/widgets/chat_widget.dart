@@ -269,7 +269,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                     onMessageLongPress: _showMessageActionsMenu,
                     onPreviewDataFetched: _previewDataFetched,
                     onSendPressed: (_) {
-                      // TODO(wuffel): implemented in customBottomWidget
+                      // implemented in customBottomWidget
                     },
                     scrollToUnreadOptions: ui.ScrollToUnreadOptions(
                       lastReadMessageId: state.messages.lastWhereOrNull((msg) {

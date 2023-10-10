@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:mint_core/mint_core.dart';
 import 'package:mint_core/mint_utils.dart';
 
+import '../../../../../backbone/specialist_info_group.dart';
 import '../../../../../gen/assets.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../bloc/specialist_info/specialist_info_bloc.dart';
@@ -12,23 +13,33 @@ import 'specialist_edit_widget.dart';
 import 'specialist_header_data.dart';
 import 'specialist_personal_data.dart';
 
-class SpecialistDataWidget extends StatelessWidget {
+class SpecialistDataWidget extends StatefulWidget {
   const SpecialistDataWidget({super.key});
+
+  @override
+  State<SpecialistDataWidget> createState() => _SpecialistDataWidgetState();
+}
+
+class _SpecialistDataWidgetState extends State<SpecialistDataWidget> {
+  final _formKey = GlobalKey<FormState>();
 
   Widget _specialistInfoBuilder(
     BuildContext context,
-    SpecialistInfoEnum info,
+    SpecialistInfoGroup info,
     SpecialistModel specialist,
     UserModel? user,
   ) {
+    final dateOfBirth = user?.dateOfBirth;
     return Text(
       switch (info) {
-        SpecialistInfoEnum.specialities =>
+        SpecialistInfoGroup.specialities =>
           specialist.specializations.join(', '),
-        SpecialistInfoEnum.phone => user?.phoneNumber ?? '',
-        SpecialistInfoEnum.email => user?.email ?? '',
-        SpecialistInfoEnum.experience => _experienceInfo(context, specialist),
-        SpecialistInfoEnum.price => '₴${specialist.price}',
+        SpecialistInfoGroup.phone => user?.phoneNumber ?? '',
+        SpecialistInfoGroup.email => user?.email ?? '',
+        SpecialistInfoGroup.dateOfBirth =>
+          dateOfBirth != null ? DateFormat.yMMMMd().format(dateOfBirth) : '',
+        SpecialistInfoGroup.experience => _experienceInfo(context, specialist),
+        SpecialistInfoGroup.price => '₴${specialist.price}',
       },
       style: const TextStyle(fontSize: 16),
     );
@@ -62,18 +73,18 @@ class SpecialistDataWidget extends StatelessWidget {
               _SpecialistPhoto(photoUrl: specialist.photoUrl),
               const SizedBox(width: 20),
               Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: SpecialistHeaderData(specialist: specialist),
-                    ),
-                    const SizedBox(height: 20),
-                    Expanded(
-                      flex: 4,
-                      child: BlocSelector<SpecialistProfileBloc,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SpecialistHeaderData(
+                        specialist: specialist,
+                        formKey: _formKey,
+                      ),
+                      const SizedBox(height: 20),
+                      BlocSelector<SpecialistProfileBloc,
                           SpecialistProfileState, SpecialistProfileEditState?>(
                         selector: (state) =>
                             state is SpecialistProfileEditState ? state : null,
@@ -91,15 +102,17 @@ class SpecialistDataWidget extends StatelessWidget {
                                 info,
                                 specialist: editState.specialist,
                                 user: editState.user,
-                                specializations:
+                                currentSpecializations:
+                                    editState.currentSpecializations,
+                                availableSpecializations:
                                     editState.availableSpecializations,
                               );
                             },
                           );
                         },
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -116,31 +129,85 @@ class _SpecialistPhoto extends StatelessWidget {
 
   final String? photoUrl;
 
+  Widget? _photoWidget(
+    BuildContext context,
+    SpecialistProfileEditState? state,
+  ) {
+    final photoUrl = this.photoUrl;
+    final photoData = state?.photoData;
+    if (photoData != null) {
+      return Image.memory(
+        photoData.bytes,
+        alignment: Alignment.bottomCenter,
+        fit: BoxFit.cover,
+      );
+    } else if (photoUrl != null) {
+      return Image.network(
+        photoUrl,
+        alignment: Alignment.bottomCenter,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Assets.svg.userPlaceholder.svg(
+        width: 200,
+        height: 250,
+        fit: BoxFit.scaleDown,
+        colorFilter: ColorFilter.mode(
+          Theme.of(context).primaryColor,
+          BlendMode.srcIn,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final photoUrl = this.photoUrl;
-    return Container(
+    return SizedBox(
+      height: 270,
       width: 200,
-      height: 250,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: Theme.of(context).scaffoldBackgroundColor,
-        image: photoUrl != null
-            ? DecorationImage(image: NetworkImage(photoUrl), fit: BoxFit.cover)
-            : null,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: <Widget>[
+          BlocSelector<SpecialistProfileBloc, SpecialistProfileState,
+              SpecialistProfileEditState?>(
+            selector: (state) =>
+                state is SpecialistProfileEditState ? state : null,
+            builder: (context, state) {
+              return Container(
+                height: 250,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
+                child: _photoWidget(context, state),
+              );
+            },
+          ),
+          BlocSelector<SpecialistProfileBloc, SpecialistProfileState, bool>(
+            selector: (state) => state is SpecialistProfileEditState,
+            builder: (context, isEdit) {
+              if (!isEdit) return const SizedBox.shrink();
+              return Positioned.fill(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: MaterialButton(
+                    onPressed: () {
+                      context
+                          .read<SpecialistProfileBloc>()
+                          .add(SpecialistProfilePickImageRequested());
+                    },
+                    minWidth: 50,
+                    height: 50,
+                    color: Colors.white,
+                    shape: const CircleBorder(),
+                    child: const Icon(Icons.add_a_photo_outlined),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
-      child: photoUrl == null
-          ? Assets.svg.userPlaceholder.svg(
-              width: 200,
-              height: 250,
-              fit: BoxFit.scaleDown,
-              colorFilter: ColorFilter.mode(
-                Theme.of(context).primaryColor,
-                BlendMode.srcIn,
-              ),
-            )
-          : null,
     );
   }
 }

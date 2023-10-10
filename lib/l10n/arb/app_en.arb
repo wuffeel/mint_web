@@ -100,5 +100,9 @@
   "specialist": "Specialist",
   "specialities": "Specialities",
   "phone": "Phone",
-  "price": "Price"
+  "price": "Price",
+  "fieldShouldNotBeEmpty": "Field should not be empty",
+  "specialization": "Specialization",
+  "profile": "Profile",
+  "logOut": "Log out"
 }

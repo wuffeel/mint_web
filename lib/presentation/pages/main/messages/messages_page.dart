@@ -83,7 +83,6 @@ class _MessagesView extends StatelessWidget {
                       if (state.roomList.isEmpty) {
                         return _MessagesBlockContainer(
                           child: Center(
-                            // TODO(wuffeel): add localization
                             child: Text(context.l10n.noChatWithPatientsYet),
                           ),
                         );

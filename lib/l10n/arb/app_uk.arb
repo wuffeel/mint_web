@@ -100,5 +100,9 @@
   "specialist": "Спеціаліст",
   "specialities": "Спеціальності",
   "phone": "Телефон",
-  "price": "Ціна"
+  "price": "Ціна",
+  "fieldShouldNotBeEmpty": "Поле не повинно бути порожнім",
+  "specialization": "Спеціалізація",
+  "profile": "Профіль",
+  "logOut": "Вийти"
 }
