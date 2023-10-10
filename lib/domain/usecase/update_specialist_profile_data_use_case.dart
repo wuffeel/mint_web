@@ -9,7 +9,7 @@ class UpdateSpecialistProfileDataUseCase {
 
   final SpecialistService _service;
 
-  Future<void> call(
+  Future<String?> call(
     SpecialistModel specialist,
     UserModel user, {
     FileData? photoData,
