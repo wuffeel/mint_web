@@ -102,11 +102,21 @@ class _PatientsPaginatedDataTableState
                     size: ColumnSize.L,
                   ),
                   DataColumn2(label: Text(l10n.time)),
-                  DataColumn2(label: Text(l10n.date)),
+                  DataColumn2(
+                    label: Text(l10n.date),
+                    onSort: (columnIndex, ascending) => _sort(
+                      (p) => p.bookTime,
+                      columnIndex,
+                      ascending,
+                    ),
+                  ),
                   DataColumn2(
                     label: Center(child: Text(l10n.status)),
                   ),
                 ],
+                sortArrowBuilder: (ascending, sorted) =>
+                    _TableSortIcon(ascending: ascending, sorted: sorted),
+                sortArrowAlwaysVisible: true,
                 sortAscending: _sortAscending,
                 sortColumnIndex: _sortColumnIndex,
                 source: _BookingDataTableSource(
@@ -230,5 +240,31 @@ class _PatientsListLoadingWrapper extends StatelessWidget {
             ],
           )
         : child;
+  }
+}
+
+class _TableSortIcon extends StatelessWidget {
+  const _TableSortIcon({required this.ascending, required this.sorted});
+
+  final bool ascending;
+  final bool sorted;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 4),
+      child: RotatedBox(
+        quarterTurns: sorted ? 0 : 1,
+        child: Icon(
+          !sorted
+              ? Icons.compare_arrows
+              : ascending
+                  ? Icons.arrow_upward_rounded
+                  : Icons.arrow_downward_rounded,
+          color: sorted ? Colors.black : Colors.black.withOpacity(0.4),
+          size: 16,
+        ),
+      ),
+    );
   }
 }
