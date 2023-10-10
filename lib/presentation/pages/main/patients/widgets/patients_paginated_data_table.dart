@@ -101,17 +101,8 @@ class _PatientsPaginatedDataTableState
                     label: Text(l10n.contactPhone),
                     size: ColumnSize.L,
                   ),
-                  DataColumn2(
-                    label: Text(l10n.time),
-                  ),
-                  DataColumn2(
-                    label: Text(l10n.date),
-                    onSort: (columnIndex, ascending) => _sort(
-                      (p) => p.bookTime,
-                      columnIndex,
-                      ascending,
-                    ),
-                  ),
+                  DataColumn2(label: Text(l10n.time)),
+                  DataColumn2(label: Text(l10n.date)),
                   DataColumn2(
                     label: Center(child: Text(l10n.status)),
                   ),
