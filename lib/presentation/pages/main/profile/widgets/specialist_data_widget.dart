@@ -160,6 +160,12 @@ class _SpecialistPhoto extends StatelessWidget {
     }
   }
 
+  void _onPickImage(BuildContext context) {
+    context
+        .read<SpecialistProfileBloc>()
+        .add(SpecialistProfilePickImageRequested());
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -191,11 +197,7 @@ class _SpecialistPhoto extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: MaterialButton(
-                    onPressed: () {
-                      context
-                          .read<SpecialistProfileBloc>()
-                          .add(SpecialistProfilePickImageRequested());
-                    },
+                    onPressed: () => _onPickImage(context),
                     minWidth: 50,
                     height: 50,
                     color: Colors.white,
