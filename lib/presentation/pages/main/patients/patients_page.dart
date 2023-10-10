@@ -127,17 +127,17 @@ class _PatientsToolbar extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 24),
-            InkWell(
-              onTap: () => _showFilterDialog(context),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                ),
+            Material(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+              child: InkWell(
+                onTap: () => _showFilterDialog(context),
+                borderRadius: BorderRadius.circular(10),
+                hoverColor: Colors.black.withOpacity(0.08),
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Row(
-                    children: [
+                    children: <Widget>[
                       Assets.svg.filterIcon.svg(
                         width: 16,
                         height: 16,
