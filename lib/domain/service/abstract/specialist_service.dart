@@ -12,7 +12,8 @@ abstract class SpecialistService {
 
   Future<SpecialistModel?> fetchSpecialistData(String specialistId);
 
-  Future<void> updateSpecialistData(
+  /// Returns photoUrl link for to use for [specialist] and [user]
+  Future<String?> updateSpecialistData(
     SpecialistModel specialist,
     UserModel user, {
     FileData? photoData,
