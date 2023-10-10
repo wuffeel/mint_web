@@ -72,7 +72,7 @@ class SpecialistProfileBloc
         SpecialistProfileEditState(
           specialist,
           user,
-          specialist.specializations,
+          [...specialist.specializations],
           availableSpecializations: specializations,
         );
 
