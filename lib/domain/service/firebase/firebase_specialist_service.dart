@@ -80,9 +80,7 @@ class FirebaseSpecialistService implements SpecialistService {
       photoData: photoData,
     );
 
-    await _specialistRepository.updateSpecialistData(
-      specialistProfileDto.copyWith(photoUrl: userData.photoUrl),
-    );
+    await _specialistRepository.updateSpecialistData(specialistProfileDto);
 
     return userData.photoUrl;
   }

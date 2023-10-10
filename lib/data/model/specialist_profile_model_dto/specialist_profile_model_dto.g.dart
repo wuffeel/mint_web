@@ -18,7 +18,6 @@ _$_SpecialistProfileModelDto _$$_SpecialistProfileModelDtoFromJson(Map json) =>
           .toList(),
       about: json['about'] as String?,
       education: json['education'] as String?,
-      photoUrl: json['photoUrl'] as String?,
     );
 
 Map<String, dynamic> _$$_SpecialistProfileModelDtoToJson(
@@ -32,5 +31,4 @@ Map<String, dynamic> _$$_SpecialistProfileModelDtoToJson(
       'specializations': instance.specializations,
       'about': instance.about,
       'education': instance.education,
-      'photoUrl': instance.photoUrl,
     };

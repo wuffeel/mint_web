@@ -17,7 +17,6 @@ class SpecialistProfileModelDto with _$SpecialistProfileModelDto {
     required List<String> specializations,
     String? about,
     String? education,
-    String? photoUrl,
   }) = _SpecialistProfileModelDto;
 
   const SpecialistProfileModelDto._();

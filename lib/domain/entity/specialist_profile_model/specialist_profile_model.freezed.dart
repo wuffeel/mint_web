@@ -24,7 +24,6 @@ mixin _$SpecialistProfileModel {
   List<String> get specializations => throw _privateConstructorUsedError;
   String? get about => throw _privateConstructorUsedError;
   String? get education => throw _privateConstructorUsedError;
-  String? get photoUrl => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SpecialistProfileModelCopyWith<SpecialistProfileModel> get copyWith =>
@@ -45,8 +44,7 @@ abstract class $SpecialistProfileModelCopyWith<$Res> {
       int price,
       List<String> specializations,
       String? about,
-      String? education,
-      String? photoUrl});
+      String? education});
 }
 
 /// @nodoc
@@ -71,7 +69,6 @@ class _$SpecialistProfileModelCopyWithImpl<$Res,
     Object? specializations = null,
     Object? about = freezed,
     Object? education = freezed,
-    Object? photoUrl = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -106,10 +103,6 @@ class _$SpecialistProfileModelCopyWithImpl<$Res,
           ? _value.education
           : education // ignore: cast_nullable_to_non_nullable
               as String?,
-      photoUrl: freezed == photoUrl
-          ? _value.photoUrl
-          : photoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
     ) as $Val);
   }
 }
@@ -130,8 +123,7 @@ abstract class _$$_SpecialistProfileModelCopyWith<$Res>
       int price,
       List<String> specializations,
       String? about,
-      String? education,
-      String? photoUrl});
+      String? education});
 }
 
 /// @nodoc
@@ -154,7 +146,6 @@ class __$$_SpecialistProfileModelCopyWithImpl<$Res>
     Object? specializations = null,
     Object? about = freezed,
     Object? education = freezed,
-    Object? photoUrl = freezed,
   }) {
     return _then(_$_SpecialistProfileModel(
       id: null == id
@@ -189,10 +180,6 @@ class __$$_SpecialistProfileModelCopyWithImpl<$Res>
           ? _value.education
           : education // ignore: cast_nullable_to_non_nullable
               as String?,
-      photoUrl: freezed == photoUrl
-          ? _value.photoUrl
-          : photoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
@@ -209,8 +196,7 @@ class _$_SpecialistProfileModel extends _SpecialistProfileModel
       required this.price,
       required final List<String> specializations,
       this.about,
-      this.education,
-      this.photoUrl})
+      this.education})
       : _specializations = specializations,
         super._();
 
@@ -236,12 +222,10 @@ class _$_SpecialistProfileModel extends _SpecialistProfileModel
   final String? about;
   @override
   final String? education;
-  @override
-  final String? photoUrl;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SpecialistProfileModel(id: $id, experience: $experience, firstName: $firstName, lastName: $lastName, price: $price, specializations: $specializations, about: $about, education: $education, photoUrl: $photoUrl)';
+    return 'SpecialistProfileModel(id: $id, experience: $experience, firstName: $firstName, lastName: $lastName, price: $price, specializations: $specializations, about: $about, education: $education)';
   }
 
   @override
@@ -256,8 +240,7 @@ class _$_SpecialistProfileModel extends _SpecialistProfileModel
       ..add(DiagnosticsProperty('price', price))
       ..add(DiagnosticsProperty('specializations', specializations))
       ..add(DiagnosticsProperty('about', about))
-      ..add(DiagnosticsProperty('education', education))
-      ..add(DiagnosticsProperty('photoUrl', photoUrl));
+      ..add(DiagnosticsProperty('education', education));
   }
 
   @override
@@ -277,9 +260,7 @@ class _$_SpecialistProfileModel extends _SpecialistProfileModel
                 .equals(other._specializations, _specializations) &&
             (identical(other.about, about) || other.about == about) &&
             (identical(other.education, education) ||
-                other.education == education) &&
-            (identical(other.photoUrl, photoUrl) ||
-                other.photoUrl == photoUrl));
+                other.education == education));
   }
 
   @override
@@ -292,8 +273,7 @@ class _$_SpecialistProfileModel extends _SpecialistProfileModel
       price,
       const DeepCollectionEquality().hash(_specializations),
       about,
-      education,
-      photoUrl);
+      education);
 
   @JsonKey(ignore: true)
   @override
@@ -312,8 +292,7 @@ abstract class _SpecialistProfileModel extends SpecialistProfileModel {
       required final int price,
       required final List<String> specializations,
       final String? about,
-      final String? education,
-      final String? photoUrl}) = _$_SpecialistProfileModel;
+      final String? education}) = _$_SpecialistProfileModel;
   const _SpecialistProfileModel._() : super._();
 
   @override
@@ -332,8 +311,6 @@ abstract class _SpecialistProfileModel extends SpecialistProfileModel {
   String? get about;
   @override
   String? get education;
-  @override
-  String? get photoUrl;
   @override
   @JsonKey(ignore: true)
   _$$_SpecialistProfileModelCopyWith<_$_SpecialistProfileModel> get copyWith =>

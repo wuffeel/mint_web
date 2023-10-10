@@ -30,7 +30,6 @@ mixin _$SpecialistProfileModelDto {
   List<String> get specializations => throw _privateConstructorUsedError;
   String? get about => throw _privateConstructorUsedError;
   String? get education => throw _privateConstructorUsedError;
-  String? get photoUrl => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -52,8 +51,7 @@ abstract class $SpecialistProfileModelDtoCopyWith<$Res> {
       int price,
       List<String> specializations,
       String? about,
-      String? education,
-      String? photoUrl});
+      String? education});
 }
 
 /// @nodoc
@@ -78,7 +76,6 @@ class _$SpecialistProfileModelDtoCopyWithImpl<$Res,
     Object? specializations = null,
     Object? about = freezed,
     Object? education = freezed,
-    Object? photoUrl = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -113,10 +110,6 @@ class _$SpecialistProfileModelDtoCopyWithImpl<$Res,
           ? _value.education
           : education // ignore: cast_nullable_to_non_nullable
               as String?,
-      photoUrl: freezed == photoUrl
-          ? _value.photoUrl
-          : photoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
     ) as $Val);
   }
 }
@@ -138,8 +131,7 @@ abstract class _$$_SpecialistProfileModelDtoCopyWith<$Res>
       int price,
       List<String> specializations,
       String? about,
-      String? education,
-      String? photoUrl});
+      String? education});
 }
 
 /// @nodoc
@@ -163,7 +155,6 @@ class __$$_SpecialistProfileModelDtoCopyWithImpl<$Res>
     Object? specializations = null,
     Object? about = freezed,
     Object? education = freezed,
-    Object? photoUrl = freezed,
   }) {
     return _then(_$_SpecialistProfileModelDto(
       id: null == id
@@ -198,10 +189,6 @@ class __$$_SpecialistProfileModelDtoCopyWithImpl<$Res>
           ? _value.education
           : education // ignore: cast_nullable_to_non_nullable
               as String?,
-      photoUrl: freezed == photoUrl
-          ? _value.photoUrl
-          : photoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
@@ -218,8 +205,7 @@ class _$_SpecialistProfileModelDto extends _SpecialistProfileModelDto
       required this.price,
       required final List<String> specializations,
       this.about,
-      this.education,
-      this.photoUrl})
+      this.education})
       : _specializations = specializations,
         super._();
 
@@ -249,12 +235,10 @@ class _$_SpecialistProfileModelDto extends _SpecialistProfileModelDto
   final String? about;
   @override
   final String? education;
-  @override
-  final String? photoUrl;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SpecialistProfileModelDto(id: $id, experience: $experience, firstName: $firstName, lastName: $lastName, price: $price, specializations: $specializations, about: $about, education: $education, photoUrl: $photoUrl)';
+    return 'SpecialistProfileModelDto(id: $id, experience: $experience, firstName: $firstName, lastName: $lastName, price: $price, specializations: $specializations, about: $about, education: $education)';
   }
 
   @override
@@ -269,8 +253,7 @@ class _$_SpecialistProfileModelDto extends _SpecialistProfileModelDto
       ..add(DiagnosticsProperty('price', price))
       ..add(DiagnosticsProperty('specializations', specializations))
       ..add(DiagnosticsProperty('about', about))
-      ..add(DiagnosticsProperty('education', education))
-      ..add(DiagnosticsProperty('photoUrl', photoUrl));
+      ..add(DiagnosticsProperty('education', education));
   }
 
   @override
@@ -290,9 +273,7 @@ class _$_SpecialistProfileModelDto extends _SpecialistProfileModelDto
                 .equals(other._specializations, _specializations) &&
             (identical(other.about, about) || other.about == about) &&
             (identical(other.education, education) ||
-                other.education == education) &&
-            (identical(other.photoUrl, photoUrl) ||
-                other.photoUrl == photoUrl));
+                other.education == education));
   }
 
   @JsonKey(ignore: true)
@@ -306,8 +287,7 @@ class _$_SpecialistProfileModelDto extends _SpecialistProfileModelDto
       price,
       const DeepCollectionEquality().hash(_specializations),
       about,
-      education,
-      photoUrl);
+      education);
 
   @JsonKey(ignore: true)
   @override
@@ -333,8 +313,7 @@ abstract class _SpecialistProfileModelDto extends SpecialistProfileModelDto {
       required final int price,
       required final List<String> specializations,
       final String? about,
-      final String? education,
-      final String? photoUrl}) = _$_SpecialistProfileModelDto;
+      final String? education}) = _$_SpecialistProfileModelDto;
   const _SpecialistProfileModelDto._() : super._();
 
   factory _SpecialistProfileModelDto.fromJson(Map<String, dynamic> json) =
@@ -357,8 +336,6 @@ abstract class _SpecialistProfileModelDto extends SpecialistProfileModelDto {
   String? get about;
   @override
   String? get education;
-  @override
-  String? get photoUrl;
   @override
   @JsonKey(ignore: true)
   _$$_SpecialistProfileModelDtoCopyWith<_$_SpecialistProfileModelDto>

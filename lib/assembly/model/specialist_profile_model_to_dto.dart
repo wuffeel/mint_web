@@ -18,6 +18,5 @@ class SpecialistProfileModelToDto
         specializations: param.specializations,
         about: param.about,
         education: param.education,
-        photoUrl: param.photoUrl,
       );
 }

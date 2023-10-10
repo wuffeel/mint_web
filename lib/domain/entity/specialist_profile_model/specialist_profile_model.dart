@@ -14,7 +14,6 @@ class SpecialistProfileModel with _$SpecialistProfileModel {
     required List<String> specializations,
     String? about,
     String? education,
-    String? photoUrl,
   }) = _SpecialistProfileModel;
 
   const SpecialistProfileModel._();
