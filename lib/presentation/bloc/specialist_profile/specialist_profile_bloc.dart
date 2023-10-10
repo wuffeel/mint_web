@@ -90,7 +90,7 @@ class SpecialistProfileBloc
         ),
       );
       final specializations = await _fetchSpecializationsUseCase();
-      emit(editState(specializations));
+      emit(editState(specializations..sort()));
     } catch (error) {
       debugPrint('SpecialistProfileSpecializationsFetchFailure: $error');
       emit(SpecialistProfileSpecializationsFetchFailure());
