@@ -64,8 +64,8 @@ class _SpecialistSpecializations extends StatelessWidget {
     context.read<SpecialistProfileBloc>().add(removeEvent);
   }
 
-  /// Check if 'add specialization' button should be visible.
-  bool _isAddButtonVisible(
+  /// Check if 'add specialization' button should be hidden.
+  bool _isAddButtonHidden(
     List<String?> currentSpecializations,
     List<String>? availableSpecializations,
   ) {
@@ -86,9 +86,9 @@ class _SpecialistSpecializations extends StatelessWidget {
       runSpacing: 10,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: List.generate(
-          _isAddButtonVisible(specializations, availableSpecializations)
-              ? specializations.length + 1
-              : specializations.length, (index) {
+          _isAddButtonHidden(specializations, availableSpecializations)
+              ? specializations.length
+              : specializations.length + 1, (index) {
         if (index == specializations.length) {
           return _AddSpecializationButton(specializations);
         } else {
