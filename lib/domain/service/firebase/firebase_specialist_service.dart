@@ -64,7 +64,7 @@ class FirebaseSpecialistService implements SpecialistService {
   }
 
   @override
-  Future<void> updateSpecialistData(
+  Future<String?> updateSpecialistData(
     SpecialistModel specialist,
     UserModel user, {
     FileData? photoData,
@@ -74,11 +74,16 @@ class FirebaseSpecialistService implements SpecialistService {
       specialistProfile,
     );
 
-    await Future.wait([
-      _specialistRepository.updateSpecialistData(specialistProfileDto),
+    /// photoUrl for specialist in 'specialists' collection updated here
+    final userData = await _userService.updateUserData(
+      user,
+      photoData: photoData,
+    );
 
-      /// photoUrl for specialist in 'specialists' collection updated here
-      _userService.updateUserData(user, photoData: photoData),
-    ]);
+    await _specialistRepository.updateSpecialistData(
+      specialistProfileDto.copyWith(photoUrl: userData.photoUrl),
+    );
+
+    return userData.photoUrl;
   }
 }
