@@ -105,5 +105,10 @@
   "specialization": "Specialization",
   "profile": "Profile",
   "logOut": "Log out",
-  "noSpecialities": "No specialities"
+  "noSpecialities": "No specialities",
+  "recentConsultations": "Recent consultations",
+  "upcomingAppointments": "Upcoming appointments",
+  "todayAppointments": "Today appointments",
+  "weekAppointments": "Week appointments",
+  "monthAppointments": "Month appointments"
 }

@@ -14,7 +14,19 @@ import '../../../../widgets/error_try_again.dart';
 import 'consultation_status_widget.dart';
 
 class PatientsPaginatedDataTable extends StatefulWidget {
-  const PatientsPaginatedDataTable({super.key});
+  const PatientsPaginatedDataTable({
+    super.key,
+    this.rowsPerPage = 8,
+    this.whereBook,
+    this.title,
+  });
+
+  final bool Function(PatientBook)? whereBook;
+
+  /// See [PaginatedDataTable2.rowsPerPage]
+  final int rowsPerPage;
+
+  final Widget? title;
 
   @override
   State<PatientsPaginatedDataTable> createState() =>
@@ -54,6 +66,7 @@ class _PatientsPaginatedDataTableState
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final whereBook = widget.whereBook;
     return BlocBuilder<PatientsBloc, PatientsState>(
       builder: (context, state) {
         if (state is PatientsFetchBookListFailure) {
@@ -77,18 +90,18 @@ class _PatientsPaginatedDataTableState
                       child: Text(l10n.resetSorting),
                     ),
                 ],
-                empty: const _NoConsultationsFound(),
+                empty: state is! PatientsFetchBookListLoading
+                    ? const _NoConsultationsFound()
+                    : null,
                 renderEmptyRowsInTheEnd: false,
-                headingTextStyle: MintTextStyles.medium16.copyWith(
-                  height: 1.3,
-                ),
-                header: const Text(''),
+                headingTextStyle: MintTextStyles.medium16.copyWith(height: 1.3),
+                header: widget.title ?? const Text(''),
                 dataRowHeight: 75,
                 dataTextStyle: MintTextStyles.figure.copyWith(
                   color: MintColors.dark,
                 ),
                 minWidth: 900,
-                rowsPerPage: state.rowsLimit,
+                rowsPerPage: widget.rowsPerPage,
                 columns: <DataColumn>[
                   const DataColumn2(
                     label: Center(child: Text('#')),
@@ -122,7 +135,9 @@ class _PatientsPaginatedDataTableState
                 source: _BookingDataTableSource(
                   context,
                   state.filter.isEmpty
-                      ? state.bookList
+                      ? whereBook != null
+                          ? state.bookList.where(whereBook).toList()
+                          : state.bookList
                       : state.filteredBookList,
                 ),
               ),

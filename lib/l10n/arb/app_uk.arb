@@ -105,5 +105,10 @@
   "specialization": "Спеціалізація",
   "profile": "Профіль",
   "logOut": "Вийти",
-  "noSpecialities": "Немає спеціальностей"
+  "noSpecialities": "Немає спеціальностей",
+  "recentConsultations": "Недавні консультації",
+  "upcomingAppointments": "Майбутні зустрічі",
+  "todayAppointments": "Зустрічі на сьогодні",
+  "weekAppointments": "Зустрічі на тиждень",
+  "monthAppointments": "Зустрічі на місяць"
 }

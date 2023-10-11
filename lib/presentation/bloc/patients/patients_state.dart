@@ -1,9 +1,7 @@
 part of 'patients_bloc.dart';
 
 @immutable
-class PatientsState {
-  int get rowsLimit => 8;
-}
+class PatientsState {}
 
 class PatientsBookListLoadSuccess extends PatientsState {
   PatientsBookListLoadSuccess({

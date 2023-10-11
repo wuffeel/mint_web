@@ -2,12 +2,18 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mint_core/mint_module.dart';
-import 'package:mint_core/mint_utils.dart';
 
+import '../../../../domain/entity/patient_book/patient_book.dart';
+import '../../../../l10n/l10n.dart';
+import '../../../bloc/patients/patients_bloc.dart';
 import '../../../bloc/specialist_profile/specialist_profile_bloc.dart';
 import '../../../widgets/mint_view_bar.dart';
 import '../../../widgets/scrollable_area.dart';
+import '../patients/widgets/patients_paginated_data_table.dart';
+import 'widgets/profile_appointments_count.dart';
 import 'widgets/specialist_data_widget.dart';
+
+enum _ProfileAppointmentView { overview, recent, upcoming }
 
 @RoutePage()
 class ProfilePage extends StatelessWidget {
@@ -15,8 +21,17 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<SpecialistProfileBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<SpecialistProfileBloc>(),
+        ),
+        BlocProvider(
+          create: (context) =>
+          getIt<PatientsBloc>()
+            ..add(PatientsInitializeSubscriptionRequested()),
+        ),
+      ],
       child: const _ProfileView(),
     );
   }
@@ -30,17 +45,30 @@ class _ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<_ProfileView> {
-  late String _selectedItem = _items.first;
+  late _ProfileAppointmentView _selectedItem = _items(context).keys.first;
 
-  // TODO(wuffeel): add localization
-  List<String> get _items => [
-        'Overview',
-        'Recent tasks',
-        'Upcoming appointments',
-      ];
+  Map<_ProfileAppointmentView, String> _items(BuildContext context) {
+    final l10n = context.l10n;
+    return {
+      _ProfileAppointmentView.overview: l10n.overview,
+      _ProfileAppointmentView.recent: l10n.recentConsultations,
+      _ProfileAppointmentView.upcoming: l10n.upcomingAppointments,
+    };
+  }
+
+  bool Function(PatientBook)? _whereBook(_ProfileAppointmentView view) {
+    return switch (view) {
+      _ProfileAppointmentView.overview => null,
+      _ProfileAppointmentView.recent =>
+          (book) => DateTime.now().isAfter(book.endTime),
+      _ProfileAppointmentView.upcoming =>
+          (book) => book.endTime.isAfter(DateTime.now()),
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
+    final items = _items(context);
     return ScrollableArea(
       child: Center(
         child: FractionallySizedBox(
@@ -62,34 +90,28 @@ class _ProfileViewState extends State<_ProfileView> {
                   ),
                 ),
                 const SizedBox(height: 30),
+                const ProfileAppointmentsCount(),
+                const SizedBox(height: 30),
                 MintViewBar(
                   selectedView: _selectedItem,
-                  viewItems: _items
-                      .map((e) => MintViewBarItem(value: e, title: e))
+                  viewItems: items.entries
+                      .map((e) => MintViewBarItem(value: e.key, title: e.value))
                       .toList(),
                   onViewChange: (view) => setState(() => _selectedItem = view),
                 ),
                 const SizedBox(height: 30),
-                Row(
-                  children: List.generate(
-                    3,
-                    (index) => Expanded(
-                      child: Container(
-                        height: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                        ),
+                SizedBox(
+                  height: 450,
+                  child: PatientsPaginatedDataTable(
+                    rowsPerPage: 3,
+                    title: Text(
+                      context.l10n.appointments,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  )..insertBetween(const SizedBox(width: 30)),
-                ),
-                const SizedBox(height: 30),
-                Container(
-                  height: 300,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
+                    whereBook: _whereBook(_selectedItem),
                   ),
                 ),
               ],
