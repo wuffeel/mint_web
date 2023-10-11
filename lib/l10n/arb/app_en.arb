@@ -110,5 +110,14 @@
   "upcomingAppointments": "Upcoming appointments",
   "todayAppointments": "Today appointments",
   "weekAppointments": "Week appointments",
-  "monthAppointments": "Month appointments"
+  "monthAppointments": "Month appointments",
+  "sentA": "sent a",
+  "justNow": "Just now",
+  "previousNotifications": "Previous",
+  "youDoNotHaveAnyNotifications": "You do not have any notifications",
+  "markAllAsRead": "Mark all as read",
+  "bookedA": "Booked a",
+  "consultation": "Consultation",
+  "bookedOn": "On",
+  "notifications": "Notifications"
 }

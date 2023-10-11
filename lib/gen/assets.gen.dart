@@ -46,6 +46,10 @@ class $AssetsSvgGen {
   /// File path: assets/svg/mint_logo.svg
   SvgGenImage get mintLogo => const SvgGenImage('assets/svg/mint_logo.svg');
 
+  /// File path: assets/svg/notification_tile_icon.svg
+  SvgGenImage get notificationTileIcon =>
+      const SvgGenImage('assets/svg/notification_tile_icon.svg');
+
   /// File path: assets/svg/phone_icon.svg
   SvgGenImage get phoneIcon => const SvgGenImage('assets/svg/phone_icon.svg');
 
@@ -72,6 +76,7 @@ class $AssetsSvgGen {
         filterIcon,
         microphoneIcon,
         mintLogo,
+        notificationTileIcon,
         phoneIcon,
         refreshIcon,
         sortIcon,

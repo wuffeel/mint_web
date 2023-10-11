@@ -110,5 +110,14 @@
   "upcomingAppointments": "Майбутні зустрічі",
   "todayAppointments": "Зустрічі на сьогодні",
   "weekAppointments": "Зустрічі на тиждень",
-  "monthAppointments": "Зустрічі на місяць"
+  "monthAppointments": "Зустрічі на місяць",
+  "sentA": "відправив",
+  "justNow": "Щойно",
+  "previousNotifications": "Попередні",
+  "youDoNotHaveAnyNotifications": "У вас немає сповіщень",
+  "markAllAsRead": "Позначити все як прочитане",
+  "bookedA": "Замовив",
+  "bookedConsultation": "Консультацію",
+  "bookedOn": "На",
+  "notifications": "Сповіщення"
 }
