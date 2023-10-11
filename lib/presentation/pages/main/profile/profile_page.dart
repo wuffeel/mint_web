@@ -77,16 +77,14 @@ class _ProfileViewState extends State<_ProfileView> {
           child: SelectionArea(
             child: Column(
               children: <Widget>[
-                Flexible(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(20),
-                      child: SpecialistDataWidget(),
-                    ),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(20),
+                    child: SpecialistDataWidget(),
                   ),
                 ),
                 const SizedBox(height: 30),
