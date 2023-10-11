@@ -220,7 +220,7 @@ class _BookingNotification extends StatelessWidget {
           ),
           TextSpan(text: '${l10n.bookedA.toLowerCase()} ', style: style),
           TextSpan(
-            text: '${l10n.consultation.toLowerCase()} ',
+            text: '${l10n.bookedConsultation.toLowerCase()} ',
             style: style.copyWith(
               color: Theme.of(context).colorScheme.primary,
               fontWeight: FontWeight.w500,
