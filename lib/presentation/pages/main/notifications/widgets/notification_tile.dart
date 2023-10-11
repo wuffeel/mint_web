@@ -252,25 +252,30 @@ class _NotificationCircleAvatar extends StatelessWidget {
     final photoUrl = this.photoUrl;
     final backgroundColor =
         Theme.of(context).colorScheme.primary.withOpacity(0.5);
-    return photoUrl != null
-        ? CircleAvatar(
-            radius: _tileRadius,
-            backgroundColor: backgroundColor,
-            backgroundImage: NetworkImage(photoUrl),
-          )
-        : CircleAvatar(
-            radius: _tileRadius,
-            backgroundColor: backgroundColor,
-            child: (svgIcon ?? _fallBackIcon).svg(
-              width: 48,
-              height: 48,
-              fit: BoxFit.scaleDown,
-              colorFilter: ColorFilter.mode(
-                Theme.of(context).iconTheme.color ?? Colors.white,
-                BlendMode.srcIn,
-              ),
-            ),
-          );
+
+    final notificationIcon = (svgIcon ?? _fallBackIcon).svg(
+      width: 48,
+      height: 48,
+      fit: BoxFit.scaleDown,
+      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+    );
+
+    return Container(
+      width: _tileRadius * 2,
+      height: _tileRadius * 2,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        shape: BoxShape.circle,
+      ),
+      child: photoUrl != null
+          ? Image.network(
+              photoUrl,
+              errorBuilder: (_, __, ___) => notificationIcon,
+              fit: BoxFit.cover,
+            )
+          : notificationIcon,
+    );
   }
 }
 
