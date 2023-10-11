@@ -199,7 +199,7 @@ class _NotificationsBellPortal extends StatelessWidget {
           clipBehavior: Clip.hardEdge,
           elevation: 8,
           child: SizedBox(
-            width: 500,
+            width: 550,
             height: 500,
             child: NotificationsView(),
           ),
