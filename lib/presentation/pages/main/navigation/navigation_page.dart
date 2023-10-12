@@ -26,7 +26,6 @@ class _NavigationPageState extends State<NavigationPage> {
           PatientsRoute(),
           AppointmentsRoute(),
           MessagesRoute(),
-          ProfileRoute(),
         ],
         animationDuration: Duration.zero,
         appBarBuilder: (context, tabsRouter) => NavigationAppBar(

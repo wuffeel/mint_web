@@ -131,12 +131,6 @@ class _UserToolbar extends StatelessWidget {
           builder: (context, state) => PopupMenuButton<String>(
             itemBuilder: (context) => [
               PopupMenuItem<String>(
-                value: l10n.profile,
-                onTap: () => context.router.navigate(const ProfileRoute()),
-                child: Text(l10n.profile),
-              ),
-              const PopupMenuDivider(),
-              PopupMenuItem<String>(
                 value: l10n.logOut,
                 onTap: () =>
                     context.read<UserBloc>().add(UserLogOutRequested()),
