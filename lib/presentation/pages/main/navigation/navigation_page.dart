@@ -21,10 +21,10 @@ class _NavigationPageState extends State<NavigationPage> {
   Widget build(BuildContext context) {
     return Portal(
       child: AutoTabsScaffold(
-        routes: const [
-          HomeRoute(),
-          PatientsRoute(),
-          AppointmentsRoute(),
+        routes: [
+          const HomeRoute(),
+          const PatientsRoute(),
+          const AppointmentsRoute(),
           MessagesRoute(),
         ],
         animationDuration: Duration.zero,

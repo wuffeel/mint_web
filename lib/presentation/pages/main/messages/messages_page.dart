@@ -17,7 +17,17 @@ import 'widgets/message_tile.dart';
 
 @RoutePage()
 class MessagesPage extends StatelessWidget {
-  const MessagesPage({super.key});
+  const MessagesPage({super.key, this.room});
+
+  final types.Room? room;
+
+  /// Initializes chat if [room] passed is not null.
+  ChatBloc _onCreateChat(BuildContext context) {
+    final chatBloc = getIt<ChatBloc>();
+    final room = this.room;
+    if (room != null) chatBloc.add(ChatInitializeRequested(room));
+    return chatBloc;
+  }
 
   // TODO(wuffeel): find a better solution, too many reads
   // UseCase: ChatRoomListFetchSuccess triggers too much, - room updates on
@@ -28,8 +38,8 @@ class MessagesPage extends StatelessWidget {
   void _chatRoomBlocListener(BuildContext context, ChatRoomState state) {
     if (state is ChatRoomListFetchSuccess) {
       context.read<UnreadMessagesBloc>().add(
-        UnreadMessagesFetchRequested(state.roomList, state.senderId),
-      );
+            UnreadMessagesFetchRequested(state.roomList, state.senderId),
+          );
     }
   }
 
@@ -41,7 +51,7 @@ class MessagesPage extends StatelessWidget {
           create: (context) =>
               getIt<ChatRoomBloc>()..add(ChatRoomListFetchRequested()),
         ),
-        BlocProvider(create: (context) => getIt<ChatBloc>()),
+        BlocProvider(create: _onCreateChat),
         BlocProvider(create: (context) => getIt<PresenceMessageBloc>()),
         BlocProvider(
           create: (context) =>
@@ -92,10 +102,9 @@ class _MessagesView extends StatelessWidget {
                           return _MessagesBlock(
                             roomList: state.roomList,
                             senderId: state.senderId,
-                            selectedRoom:
-                                chatState is ChatFetchMessagesSuccess
-                                    ? chatState.room
-                                    : null,
+                            selectedRoom: chatState is ChatFetchMessagesSuccess
+                                ? chatState.room
+                                : null,
                           );
                         },
                       );

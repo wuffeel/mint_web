@@ -9,6 +9,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i13;
+import 'package:flutter/material.dart' as _i14;
+import 'package:flutter_chat_types/flutter_chat_types.dart' as _i15;
 import 'package:mint_web/presentation/pages/auth/auth_wrapper_page.dart' as _i2;
 import 'package:mint_web/presentation/pages/auth/enter_phone/enter_phone_page.dart'
     as _i3;
@@ -77,9 +79,14 @@ abstract class $AppRouter extends _i13.RootStackRouter {
       );
     },
     MessagesRoute.name: (routeData) {
+      final args = routeData.argsAs<MessagesRouteArgs>(
+          orElse: () => const MessagesRouteArgs());
       return _i13.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i8.MessagesPage(),
+        child: _i8.MessagesPage(
+          key: args.key,
+          room: args.room,
+        ),
       );
     },
     NavigationRoute.name: (routeData) {
@@ -209,16 +216,40 @@ class MainWrapperRoute extends _i13.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i8.MessagesPage]
-class MessagesRoute extends _i13.PageRouteInfo<void> {
-  const MessagesRoute({List<_i13.PageRouteInfo>? children})
-      : super(
+class MessagesRoute extends _i13.PageRouteInfo<MessagesRouteArgs> {
+  MessagesRoute({
+    _i14.Key? key,
+    _i15.Room? room,
+    List<_i13.PageRouteInfo>? children,
+  }) : super(
           MessagesRoute.name,
+          args: MessagesRouteArgs(
+            key: key,
+            room: room,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'MessagesRoute';
 
-  static const _i13.PageInfo<void> page = _i13.PageInfo<void>(name);
+  static const _i13.PageInfo<MessagesRouteArgs> page =
+      _i13.PageInfo<MessagesRouteArgs>(name);
+}
+
+class MessagesRouteArgs {
+  const MessagesRouteArgs({
+    this.key,
+    this.room,
+  });
+
+  final _i14.Key? key;
+
+  final _i15.Room? room;
+
+  @override
+  String toString() {
+    return 'MessagesRouteArgs{key: $key, room: $room}';
+  }
 }
 
 /// generated route for

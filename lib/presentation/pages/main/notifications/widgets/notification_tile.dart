@@ -7,6 +7,7 @@ import 'package:mint_core/mint_utils.dart';
 
 import '../../../../../gen/assets.gen.dart';
 import '../../../../../l10n/l10n.dart';
+import '../../../../bloc/app_notifications/app_notifications_bloc_web.dart';
 
 class NotificationTile extends StatelessWidget {
   const NotificationTile({
@@ -74,9 +75,36 @@ class NotificationTile extends StatelessWidget {
   ) {
     if (notification.status != AppNotificationStatus.seen) {
       context
-          .read<AppNotificationsBloc>()
+          .read<AppNotificationsBlocWeb>()
           .add(AppNotificationsMarkAsReadRequested(notification.id));
     }
+    return switch (notification) {
+      ChatNotification() => _onChatNotificationClick(context, notification),
+      BookingNotification() => _onBookingNotificationClick(
+          context,
+          notification,
+        ),
+    };
+  }
+
+  void _onChatNotificationClick(
+    BuildContext context,
+    ChatNotification notification,
+  ) {
+    final event = AppNotificationsFetchChatRoomRequested(
+      notification.id,
+      notification.roomId,
+    );
+    context.read<AppNotificationsBlocWeb>().add(event);
+  }
+
+  void _onBookingNotificationClick(
+    BuildContext context,
+    BookingNotification notification,
+  ) {
+    context.read<AppNotificationsBlocWeb>().add(
+          AppNotificationsBookingDateChangeRequested(notification.bookTime),
+        );
   }
 
   @override
@@ -286,7 +314,7 @@ class _NotificationStatusWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AppNotificationsBloc, AppNotificationsState, bool>(
+    return BlocSelector<AppNotificationsBlocWeb, AppNotificationsState, bool>(
       selector: (state) => state.loadingMessageId == notification.id,
       builder: (context, isLoading) => isLoading
           ? const CircularProgressIndicator(strokeWidth: 2)

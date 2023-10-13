@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mint_core/mint_module.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import '../../../bloc/app_notifications/app_notifications_bloc_web.dart';
 import '../../../bloc/appointments/appointments_bloc.dart';
 import '../../../widgets/error_try_again.dart';
 import 'widgets/appointments_calendar.dart';
@@ -35,30 +36,39 @@ class _AppointmentsViewState extends State<_AppointmentsView> {
   /// Variable that stores date that was tapped
   DateTime? _focusedDate;
 
-  final _calendarController = CalendarController()..view = CalendarView.month;
-
-  Future<bool> rebuild() async {
-    if (!mounted) return false;
-
-    // if there's a current frame,
-    if (SchedulerBinding.instance.schedulerPhase != SchedulerPhase.idle) {
-      // wait for the end of that frame.
-      await SchedulerBinding.instance.endOfFrame;
-      if (!mounted) return false;
-    }
-
-    setState(() {});
-    return true;
-  }
+  late final _calendarController = CalendarController()
+    ..view = _focusedDate == null ? CalendarView.month : CalendarView.schedule;
 
   @override
   void initState() {
     super.initState();
+    _initializeSelectedBookingDateWatch();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _calendarController.addPropertyChangedListener((_) {
         _doRebuild();
       });
     });
+  }
+
+  void _initializeSelectedBookingDateWatch() {
+    final state = context.watch<AppNotificationsBlocWeb>().state;
+    if (state is AppNotificationsBookingDateChangeSuccess) {
+      setState(() => _focusedDate = state.bookingDate);
+    }
+  }
+
+  /// Updates the 'selectedDate' and 'displayDate' properties of
+  /// [_calendarController] with the date-without-time data of [date].
+  void _setControllerDate(DateTime date) {
+    final now = DateTime.now();
+    final newDate = DateTime(date.year, date.month, date.day);
+    _calendarController
+      ..selectedDate = newDate
+      ..displayDate = newDate.copyWith(
+        hour: now.hour,
+        minute: now.minute,
+        second: now.second,
+      );
   }
 
   /// Function that does rebuild with setState() only if build is done
@@ -119,6 +129,7 @@ class _AppointmentsViewState extends State<_AppointmentsView> {
                       blackoutDates: state.blackoutDates,
                       focusedDate: _focusedDate,
                       onFocusedDateChange: _onFocusedDateChange,
+                      onSetControllerDate: _setControllerDate,
                     ),
                   ),
                 ),

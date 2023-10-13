@@ -9,6 +9,7 @@ import '../../../../../gen/assets.gen.dart';
 import '../../../../../gen/colors.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../../router/app_router.gr.dart';
+import '../../../../bloc/app_notifications/app_notifications_bloc_web.dart';
 import '../../../../bloc/user/user_bloc.dart';
 import '../../../../widgets/mint_circle_avatar.dart';
 import '../../../../widgets/mint_logo.dart';
@@ -227,7 +228,7 @@ class _NotificationsBellIcon extends StatelessWidget {
         BlendMode.srcIn,
       ),
     );
-    return BlocSelector<AppNotificationsBloc, AppNotificationsState, int>(
+    return BlocSelector<AppNotificationsBlocWeb, AppNotificationsState, int>(
       selector: (state) => state.unreadNotificationCount,
       builder: (context, unreadNotifications) {
         if (unreadNotifications != 0) {

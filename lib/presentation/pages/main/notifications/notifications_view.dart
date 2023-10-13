@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mint_core/mint_bloc.dart';
@@ -6,7 +7,9 @@ import 'package:mint_core/mint_utils.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../../../l10n/l10n.dart';
+import '../../../../router/app_router.gr.dart';
 import '../../../../theme/mint_text_styles.dart';
+import '../../../bloc/app_notifications/app_notifications_bloc_web.dart';
 import 'widgets/notification_tile.dart';
 
 class NotificationsView extends StatelessWidget {
@@ -16,6 +19,9 @@ class NotificationsView extends StatelessWidget {
     BuildContext context,
     AppNotificationsState state,
   ) {
+    if (state is AppNotificationsFetchChatRoomSuccess) {
+      context.router.navigate(MessagesRoute(room: state.room));
+    }
     if (state is AppNotificationsFailure) {
       final l10n = context.l10n;
       switch (state.failureState) {
@@ -38,7 +44,7 @@ class NotificationsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AppNotificationsBloc, AppNotificationsState>(
+    return BlocListener<AppNotificationsBlocWeb, AppNotificationsState>(
       listener: _appNotificationsBlocListener,
       child: const _NotificationsOverlayView(),
     );
@@ -98,7 +104,7 @@ class _EmptyNotifications extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<AppNotificationsBloc, AppNotificationsState, bool>(
+    return BlocSelector<AppNotificationsBlocWeb, AppNotificationsState, bool>(
       selector: (state) =>
           state.todayNotifications.isEmpty &&
           state.previousNotifications.isEmpty,
@@ -123,7 +129,7 @@ class _TodayNotifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return BlocSelector<AppNotificationsBloc, AppNotificationsState,
+    return BlocSelector<AppNotificationsBlocWeb, AppNotificationsState,
         List<NotificationModel>>(
       selector: (state) => state.todayNotifications,
       builder: (context, todayNotifications) => todayNotifications.isNotEmpty
@@ -145,7 +151,7 @@ class _PreviousNotifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return BlocSelector<AppNotificationsBloc, AppNotificationsState,
+    return BlocSelector<AppNotificationsBlocWeb, AppNotificationsState,
         List<NotificationModel>>(
       selector: (state) => state.previousNotifications,
       builder: (context, previousNotifications) =>
@@ -200,13 +206,15 @@ class _MarkAllAsReadButton extends StatelessWidget {
   const _MarkAllAsReadButton();
 
   void _markMessagesAsCleared(BuildContext context) {
-    context.read<AppNotificationsBloc>().add(AppNotificationsClearRequested());
+    context
+        .read<AppNotificationsBlocWeb>()
+        .add(AppNotificationsClearRequested());
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return BlocSelector<AppNotificationsBloc, AppNotificationsState, bool>(
+    return BlocSelector<AppNotificationsBlocWeb, AppNotificationsState, bool>(
       selector: (state) => state.unreadNotificationCount != 0,
       builder: (context, hasUnread) {
         return hasUnread

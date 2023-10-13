@@ -13,6 +13,7 @@ class AppointmentsCalendar extends StatelessWidget {
     required this.bookingList,
     required this.focusedDate,
     required this.onFocusedDateChange,
+    required this.onSetControllerDate,
     required this.blackoutDates,
     super.key,
   });
@@ -21,6 +22,7 @@ class AppointmentsCalendar extends StatelessWidget {
   final List<PatientBook> bookingList;
   final DateTime? focusedDate;
   final void Function(DateTime) onFocusedDateChange;
+  final void Function(DateTime) onSetControllerDate;
 
   /// See [SfCalendar.blackoutDates]
   final List<DateTime> blackoutDates;
@@ -55,25 +57,11 @@ class AppointmentsCalendar extends StatelessWidget {
 
     if (view == CalendarView.month && isCalendarCell) {
       controller.view = CalendarView.day;
-      if (date != null) _setControllerDate(date);
+      if (date != null) onSetControllerDate(date);
     } else if (view != CalendarView.schedule && isAppointmentTap) {
       controller.view = CalendarView.schedule;
-      if (date != null) _setControllerDate(date);
+      if (date != null) onSetControllerDate(date);
     }
-  }
-
-  /// Updates the 'selectedDate' and 'displayDate' properties of [controller]
-  /// with the date-without-time data of [date].
-  void _setControllerDate(DateTime date) {
-    final now = DateTime.now();
-    final newDate = DateTime(date.year, date.month, date.day);
-    controller
-      ..selectedDate = newDate
-      ..displayDate = newDate.copyWith(
-        hour: now.hour,
-        minute: now.minute,
-        second: now.second,
-      );
   }
 
   /// Checks if appointment startTime from [details] is the same as
