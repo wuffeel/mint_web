@@ -21,7 +21,8 @@ class PhoneFieldErrorDecoration extends StatelessWidget {
   ) {
     final l10n = context.l10n;
     return switch (state) {
-      AuthVerifyPhoneBaseFailure() => l10n.somethingWentWrong,
+      AuthVerifyPhoneBaseFailure() =>
+        '${l10n.somethingWentWrong} ${l10n.tryAgain.toLowerCase()}',
       AuthVerifyPhoneInvalidNumber() => l10n.invalidPhoneNumber,
       AuthVerifyPhoneTooManyRequests() => l10n.tooManyRequestsTryAgainLater,
       AuthVerifyPhoneFailure() => l10n.phoneNumberAssociatedWithOtherUser,
