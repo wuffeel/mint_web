@@ -98,7 +98,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else if (error is AuthUserTypeException) {
       emit(AuthVerifyPhoneWrongUserType());
     } else {
-      emit(AuthVerifyPhoneFailure());
+      emit(AuthVerifyPhoneBaseFailure());
     }
   }
 

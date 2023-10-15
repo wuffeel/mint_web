@@ -15,28 +15,26 @@ class PhoneFieldErrorDecoration extends StatelessWidget {
   final Widget child;
   final BorderRadiusGeometry? borderRadius;
 
+  String _getFailureMessage(
+    BuildContext context,
+    AuthVerifyPhoneFailure state,
+  ) {
+    final l10n = context.l10n;
+    return switch (state) {
+      AuthVerifyPhoneBaseFailure() => l10n.somethingWentWrong,
+      AuthVerifyPhoneInvalidNumber() => l10n.invalidPhoneNumber,
+      AuthVerifyPhoneTooManyRequests() => l10n.tooManyRequestsTryAgainLater,
+      AuthVerifyPhoneFailure() => l10n.phoneNumberAssociatedWithOtherUser,
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if (state is AuthVerifyPhoneInvalidNumber) {
+        if (state is AuthVerifyPhoneFailure) {
           return TextFieldErrorDecoration(
-            errorText: l10n.invalidPhoneNumber,
-            borderRadius: borderRadius,
-            child: child,
-          );
-        }
-        if (state is AuthVerifyPhoneTooManyRequests) {
-          return TextFieldErrorDecoration(
-            errorText: l10n.tooManyRequestsTryAgainLater,
-            borderRadius: borderRadius,
-            child: child,
-          );
-        }
-        if (state is AuthVerifyPhoneWrongUserType) {
-          return TextFieldErrorDecoration(
-            errorText: l10n.phoneNumberAssociatedWithOtherUser,
+            errorText: _getFailureMessage(context, state),
             borderRadius: borderRadius,
             child: child,
           );

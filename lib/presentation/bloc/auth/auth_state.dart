@@ -7,13 +7,15 @@ class AuthInitial extends AuthState {}
 
 class AuthPhoneNotEntered extends AuthState {}
 
-class AuthVerifyPhoneFailure extends AuthState {}
+sealed class AuthVerifyPhoneFailure extends AuthState {}
 
-class AuthVerifyPhoneInvalidNumber extends AuthState {}
+class AuthVerifyPhoneBaseFailure extends AuthVerifyPhoneFailure {}
 
-class AuthVerifyPhoneWrongUserType extends AuthState {}
+class AuthVerifyPhoneInvalidNumber extends AuthVerifyPhoneFailure {}
 
-class AuthVerifyPhoneTooManyRequests extends AuthState {}
+class AuthVerifyPhoneWrongUserType extends AuthVerifyPhoneFailure {}
+
+class AuthVerifyPhoneTooManyRequests extends AuthVerifyPhoneFailure {}
 
 class AuthVerifyPhoneLoading extends AuthState {}
 
