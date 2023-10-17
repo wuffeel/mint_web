@@ -26,20 +26,20 @@ import 'package:mint_core/src/domain/use_case/get_app_notification_stream_use_ca
 import 'package:mint_core/src/domain/use_case/mark_app_notification_as_read_use_case.dart'
     as _i7;
 import 'package:mint_web/assembly/entity/onboarding_specialist_from_onboarding.dart'
-    as _i28;
-import 'package:mint_web/assembly/entity/patient_book_from_dto.dart' as _i34;
-import 'package:mint_web/assembly/entity/specialist_model_from_onboarding_specialist.dart'
-    as _i31;
-import 'package:mint_web/assembly/entity/specialist_profile_from_model.dart'
-    as _i30;
-import 'package:mint_web/assembly/entity/user_model_from_onboarding_specialist.dart'
-    as _i35;
-import 'package:mint_web/assembly/model/specialist_profile_model_to_dto.dart'
-    as _i37;
-import 'package:mint_web/data/model/patient_book_dto/patient_book_dto.dart'
-    as _i33;
-import 'package:mint_web/data/model/specialist_profile_model_dto/specialist_profile_model_dto.dart'
     as _i36;
+import 'package:mint_web/assembly/entity/patient_book_from_dto.dart' as _i32;
+import 'package:mint_web/assembly/entity/specialist_model_from_onboarding_specialist.dart'
+    as _i34;
+import 'package:mint_web/assembly/entity/specialist_profile_from_model.dart'
+    as _i29;
+import 'package:mint_web/assembly/entity/user_model_from_onboarding_specialist.dart'
+    as _i37;
+import 'package:mint_web/assembly/model/specialist_profile_model_to_dto.dart'
+    as _i28;
+import 'package:mint_web/data/model/patient_book_dto/patient_book_dto.dart'
+    as _i31;
+import 'package:mint_web/data/model/specialist_profile_model_dto/specialist_profile_model_dto.dart'
+    as _i26;
 import 'package:mint_web/data/repository/abstract/audio_playback_repository.dart'
     as _i11;
 import 'package:mint_web/data/repository/abstract/audio_record_repository.dart'
@@ -62,12 +62,12 @@ import 'package:mint_web/data/repository/firebase/firebase_specialist_repository
     as _i53;
 import 'package:mint_web/domain/controller/booking_controller.dart' as _i19;
 import 'package:mint_web/domain/controller/specialist_controller.dart' as _i51;
-import 'package:mint_web/domain/entity/onboarding/onboarding.dart' as _i27;
+import 'package:mint_web/domain/entity/onboarding/onboarding.dart' as _i35;
 import 'package:mint_web/domain/entity/onboarding_specialist/onboarding_specialist.dart'
-    as _i26;
-import 'package:mint_web/domain/entity/patient_book/patient_book.dart' as _i32;
+    as _i33;
+import 'package:mint_web/domain/entity/patient_book/patient_book.dart' as _i30;
 import 'package:mint_web/domain/entity/specialist_profile_model/specialist_profile_model.dart'
-    as _i29;
+    as _i27;
 import 'package:mint_web/domain/service/abstract/audio_playback_service.dart'
     as _i13;
 import 'package:mint_web/domain/service/abstract/audio_record_service.dart'
@@ -178,21 +178,21 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i23.DisposePlayerUseCase(gh<_i13.AudioPlaybackService>()));
     gh.factory<_i24.DisposeRecorderUseCase>(
         () => _i24.DisposeRecorderUseCase(gh<_i17.AudioRecordService>()));
-    gh.factory<_i25.Factory<_i26.OnboardingSpecialist?, _i27.Onboarding>>(
-        () => _i28.OnboardingSpecialistFromOnboarding());
-    gh.factory<_i25.Factory<_i29.SpecialistProfileModel, _i10.SpecialistModel>>(
-        () => _i30.SpecialistProfileFromModel());
-    gh.factory<_i25.Factory<_i10.SpecialistModel, _i26.OnboardingSpecialist>>(
-        () => _i31.SpecialistModelFromOnboardingSpecialist());
-    gh.factory<_i25.Factory<_i32.PatientBook, _i33.PatientBookDto>>(
-        () => _i34.UserModelFromOnboardingSpecialist());
-    gh.factory<_i25.Factory<_i10.UserModel, _i26.OnboardingSpecialist>>(
-        () => _i35.UserModelFromOnboardingSpecialist());
     gh.factory<
         _i25.Factory<
-            _i36.SpecialistProfileModelDto,
-            _i29
-            .SpecialistProfileModel>>(() => _i37.SpecialistProfileModelToDto());
+            _i26.SpecialistProfileModelDto,
+            _i27
+            .SpecialistProfileModel>>(() => _i28.SpecialistProfileModelToDto());
+    gh.factory<_i25.Factory<_i27.SpecialistProfileModel, _i10.SpecialistModel>>(
+        () => _i29.SpecialistProfileFromModel());
+    gh.factory<_i25.Factory<_i30.PatientBook, _i31.PatientBookDto>>(
+        () => _i32.UserModelFromOnboardingSpecialist());
+    gh.factory<_i25.Factory<_i10.SpecialistModel, _i33.OnboardingSpecialist>>(
+        () => _i34.SpecialistModelFromOnboardingSpecialist());
+    gh.factory<_i25.Factory<_i33.OnboardingSpecialist?, _i35.Onboarding>>(
+        () => _i36.OnboardingSpecialistFromOnboarding());
+    gh.factory<_i25.Factory<_i10.UserModel, _i33.OnboardingSpecialist>>(
+        () => _i37.UserModelFromOnboardingSpecialist());
     gh.factory<_i38.FetchUserUseCase>(
         () => _i38.FetchUserUseCase(gh<_i3.UserService>()));
     gh.factory<_i39.GetPlayerPositionStreamUseCase>(() =>
@@ -226,10 +226,10 @@ extension GetItInjectableX on _i1.GetIt {
               _i25.Factory<_i56.Future<_i10.SpecialistModel>,
                   _i10.SpecialistModelDto>>(),
           gh<_i25.Factory<_i10.SpecialistModelDto, _i10.SpecialistModel>>(),
-          gh<_i25.Factory<_i29.SpecialistProfileModel, _i10.SpecialistModel>>(),
+          gh<_i25.Factory<_i27.SpecialistProfileModel, _i10.SpecialistModel>>(),
           gh<
-              _i25.Factory<_i36.SpecialistProfileModelDto,
-                  _i29.SpecialistProfileModel>>(),
+              _i25.Factory<_i26.SpecialistProfileModelDto,
+                  _i27.SpecialistProfileModel>>(),
         ));
     gh.factory<_i57.StartPlayerUseCase>(
         () => _i57.StartPlayerUseCase(gh<_i13.AudioPlaybackService>()));
@@ -280,7 +280,7 @@ extension GetItInjectableX on _i1.GetIt {
         ));
     gh.factory<_i71.BookingService>(() => _i72.FirebaseBookingService(
           gh<_i20.BookingRepository>(),
-          gh<_i25.Factory<_i32.PatientBook, _i33.PatientBookDto>>(),
+          gh<_i25.Factory<_i30.PatientBook, _i31.PatientBookDto>>(),
         ));
     gh.factory<_i73.FetchPatientBookListUseCase>(
         () => _i73.FetchPatientBookListUseCase(gh<_i71.BookingService>()));
@@ -299,9 +299,9 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i66.AddSpecialistWithIdUseCase>(),
           gh<_i62.UpdateUserDataUseCase>(),
           gh<_i67.AddWorkInfoDataUseCase>(),
-          gh<_i25.Factory<_i26.OnboardingSpecialist?, _i27.Onboarding>>(),
-          gh<_i25.Factory<_i10.SpecialistModel, _i26.OnboardingSpecialist>>(),
-          gh<_i25.Factory<_i10.UserModel, _i26.OnboardingSpecialist>>(),
+          gh<_i25.Factory<_i33.OnboardingSpecialist?, _i35.Onboarding>>(),
+          gh<_i25.Factory<_i10.SpecialistModel, _i33.OnboardingSpecialist>>(),
+          gh<_i25.Factory<_i10.UserModel, _i33.OnboardingSpecialist>>(),
           gh<_i9.UserController<_i10.UserModel?>>(),
           gh<_i51.SpecialistController>(),
         ));

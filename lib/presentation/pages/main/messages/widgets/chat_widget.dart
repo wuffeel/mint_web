@@ -32,18 +32,121 @@ class _ChatWidgetState extends State<ChatWidget> {
 
   var _tapPosition = Offset.zero;
   var _emojiPanelHidden = true;
+
+  /// Stores [details] tap position in [_tapPosition] for further use by message
+  /// actions pop-up menu
+  void _storeTapPosition(TapDownDetails details) {
+    _tapPosition = details.globalPosition;
+  }
+
+  void _onEmojiBackspace() {
+    _messageController
+      ..text = _messageController.text.characters.toString()
+      ..selection = TextSelection.fromPosition(
+        TextPosition(offset: _messageController.text.length),
+      );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _messageController.dispose();
+    _messageFocusNode.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ChatBloc, ChatState>(
+      builder: (context, state) {
+        if (state is ChatFetchMessagesSuccess) {
+          return Column(
+            children: <Widget>[
+              Expanded(
+                child: GestureDetector(
+                  onTapDown: _storeTapPosition,
+                  child: _ChatView(
+                    state,
+                    widget.room,
+                    widget.senderId,
+                    messageController: _messageController,
+                    messageFocusNode: _messageFocusNode,
+                    tapPosition: _tapPosition,
+                    onEmojiTap: () => setState(
+                      () => _emojiPanelHidden = !_emojiPanelHidden,
+                    ),
+                    emojiPanelHidden: _emojiPanelHidden,
+                    onBackgroundTap: () {
+                      if (!_emojiPanelHidden) {
+                        setState(() => _emojiPanelHidden = true);
+                      }
+                    },
+                  ),
+                ),
+              ),
+              if (!_emojiPanelHidden)
+                SizedBox(
+                  height: 250,
+                  child: ChatEmojiPicker(
+                    controller: _messageController,
+                    focusNode: _messageFocusNode,
+                    onBackSpace: _onEmojiBackspace,
+                  ),
+                ),
+            ],
+          );
+        }
+        return const SizedBox.shrink();
+      },
+    );
+  }
+}
+
+class _ChatView extends StatefulWidget {
+  const _ChatView(
+    this.state,
+    this.room,
+    this.senderId, {
+    required this.messageController,
+    required this.messageFocusNode,
+    required this.tapPosition,
+    required this.onBackgroundTap,
+    required this.onEmojiTap,
+    required this.emojiPanelHidden,
+  });
+
+  final ChatFetchMessagesSuccess state;
+  final types.Room room;
+  final String senderId;
+  final TextEditingController messageController;
+  final FocusNode messageFocusNode;
+  final Offset tapPosition;
+  final VoidCallback onBackgroundTap;
+  final VoidCallback onEmojiTap;
+  final bool emojiPanelHidden;
+
+  @override
+  State<_ChatView> createState() => _ChatViewState();
+}
+
+class _ChatViewState extends State<_ChatView> {
   final _emojiEnlargementBehavior = ui.EmojiEnlargementBehavior.single;
   final _hideBackgroundOnEmojiMessages = true;
 
-  late final _user = widget.room.users.firstWhere(
-    (e) => e.id == widget.senderId,
-  );
+  types.User get _user => widget.room.users.firstWhere(
+        (e) => e.id == widget.senderId,
+      );
+
+  types.User get _receiver => widget.room.users.firstWhere(
+        (e) => e.id != widget.senderId,
+      );
 
   void _handleSendPressed() {
-    final message = types.PartialText(text: _messageController.text.trim());
+    final message = types.PartialText(
+      text: widget.messageController.text.trim(),
+    );
     context.read<ChatBloc>().add(ChatSendMessageRequested(message));
-    _messageController.clear();
-    _messageFocusNode.requestFocus();
+    widget.messageController.clear();
+    widget.messageFocusNode.requestFocus();
   }
 
   void _handleAttachmentPressed(GlobalKey attachKey) {
@@ -90,13 +193,14 @@ class _ChatWidgetState extends State<ChatWidget> {
   /// type
   void _handleMessageTap(BuildContext _, types.Message message) {
     if (message is types.FileMessage) {
-      return context.read<ChatBloc>().add(
-            ChatFileLoadRequested(
-              message,
-              shouldOpen: false,
-            ),
-          );
+      final fileLoadEvent = ChatFileLoadRequested(message, shouldOpen: false);
+      return context.read<ChatBloc>().add(fileLoadEvent);
     }
+  }
+
+  void _handleTypingStart(String text) {
+    final typingStartEvent = ChatTypingStartRequested(_user.id, widget.room.id);
+    context.read<ChatTypingBloc>().add(typingStartEvent);
   }
 
   /// Calls event when http link preview data has been fetched
@@ -109,14 +213,14 @@ class _ChatWidgetState extends State<ChatWidget> {
         .add(ChatPreviewDataFetched(message, previewData));
   }
 
-  /// Shows pop-up menu on [_tapPosition] with 'Edit' and 'Delete' actions
+  /// Shows pop-up menu on widget.tapPosition with 'Edit' and 'Delete' actions
   void _showMessageActionsMenu(BuildContext context, types.Message message) {
     if (_isSender(message.author.id)) {
       final l10n = context.l10n;
       return ChatUtils.showMessageActionsMenu(
         context,
         message,
-        _tapPosition,
+        widget.tapPosition,
         items: <PopupMenuEntry<void>>[
           PopupMenuItem(
             onTap: () {
@@ -128,20 +232,6 @@ class _ChatWidgetState extends State<ChatWidget> {
         ],
       );
     }
-  }
-
-  /// Stores [details] tap position in [_tapPosition] for further use by message
-  /// actions pop-up menu
-  void _storeTapPosition(TapDownDetails details) {
-    _tapPosition = details.globalPosition;
-  }
-
-  void _onEmojiBackspace() {
-    _messageController
-      ..text = _messageController.text.characters.toString()
-      ..selection = TextSelection.fromPosition(
-        TextPosition(offset: _messageController.text.length),
-      );
   }
 
   void _markMessageAsRead(String messageId) {
@@ -194,111 +284,81 @@ class _ChatWidgetState extends State<ChatWidget> {
       );
 
   @override
-  void dispose() {
-    super.dispose();
-    _messageController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChatBloc, ChatState>(
-      builder: (context, state) {
-        if (state is ChatFetchMessagesSuccess) {
-          return Column(
-            children: <Widget>[
-              Expanded(
-                child: GestureDetector(
-                  onTapDown: _storeTapPosition,
-                  child: ui.Chat(
-                    audioMessageBuilder: (
-                      audio, {
-                      required int messageWidth,
-                    }) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: AudioMessageWidget(
-                          message: audio,
-                          isSender: _isSender(audio.author.id),
-                        ),
-                      );
-                    },
-                    bubbleBuilder: _bubbleBuilder,
-                    customBottomWidget: ChatBottomBar(
-                      controller: _messageController,
-                      focusNode: _messageFocusNode,
-                      onSend: _handleSendPressed,
-                      onEmoji: () {
-                        setState(() {
-                          _emojiPanelHidden = !_emojiPanelHidden;
-                        });
-                      },
-                      onAttach: _handleAttachmentPressed,
-                      onAudioStop: (audioPath, duration) {
-                        context
-                            .read<ChatBloc>()
-                            .add(ChatSaveAudioRequested(audioPath, duration));
-                      },
-                      isEmojiSelected: !_emojiPanelHidden,
-                    ),
-                    customMessageBuilder: _messageLoadingBuilder,
-                    dateLocale: context.l10n.localeName,
-                    dateHeaderBuilder: (date) {
-                      return Center(
-                        child: ChatDateHeader(
-                          date: date.dateTime,
-                          text: date.text,
-                        ),
-                      );
-                    },
-                    // 3 minutes
-                    groupMessagesThreshold: 180000,
-                    // 24 hours
-                    dateHeaderThreshold: 86400000,
-                    emojiEnlargementBehavior: _emojiEnlargementBehavior,
-                    hideBackgroundOnEmojiMessages:
-                        _hideBackgroundOnEmojiMessages,
-                    messages: state.messages,
-                    onBackgroundTap: () {
-                      if (!_emojiPanelHidden) {
-                        setState(
-                          () => _emojiPanelHidden = true,
-                        );
-                      }
-                    },
-                    onMessageTap: _handleMessageTap,
-                    onMessageLongPress: _showMessageActionsMenu,
-                    onPreviewDataFetched: _previewDataFetched,
-                    onSendPressed: (_) {
-                      // implemented in customBottomWidget
-                    },
-                    scrollToUnreadOptions: ui.ScrollToUnreadOptions(
-                      lastReadMessageId: state.messages.lastWhereOrNull((msg) {
-                        final status = msg.status;
-                        if (msg.author.id == _user.id) return false;
-                        return status != null && status != types.Status.seen;
-                      })?.id,
-                      scrollDelay: const Duration(milliseconds: 20),
-                      scrollDuration: const Duration(milliseconds: 100),
-                      scrollOnOpen: true,
-                    ),
-                    theme: MintChatTheme(context),
-                    user: _user,
-                  ),
-                ),
+    return BlocSelector<ChatTypingBloc, ChatTypingState, bool?>(
+      selector: (typingState) =>
+          typingState.typingMap[widget.room.id]?[_receiver.id],
+      builder: (context, isReceiverTyping) {
+        return ui.Chat(
+          audioMessageBuilder: (
+            audio, {
+            required int messageWidth,
+          }) {
+            return Padding(
+              padding: const EdgeInsets.all(8),
+              child: AudioMessageWidget(
+                message: audio,
+                isSender: _isSender(audio.author.id),
               ),
-              if (!_emojiPanelHidden)
-                SizedBox(
-                  height: 250,
-                  child: ChatEmojiPicker(
-                    controller: _messageController,
-                    focusNode: _messageFocusNode,
-                    onBackSpace: _onEmojiBackspace,
-                  ),
-                ),
-            ],
-          );
-        }
-        return const SizedBox.shrink();
+            );
+          },
+          bubbleBuilder: _bubbleBuilder,
+          customBottomWidget: ChatBottomBar(
+            controller: widget.messageController,
+            focusNode: widget.messageFocusNode,
+            onSend: _handleSendPressed,
+            onEmoji: widget.onEmojiTap,
+            onAttach: _handleAttachmentPressed,
+            onAudioStop: (audioPath, duration) {
+              context
+                  .read<ChatBloc>()
+                  .add(ChatSaveAudioRequested(audioPath, duration));
+            },
+            onTextChanged: _handleTypingStart,
+            isEmojiSelected: !widget.emojiPanelHidden,
+          ),
+          customMessageBuilder: _messageLoadingBuilder,
+          dateLocale: context.l10n.localeName,
+          dateHeaderBuilder: (date) {
+            return Center(
+              child: ChatDateHeader(
+                date: date.dateTime,
+                text: date.text,
+              ),
+            );
+          },
+          // 3 minutes
+          groupMessagesThreshold: 180000,
+          // 24 hours
+          dateHeaderThreshold: 86400000,
+          emojiEnlargementBehavior: _emojiEnlargementBehavior,
+          hideBackgroundOnEmojiMessages: _hideBackgroundOnEmojiMessages,
+          messages: widget.state.messages,
+          onBackgroundTap: widget.onBackgroundTap,
+          onMessageTap: _handleMessageTap,
+          onMessageLongPress: _showMessageActionsMenu,
+          onPreviewDataFetched: _previewDataFetched,
+          onSendPressed: (_) {
+            // implemented in customBottomWidget
+          },
+          scrollToUnreadOptions: ui.ScrollToUnreadOptions(
+            lastReadMessageId: widget.state.messages.lastWhereOrNull((msg) {
+              final status = msg.status;
+              if (msg.author.id == _user.id) return false;
+              return status != null && status != types.Status.seen;
+            })?.id,
+            scrollDelay: const Duration(milliseconds: 20),
+            scrollDuration: const Duration(milliseconds: 100),
+            scrollOnOpen: true,
+          ),
+          theme: MintChatTheme(context),
+          typingIndicatorOptions: ui.TypingIndicatorOptions(
+            animationSpeed: const Duration(seconds: 1),
+            typingUsers:
+                isReceiverTyping != null && isReceiverTyping ? [_receiver] : [],
+          ),
+          user: _user,
+        );
       },
     );
   }

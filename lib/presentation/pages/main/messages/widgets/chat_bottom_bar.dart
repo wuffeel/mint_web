@@ -19,6 +19,7 @@ class ChatBottomBar extends StatefulWidget {
     required this.onAudioStop,
     super.key,
     this.isEmojiSelected = false,
+    this.onTextChanged,
     this.onTextFieldTap,
   });
 
@@ -29,6 +30,7 @@ class ChatBottomBar extends StatefulWidget {
   final void Function(GlobalKey) onAttach;
   final void Function(String audioPath, Duration duration) onAudioStop;
   final bool isEmojiSelected;
+  final void Function(String)? onTextChanged;
   final VoidCallback? onTextFieldTap;
 
   @override
@@ -86,6 +88,7 @@ class _ChatBottomBarState extends State<ChatBottomBar> {
                     onAttachTap: widget.onAttach,
                     onSendTap: widget.onSend,
                     onEmojiTap: widget.onEmoji,
+                    onTextChanged: widget.onTextChanged,
                     onTextFieldTap: widget.onTextFieldTap,
                     isEmojiSelected: widget.isEmojiSelected,
                     isSendButtonVisible: _isSendButtonVisible,
@@ -133,6 +136,7 @@ class _ChatToolbar extends StatefulWidget {
     required this.onEmojiTap,
     required this.isEmojiSelected,
     required this.isSendButtonVisible,
+    this.onTextChanged,
     this.onTextFieldTap,
   });
 
@@ -143,6 +147,7 @@ class _ChatToolbar extends StatefulWidget {
   final VoidCallback onEmojiTap;
   final bool isEmojiSelected;
   final bool isSendButtonVisible;
+  final void Function(String)? onTextChanged;
   final VoidCallback? onTextFieldTap;
 
   @override
@@ -217,6 +222,7 @@ class _ChatToolbarState extends State<_ChatToolbar> {
               ),
               hintText: context.l10n.message,
             ),
+            onChanged: widget.onTextChanged,
             style: const TextStyle(
               fontFamilyFallback: [MintFontFamily.notoColorEmoji],
             ),

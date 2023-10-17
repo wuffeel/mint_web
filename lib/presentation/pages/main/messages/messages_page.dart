@@ -40,6 +40,13 @@ class MessagesPage extends StatelessWidget {
       context.read<UnreadMessagesBloc>().add(
             UnreadMessagesFetchRequested(state.roomList, state.senderId),
           );
+      for (final room in state.roomList) {
+        final otherUserId =
+            room.users.firstWhere((e) => e.id != state.senderId).id;
+        context
+            .read<ChatTypingBloc>()
+            .add(ChatTypingInitializeRequested(otherUserId, room.id));
+      }
     }
   }
 
@@ -59,6 +66,7 @@ class MessagesPage extends StatelessWidget {
         ),
         BlocProvider(create: (context) => getIt<AudioPlayerBloc>()),
         BlocProvider(create: (context) => getIt<UnreadMessagesBloc>()),
+        BlocProvider(create: (context) => getIt<ChatTypingBloc>()),
       ],
       child: BlocListener<ChatRoomBloc, ChatRoomState>(
         listener: _chatRoomBlocListener,
@@ -189,16 +197,6 @@ class _MessagesBlock extends StatelessWidget {
   final String senderId;
   final types.Room? selectedRoom;
 
-  void _initializeChat(BuildContext context, types.Room room) {
-    context.read<ChatBloc>().add(ChatInitializeRequested(room));
-  }
-
-  int _getUnreadCount(UnreadMessagesState state, String userId) {
-    return state is UnreadMessagesFetchSuccess
-        ? state.unreadMap[userId] ?? 0
-        : 0;
-  }
-
   @override
   Widget build(BuildContext context) {
     final currentRoom = selectedRoom;
@@ -209,22 +207,7 @@ class _MessagesBlock extends StatelessWidget {
           final room = roomList[index];
           final user = room.users.firstWhere((e) => e.id != senderId);
           final isSelected = currentRoom != null && currentRoom.id == room.id;
-          return BlocBuilder<UnreadMessagesBloc, UnreadMessagesState>(
-            builder: (context, state) {
-              return MessageTile(
-                isSelected: isSelected,
-                lastMessage: (room.lastMessages?.isNotEmpty ?? false)
-                    ? room.lastMessages?.last
-                    : null,
-                user: user,
-                onTap: !isSelected
-                    ? () => _initializeChat(context, roomList[index])
-                    : null,
-                unreadCount: _getUnreadCount(state, user.id),
-                roomLastDate: room.updatedAt ?? room.createdAt,
-              );
-            },
-          );
+          return _MessageTile(room, user, isSelected: isSelected);
         },
         itemCount: roomList.length,
       ),
@@ -280,6 +263,48 @@ class _ChatBlock extends StatelessWidget {
           Expanded(child: ChatWidget(room: room, senderId: senderId)),
         ],
       ),
+    );
+  }
+}
+
+class _MessageTile extends StatelessWidget {
+  const _MessageTile(this.room, this.user, {this.isSelected = false});
+
+  final types.Room room;
+  final types.User user;
+  final bool isSelected;
+
+  void _initializeChat(BuildContext context, types.Room room) {
+    context.read<ChatBloc>().add(ChatInitializeRequested(room));
+  }
+
+  int _getUnreadCount(UnreadMessagesState state, String userId) {
+    return state is UnreadMessagesFetchSuccess
+        ? state.unreadMap[userId] ?? 0
+        : 0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<UnreadMessagesBloc, UnreadMessagesState>(
+      builder: (context, state) {
+        return BlocSelector<ChatTypingBloc, ChatTypingState, bool?>(
+          selector: (typingState) => typingState.typingMap[room.id]?[user.id],
+          builder: (context, isTyping) {
+            return MessageTile(
+              isSelected: isSelected,
+              isTyping: isTyping ?? false,
+              lastMessage: (room.lastMessages?.isNotEmpty ?? false)
+                  ? room.lastMessages?.last
+                  : null,
+              user: user,
+              onTap: !isSelected ? () => _initializeChat(context, room) : null,
+              unreadCount: _getUnreadCount(state, user.id),
+              roomLastDate: room.updatedAt ?? room.createdAt,
+            );
+          },
+        );
+      },
     );
   }
 }

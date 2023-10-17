@@ -119,5 +119,6 @@
   "bookedA": "Booked a",
   "bookedConsultation": "Consultation",
   "bookedOn": "On",
-  "notifications": "Notifications"
+  "notifications": "Notifications",
+  "typing": "Typing"
 }

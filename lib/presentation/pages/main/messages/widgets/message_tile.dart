@@ -14,6 +14,7 @@ class MessageTile extends StatelessWidget {
     required this.user,
     required this.onTap,
     this.unreadCount = 0,
+    this.isTyping = false,
     this.roomLastDate,
     super.key,
   });
@@ -23,6 +24,7 @@ class MessageTile extends StatelessWidget {
   final types.User user;
   final VoidCallback? onTap;
   final int unreadCount;
+  final bool isTyping;
   final int? roomLastDate;
 
   String _getLastMessageContent(
@@ -84,9 +86,11 @@ class MessageTile extends StatelessWidget {
                       style: MintTextStyles.semiBold16,
                     ),
                     Text(
-                      message != null
-                          ? _getLastMessageContent(context, message)
-                          : l10n.noMessagesYet,
+                      isTyping
+                          ? '${l10n.typing.toLowerCase()}...'
+                          : message != null
+                              ? _getLastMessageContent(context, message)
+                              : l10n.noMessagesYet,
                       overflow: TextOverflow.ellipsis,
                       style: MintTextStyles.regular14,
                       maxLines: 1,
