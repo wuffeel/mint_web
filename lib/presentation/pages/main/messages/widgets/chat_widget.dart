@@ -145,6 +145,10 @@ class _ChatViewState extends State<_ChatView> {
       text: widget.messageController.text.trim(),
     );
     context.read<ChatBloc>().add(ChatSendMessageRequested(message));
+
+    final typingEndEvent = ChatTypingEndRequested(_user.id, widget.room.id);
+    context.read<ChatTypingBloc>().add(typingEndEvent);
+
     widget.messageController.clear();
     widget.messageFocusNode.requestFocus();
   }
