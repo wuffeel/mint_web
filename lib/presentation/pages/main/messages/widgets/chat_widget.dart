@@ -287,6 +287,13 @@ class _ChatViewState extends State<_ChatView> {
         isSender: _isSender(message.author.id),
       );
 
+  types.User _getTypingUser(BuildContext context) {
+    final firstName = _receiver.firstName;
+    return firstName != null
+        ? _receiver
+        : _receiver.copyWith(firstName: context.l10n.patient);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocSelector<ChatTypingBloc, ChatTypingState, bool?>(
@@ -358,8 +365,9 @@ class _ChatViewState extends State<_ChatView> {
           theme: MintChatTheme(context),
           typingIndicatorOptions: ui.TypingIndicatorOptions(
             animationSpeed: const Duration(seconds: 1),
-            typingUsers:
-                isReceiverTyping != null && isReceiverTyping ? [_receiver] : [],
+            typingUsers: isReceiverTyping != null && isReceiverTyping
+                ? [_getTypingUser(context)]
+                : [],
           ),
           user: _user,
         );
