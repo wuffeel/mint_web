@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mint_core/mint_bloc.dart';
 
+import '../../../../gen/assets.gen.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../router/app_router.gr.dart';
 import '../../../../theme/mint_text_styles.dart';
@@ -98,10 +100,45 @@ class _EnterPhonePageState extends State<EnterPhonePage> {
                   const SizedBox(height: 70),
                   const Align(child: SignInText()),
                   const SizedBox(height: 50),
+                  const _GoogleSignInButton(),
+                  const SizedBox(height: 50),
                 ],
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GoogleSignInButton extends StatelessWidget {
+  const _GoogleSignInButton();
+
+  void _signInWithGoogle(BuildContext context) {
+    context.read<GoogleAuthBloc>().add(GoogleAuthSignInRequested());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: () => _signInWithGoogle(context),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Assets.svg.googleIcon.svg(
+              width: 24,
+              height: 24,
+              fit: BoxFit.scaleDown,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              context.l10n.signInWithGoogle,
+              style: const TextStyle(color: Colors.black, fontSize: 20),
+            ),
+          ],
         ),
       ),
     );

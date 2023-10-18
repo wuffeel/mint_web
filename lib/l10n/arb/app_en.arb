@@ -120,5 +120,7 @@
   "bookedConsultation": "Consultation",
   "bookedOn": "On",
   "notifications": "Notifications",
-  "typing": "Typing"
+  "typing": "Typing",
+  "signInWithGoogle": "Sign in with Google",
+  "accountIsAttachedToOtherUser": "Account is attached to other user"
 }

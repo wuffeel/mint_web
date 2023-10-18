@@ -120,5 +120,7 @@
   "bookedConsultation": "Консультацію",
   "bookedOn": "На",
   "notifications": "Сповіщення",
-  "typing": "Друкує"
+  "typing": "Друкує",
+  "signInWithGoogle": "Увійти з Google",
+  "accountIsAttachedToOtherUser": "Акаунт пов'язаний з іншим користувачем"
 }

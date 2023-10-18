@@ -14,7 +14,7 @@ dependencies:
   collection: ^1.17.1
   data_table_2: ^2.5.7
   emoji_picker_flutter: ^1.6.1
-  firebase_auth: 4.8.0
+  firebase_auth: ^4.9.0
   firebase_core: 2.15.1
   firebase_storage: 11.2.6
   flutter:
