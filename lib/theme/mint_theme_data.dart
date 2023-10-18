@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../gen/colors.gen.dart';
+import 'mint_text_styles.dart';
 
 class MintThemeData {
   static const colorScheme = ColorScheme.light(
@@ -49,6 +50,18 @@ class MintThemeData {
       color: MintColors.hintColor.withOpacity(0.3),
     ),
     hoverColor: Colors.white,
+  );
+
+  static final outlinedButton = OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      elevation: 0,
+      minimumSize: const Size.fromHeight(50),
+      foregroundColor: Colors.black,
+      disabledForegroundColor: Colors.black.withOpacity(0.4),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      side: const BorderSide(color: MintColors.primaryBlueColor),
+      textStyle: MintTextStyles.headline1,
+    ),
   );
 
   static final textTheme = const TextTheme().apply(
