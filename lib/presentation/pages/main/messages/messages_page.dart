@@ -43,9 +43,9 @@ class MessagesPage extends StatelessWidget {
       for (final room in state.roomList) {
         final otherUserId =
             room.users.firstWhere((e) => e.id != state.senderId).id;
-        context
-            .read<ChatTypingBloc>()
-            .add(ChatTypingInitializeRequested(otherUserId, room.id));
+        context.read<ChatTypingBloc>()
+          ..add(ChatTypingInitializeRequested(otherUserId, room.id))
+          ..add(ChatTypingInitializeRequested(state.senderId, room.id));
       }
     }
   }
