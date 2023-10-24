@@ -8,11 +8,13 @@ class MintCircleAvatar extends StatelessWidget {
     required this.backgroundColor,
     super.key,
     this.photoUrl,
+    this.iconColor,
   });
 
   final double radius;
   final Color backgroundColor;
   final String? photoUrl;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class MintCircleAvatar extends StatelessWidget {
               height: radius,
               fit: BoxFit.scaleDown,
               colorFilter: ColorFilter.mode(
-                Theme.of(context).primaryColor,
+                iconColor ?? Theme.of(context).primaryColor,
                 BlendMode.srcIn,
               ),
             ),

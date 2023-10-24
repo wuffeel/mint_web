@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../../../../l10n/l10n.dart';
+import '../../../../../utils/numeric_pattern_input_formatter.dart';
 import '../../../../bloc/onboarding/onboarding_bloc.dart';
 import 'onboarding_page_container.dart';
 
@@ -69,87 +69,13 @@ class _TextField extends StatelessWidget {
     return TextFormField(
       decoration: InputDecoration(counterText: '', errorText: errorText),
       initialValue: '₴$selectedPricing/hr',
-      inputFormatters: [_PricingInputFormatter()],
+      inputFormatters: [
+        NumericPatternInputFormatter(pattern: (value) => '₴$value/hr'),
+      ],
       maxLength: 9,
       onChanged: (pricing) {
-        onChange(_PricingInputFormatter.getPrice(pricing));
+        onChange(NumericPatternInputFormatter.getNumericValue(pricing));
       },
     );
-  }
-}
-
-class _PricingInputFormatter extends TextInputFormatter {
-  static int getPrice(String pricing) {
-    final symbolArray = <String>[];
-    for (var i = 0; i < pricing.length; i++) {
-      try {
-        int.parse(pricing[i]);
-        symbolArray.add(pricing[i]);
-      } catch (_) {
-        continue;
-      }
-    }
-    return int.parse(symbolArray.join());
-  }
-
-  @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
-    final numericValue = newValue.text.replaceAll(RegExp('[^0-9]'), '');
-
-    final value = _validateNumericValue(numericValue);
-    final formattedValue = _formatPricingValue(value);
-
-    final baseOffset = newValue.selection.baseOffset;
-    final cursorPosition = _getCursorPosition(
-      baseOffset,
-      value,
-      formattedValue,
-    );
-
-    return TextEditingValue(
-      text: formattedValue,
-      selection: _getTextSelection(
-        numericValue,
-        formattedValue,
-        cursorPosition,
-      ),
-    );
-  }
-
-  /// Validates and sanitizes the numeric value, ensuring that it is not
-  /// empty and handles leading zeros appropriately.
-  String _validateNumericValue(String value) {
-    return value.isEmpty
-        ? '0'
-        : (value.startsWith('0') && value.length > 1)
-            ? value.substring(1)
-            : value;
-  }
-
-  /// Returns '₴[value]/hr' String
-  String _formatPricingValue(String value) {
-    return '₴$value/hr';
-  }
-
-  int _getCursorPosition(int baseOffset, String value, String formattedValue) {
-    final valueLength = value.length;
-    return baseOffset > valueLength
-        ? formattedValue.indexOf(value) + valueLength
-        : baseOffset;
-  }
-
-  TextSelection _getTextSelection(
-    String numericValue,
-    String formattedValue,
-    int cursorPosition,
-  ) {
-    final zeroCursor = formattedValue.indexOf('0') + 1;
-
-    return numericValue.isEmpty
-        ? TextSelection.collapsed(offset: zeroCursor)
-        : TextSelection.collapsed(offset: cursorPosition);
   }
 }

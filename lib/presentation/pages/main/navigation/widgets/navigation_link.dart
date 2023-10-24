@@ -38,7 +38,7 @@ class NavigationLink extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: Container(height: 2, color: MintColors.primaryBlueColor),
               ),
-            )
+            ),
         ],
       ),
     );

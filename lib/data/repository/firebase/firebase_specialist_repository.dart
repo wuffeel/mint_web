@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:mint_core/mint_core.dart';
 import 'package:mint_core/mint_module.dart';
 
+import '../../model/specialist_profile_model_dto/specialist_profile_model_dto.dart';
 import '../abstract/specialist_repository.dart';
 
 @Injectable(as: SpecialistRepository)
@@ -81,5 +82,17 @@ class FirebaseSpecialistRepository implements SpecialistRepository {
     if (data == null) return null;
 
     return SpecialistModelDto.fromJsonWithId(data, specialistDoc.id);
+  }
+
+  @override
+  Future<void> updateSpecialistData(
+    SpecialistProfileModelDto specialist,
+  ) async {
+    final firestore = await _firebaseInitializer.firestore;
+
+    return firestore
+        .collection(_specialistCollection)
+        .doc(specialist.id)
+        .update(specialist.toJsonWithoutId());
   }
 }

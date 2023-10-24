@@ -26,6 +26,7 @@ mixin _$PatientBookDto {
   int get durationMinutes => throw _privateConstructorUsedError;
   @DateTimeConverter()
   DateTime get endTime => throw _privateConstructorUsedError;
+  String get notes => throw _privateConstructorUsedError;
   String? get phoneNumber => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
@@ -47,6 +48,7 @@ abstract class $PatientBookDtoCopyWith<$Res> {
       @DateTimeConverter() DateTime bookTime,
       int durationMinutes,
       @DateTimeConverter() DateTime endTime,
+      String notes,
       String? phoneNumber,
       String? firstName,
       String? lastName});
@@ -69,6 +71,7 @@ class _$PatientBookDtoCopyWithImpl<$Res, $Val extends PatientBookDto>
     Object? bookTime = null,
     Object? durationMinutes = null,
     Object? endTime = null,
+    Object? notes = null,
     Object? phoneNumber = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
@@ -90,6 +93,10 @@ class _$PatientBookDtoCopyWithImpl<$Res, $Val extends PatientBookDto>
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      notes: null == notes
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String,
       phoneNumber: freezed == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
@@ -119,6 +126,7 @@ abstract class _$$_PatientBookDtoCopyWith<$Res>
       @DateTimeConverter() DateTime bookTime,
       int durationMinutes,
       @DateTimeConverter() DateTime endTime,
+      String notes,
       String? phoneNumber,
       String? firstName,
       String? lastName});
@@ -139,6 +147,7 @@ class __$$_PatientBookDtoCopyWithImpl<$Res>
     Object? bookTime = null,
     Object? durationMinutes = null,
     Object? endTime = null,
+    Object? notes = null,
     Object? phoneNumber = freezed,
     Object? firstName = freezed,
     Object? lastName = freezed,
@@ -160,6 +169,10 @@ class __$$_PatientBookDtoCopyWithImpl<$Res>
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      notes: null == notes
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String,
       phoneNumber: freezed == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
@@ -186,6 +199,7 @@ class _$_PatientBookDto
       @DateTimeConverter() required this.bookTime,
       required this.durationMinutes,
       @DateTimeConverter() required this.endTime,
+      this.notes = '',
       this.phoneNumber,
       this.firstName,
       this.lastName});
@@ -204,6 +218,9 @@ class _$_PatientBookDto
   @DateTimeConverter()
   final DateTime endTime;
   @override
+  @JsonKey()
+  final String notes;
+  @override
   final String? phoneNumber;
   @override
   final String? firstName;
@@ -212,7 +229,7 @@ class _$_PatientBookDto
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PatientBookDto(id: $id, bookTime: $bookTime, durationMinutes: $durationMinutes, endTime: $endTime, phoneNumber: $phoneNumber, firstName: $firstName, lastName: $lastName)';
+    return 'PatientBookDto(id: $id, bookTime: $bookTime, durationMinutes: $durationMinutes, endTime: $endTime, notes: $notes, phoneNumber: $phoneNumber, firstName: $firstName, lastName: $lastName)';
   }
 
   @override
@@ -224,6 +241,7 @@ class _$_PatientBookDto
       ..add(DiagnosticsProperty('bookTime', bookTime))
       ..add(DiagnosticsProperty('durationMinutes', durationMinutes))
       ..add(DiagnosticsProperty('endTime', endTime))
+      ..add(DiagnosticsProperty('notes', notes))
       ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
       ..add(DiagnosticsProperty('firstName', firstName))
       ..add(DiagnosticsProperty('lastName', lastName));
@@ -240,6 +258,7 @@ class _$_PatientBookDto
             (identical(other.durationMinutes, durationMinutes) ||
                 other.durationMinutes == durationMinutes) &&
             (identical(other.endTime, endTime) || other.endTime == endTime) &&
+            (identical(other.notes, notes) || other.notes == notes) &&
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber) &&
             (identical(other.firstName, firstName) ||
@@ -251,7 +270,7 @@ class _$_PatientBookDto
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, bookTime, durationMinutes,
-      endTime, phoneNumber, firstName, lastName);
+      endTime, notes, phoneNumber, firstName, lastName);
 
   @JsonKey(ignore: true)
   @override
@@ -273,6 +292,7 @@ abstract class _PatientBookDto implements PatientBookDto {
       @DateTimeConverter() required final DateTime bookTime,
       required final int durationMinutes,
       @DateTimeConverter() required final DateTime endTime,
+      final String notes,
       final String? phoneNumber,
       final String? firstName,
       final String? lastName}) = _$_PatientBookDto;
@@ -290,6 +310,8 @@ abstract class _PatientBookDto implements PatientBookDto {
   @override
   @DateTimeConverter()
   DateTime get endTime;
+  @override
+  String get notes;
   @override
   String? get phoneNumber;
   @override

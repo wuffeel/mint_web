@@ -10,10 +10,23 @@ import '../../../../../gen/colors.gen.dart';
 import '../../../../../l10n/l10n.dart';
 import '../../../../../theme/mint_text_styles.dart';
 import '../../../../bloc/patients/patients_bloc.dart';
+import '../../../../widgets/error_try_again.dart';
 import 'consultation_status_widget.dart';
 
 class PatientsPaginatedDataTable extends StatefulWidget {
-  const PatientsPaginatedDataTable({super.key});
+  const PatientsPaginatedDataTable({
+    super.key,
+    this.rowsPerPage = 8,
+    this.whereBook,
+    this.title,
+  });
+
+  final bool Function(PatientBook)? whereBook;
+
+  /// See [PaginatedDataTable2.rowsPerPage]
+  final int rowsPerPage;
+
+  final Widget? title;
 
   @override
   State<PatientsPaginatedDataTable> createState() =>
@@ -47,52 +60,48 @@ class _PatientsPaginatedDataTableState
   }
 
   void _onRefresh() {
-    context.read<PatientsBloc>().add(PatientsRefreshRequested());
-    setState(() {
-      _sortColumnIndex = null;
-      _sortAscending = true;
-    });
+    context.read<PatientsBloc>().add(PatientsFetchBookListRequested());
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return SelectionArea(
-      child: BlocBuilder<PatientsBloc, PatientsState>(
-        builder: (context, state) {
-          if (state is PatientsFetchBookListLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (state is PatientsBookListLoadSuccess) {
-            return Theme(
-              data: ThemeData(
-                scrollbarTheme: ScrollbarThemeData(
-                  thickness: MaterialStateProperty.all(5),
-                  thumbVisibility: MaterialStateProperty.all(true),
-                ),
+    final whereBook = widget.whereBook;
+    return BlocBuilder<PatientsBloc, PatientsState>(
+      builder: (context, state) {
+        if (state is PatientsFetchBookListFailure) {
+          return Center(child: ErrorTryAgain(onRefresh: _onRefresh));
+        }
+        if (state is PatientsBookListLoadSuccess) {
+          return Theme(
+            data: ThemeData(
+              scrollbarTheme: ScrollbarThemeData(
+                thickness: MaterialStateProperty.all(5),
+                thumbVisibility: MaterialStateProperty.all(true),
               ),
+            ),
+            child: _PatientsListLoadingWrapper(
+              state: state,
               child: PaginatedDataTable2(
-                actions: [
-                  IconButton(
-                    onPressed: _onRefresh,
-                    icon: const Icon(Icons.refresh),
-                  ),
+                actions: <Widget>[
                   if (_sortColumnIndex != null)
                     TextButton(
                       onPressed: _clearSort,
                       child: Text(l10n.resetSorting),
                     ),
                 ],
-                empty: const _NoConsultationsFound(),
+                empty: state is! PatientsFetchBookListLoading
+                    ? const _NoConsultationsFound()
+                    : null,
                 renderEmptyRowsInTheEnd: false,
                 headingTextStyle: MintTextStyles.medium16.copyWith(height: 1.3),
-                header: const Text(''),
+                header: widget.title ?? const Text(''),
                 dataRowHeight: 75,
                 dataTextStyle: MintTextStyles.figure.copyWith(
                   color: MintColors.dark,
                 ),
                 minWidth: 900,
-                rowsPerPage: state.rowsLimit,
+                rowsPerPage: widget.rowsPerPage,
                 columns: <DataColumn>[
                   const DataColumn2(
                     label: Center(child: Text('#')),
@@ -105,9 +114,7 @@ class _PatientsPaginatedDataTableState
                     label: Text(l10n.contactPhone),
                     size: ColumnSize.L,
                   ),
-                  DataColumn2(
-                    label: Text(l10n.time),
-                  ),
+                  DataColumn2(label: Text(l10n.time)),
                   DataColumn2(
                     label: Text(l10n.date),
                     onSort: (columnIndex, ascending) => _sort(
@@ -120,20 +127,25 @@ class _PatientsPaginatedDataTableState
                     label: Center(child: Text(l10n.status)),
                   ),
                 ],
+                sortArrowBuilder: (ascending, sorted) =>
+                    _TableSortIcon(ascending: ascending, sorted: sorted),
+                sortArrowAlwaysVisible: true,
                 sortAscending: _sortAscending,
                 sortColumnIndex: _sortColumnIndex,
                 source: _BookingDataTableSource(
                   context,
                   state.filter.isEmpty
-                      ? state.bookList
+                      ? whereBook != null
+                          ? state.bookList.where(whereBook).toList()
+                          : state.bookList
                       : state.filteredBookList,
                 ),
               ),
-            );
-          }
-          return const SizedBox.shrink();
-        },
-      ),
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 }
@@ -216,6 +228,57 @@ class _NoConsultationsFound extends StatelessWidget {
       child: Text(
         context.l10n.noConsultationsFound,
         style: MintTextStyles.title,
+      ),
+    );
+  }
+}
+
+class _PatientsListLoadingWrapper extends StatelessWidget {
+  const _PatientsListLoadingWrapper({required this.state, required this.child});
+
+  final PatientsState state;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final state = this.state;
+    return state is PatientsFetchBookListLoading
+        ? Stack(
+            children: <Widget>[
+              child,
+              Positioned.fill(
+                child: ColoredBox(
+                  color: Colors.black.withOpacity(0.08),
+                  child: const Center(child: CircularProgressIndicator()),
+                ),
+              ),
+            ],
+          )
+        : child;
+  }
+}
+
+class _TableSortIcon extends StatelessWidget {
+  const _TableSortIcon({required this.ascending, required this.sorted});
+
+  final bool ascending;
+  final bool sorted;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 4),
+      child: RotatedBox(
+        quarterTurns: sorted ? 0 : 1,
+        child: Icon(
+          !sorted
+              ? Icons.compare_arrows
+              : ascending
+                  ? Icons.arrow_upward_rounded
+                  : Icons.arrow_downward_rounded,
+          color: sorted ? Colors.black : Colors.black.withOpacity(0.4),
+          size: 16,
+        ),
       ),
     );
   }

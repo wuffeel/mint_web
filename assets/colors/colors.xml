@@ -20,4 +20,5 @@
     <color name="selectedMessageBlue">#B2D7FF</color>
     <color name="chatDateHeaderGrey">#F2F2F2</color>
     <color name="receiverMessageColor">#EDF3F8</color>
+    <color name="appointmentsAppBarBorder">#CCD4DE</color>
 </resources>

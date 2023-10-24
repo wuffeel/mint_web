@@ -74,7 +74,7 @@ class ChatAppBar extends StatelessWidget {
                 Text(
                   _getStatusByPresence(context, presence),
                   style: const TextStyle(fontSize: 12),
-                )
+                ),
               ],
             ),
             const Spacer(),

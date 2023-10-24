@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mint_core/mint_bloc.dart';
 
 import '../../../injector/injector.dart';
 import '../../../router/app_router.gr.dart';
@@ -50,6 +51,7 @@ class MainWrapperPage extends AutoRouter with AutoRouteWrapper {
             ..add(UserInitializeRequested())
             ..add(UserFetchRequested()),
         ),
+        BlocProvider(create: (context) => getIt<AppNotificationsBloc>()),
       ],
       child: MultiBlocListener(
         listeners: [

@@ -8,7 +8,7 @@ class MintGradient {
     end: Alignment.bottomCenter,
     colors: [
       MintColors.gradientDark,
-      MintColors.gradientLight
+      MintColors.gradientLight,
     ],
   );
 }

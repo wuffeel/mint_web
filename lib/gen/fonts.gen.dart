@@ -10,6 +10,9 @@
 class MintFontFamily {
   MintFontFamily._();
 
+  /// Font family: Gilroy
+  static const String gilroy = 'Gilroy';
+
   /// Font family: Inter
   static const String inter = 'Inter';
 

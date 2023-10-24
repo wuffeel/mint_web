@@ -12,6 +12,8 @@ class MintTextStyles {
 
   static const inter = TextStyle(fontFamily: MintFontFamily.inter);
 
+  static const gilroy = TextStyle(fontFamily: MintFontFamily.gilroy);
+
   static const logo = TextStyle(
     fontFamily: MintFontFamily.poppins,
     fontSize: 20,
@@ -72,4 +74,10 @@ class MintTextStyles {
   );
 
   static const regular14 = TextStyle(fontSize: 14);
+
+  static final gilroyMedium16 = MintTextStyles.gilroy.copyWith(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    height: 1.25,
+  );
 }

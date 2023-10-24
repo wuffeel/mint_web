@@ -25,13 +25,15 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_multi_formatter: ^2.11.7
+  flutter_portal: ^1.1.4
   flutter_sound: ^9.2.13
   flutter_svg: ^2.0.7
   freezed_annotation: 2.2.0
   get_it: ^7.6.4
   http: ^1.1.0
+  image_picker: ^1.0.4
   injectable: ^2.3.0
-  intl: ^0.18.0
+  intl: ^0.18.1
   json_annotation: ^4.8.1
   just_audio: ^0.9.34
   meta: ^1.9.1
@@ -40,6 +42,8 @@ dependencies:
   reactive_forms: ^16.1.0
   reactive_forms_annotations: ^4.0.0
   rxdart: ^0.27.7
+  sliver_tools: ^0.2.12
+  syncfusion_flutter_calendar: ^23.1.36
   universal_html: ^2.2.4
 
 dev_dependencies:
@@ -116,3 +120,13 @@ flutter:
       fonts:
         - asset: assets/fonts/noto_color_emoji/NotoColorEmoji-Regular.ttf
           weight: 400
+    - family: Gilroy
+      fonts:
+        - asset: assets/fonts/gilroy/Gilroy-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/gilroy/Gilroy-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/gilroy/Gilroy-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/gilroy/Gilroy-Bold.ttf
+          weight: 700

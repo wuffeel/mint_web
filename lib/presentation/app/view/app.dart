@@ -17,6 +17,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         colorScheme: MintThemeData.colorScheme,
         dividerColor: MintColors.dividerGrey,
+        dividerTheme: MintThemeData.dividerTheme,
         elevatedButtonTheme: MintThemeData.elevatedButton,
         fontFamily: MintFontFamily.inter,
         inputDecorationTheme: MintThemeData.inputDecoration,

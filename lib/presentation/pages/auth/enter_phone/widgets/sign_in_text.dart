@@ -22,7 +22,7 @@ class SignInText extends StatelessWidget {
               color: MintColors.primaryBlueColor,
               decoration: TextDecoration.underline,
             ),
-          )
+          ),
         ],
       ),
       style: const TextStyle(fontSize: 16),

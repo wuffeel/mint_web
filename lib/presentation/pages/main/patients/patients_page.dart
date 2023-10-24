@@ -20,7 +20,7 @@ class PatientsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          getIt<PatientsBloc>()..add(PatientsFetchBookListRequested()),
+          getIt<PatientsBloc>()..add(PatientsInitializeSubscriptionRequested()),
       child: const _PatientsView(),
     );
   }
@@ -31,8 +31,8 @@ class _PatientsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
+    return const SelectionArea(
+      child: Center(
         child: FractionallySizedBox(
           widthFactor: 0.83,
           child: Column(
@@ -127,17 +127,17 @@ class _PatientsToolbar extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 24),
-            InkWell(
-              onTap: () => _showFilterDialog(context),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                ),
+            Material(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+              child: InkWell(
+                onTap: () => _showFilterDialog(context),
+                borderRadius: BorderRadius.circular(10),
+                hoverColor: Colors.black.withOpacity(0.08),
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Row(
-                    children: [
+                    children: <Widget>[
                       Assets.svg.filterIcon.svg(
                         width: 16,
                         height: 16,
@@ -155,7 +155,7 @@ class _PatientsToolbar extends StatelessWidget {
               ),
             ),
           ],
-        )
+        ),
       ],
     );
   }

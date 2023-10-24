@@ -12,7 +12,7 @@ class AuthPageBody extends StatelessWidget {
     return Row(
       children: <Widget>[
         Expanded(child: child),
-        const Expanded(child: AuthRightPanel())
+        const Expanded(child: AuthRightPanel()),
       ],
     );
   }

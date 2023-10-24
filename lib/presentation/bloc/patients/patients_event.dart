@@ -3,9 +3,9 @@ part of 'patients_bloc.dart';
 @immutable
 abstract class PatientsEvent {}
 
-class PatientsFetchBookListRequested extends PatientsEvent {}
+class PatientsInitializeSubscriptionRequested extends PatientsEvent {}
 
-class PatientsRefreshRequested extends PatientsEvent {}
+class PatientsFetchBookListRequested extends PatientsEvent {}
 
 class PatientsSortRequested<T> extends PatientsEvent {
   PatientsSortRequested({this.getField, this.ascending = true});

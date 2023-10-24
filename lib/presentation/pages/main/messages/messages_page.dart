@@ -11,8 +11,6 @@ import '../../../../theme/mint_text_styles.dart';
 import '../../../bloc/audio_player/audio_player_bloc.dart';
 import '../../../bloc/audio_record/audio_record_bloc.dart';
 import '../../../bloc/chat_presence/chat_presence_bloc.dart';
-import '../../../bloc/chat_room/chat_room_bloc.dart';
-import '../../../bloc/unread_messages/unread_messages_bloc.dart';
 import 'widgets/chat_app_bar.dart';
 import 'widgets/chat_widget.dart';
 import 'widgets/message_tile.dart';
@@ -65,74 +63,71 @@ class _MessagesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: FractionallySizedBox(
-          widthFactor: 0.8,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 33,
-                  child: BlocBuilder<ChatRoomBloc, ChatRoomState>(
-                    builder: (context, state) {
-                      if (state is ChatRoomListLoading) {
-                        return const _MessagesBlockContainer(
-                          child: Center(child: CircularProgressIndicator()),
+    return Center(
+      child: FractionallySizedBox(
+        widthFactor: 0.8,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 33,
+                child: BlocBuilder<ChatRoomBloc, ChatRoomState>(
+                  builder: (context, state) {
+                    if (state is ChatRoomListLoading) {
+                      return const _MessagesBlockContainer(
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+                    if (state is ChatRoomListFetchSuccess) {
+                      if (state.roomList.isEmpty) {
+                        return _MessagesBlockContainer(
+                          child: Center(
+                            child: Text(context.l10n.noChatWithPatientsYet),
+                          ),
                         );
                       }
-                      if (state is ChatRoomListFetchSuccess) {
-                        if (state.roomList.isEmpty) {
-                          return _MessagesBlockContainer(
-                            child: Center(
-                              // TODO(wuffeel): add localization
-                              child: Text(context.l10n.noChatWithPatientsYet),
-                            ),
+                      return BlocBuilder<ChatBloc, ChatState>(
+                        builder: (context, chatState) {
+                          return _MessagesBlock(
+                            roomList: state.roomList,
+                            senderId: state.senderId,
+                            selectedRoom:
+                                chatState is ChatFetchMessagesSuccess
+                                    ? chatState.room
+                                    : null,
                           );
-                        }
-                        return BlocBuilder<ChatBloc, ChatState>(
-                          builder: (context, chatState) {
-                            return _MessagesBlock(
-                              roomList: state.roomList,
-                              senderId: state.senderId,
-                              selectedRoom:
-                                  chatState is ChatFetchMessagesSuccess
-                                      ? chatState.room
-                                      : null,
-                            );
-                          },
-                        );
-                      }
-                      return const SizedBox.expand(
-                        child: _MessagesBlockContainer(),
+                        },
                       );
-                    },
-                  ),
+                    }
+                    return const SizedBox.expand(
+                      child: _MessagesBlockContainer(),
+                    );
+                  },
                 ),
-                Expanded(
-                  flex: 66,
-                  child: BlocBuilder<ChatBloc, ChatState>(
-                    builder: (context, state) {
-                      if (state is ChatLoading) {
-                        return const _ChatBlockContainer(
-                          child: Center(child: CircularProgressIndicator()),
-                        );
-                      }
-                      if (state is ChatFetchMessagesSuccess) {
-                        return _ChatBlock(
-                          room: state.room,
-                          senderId: state.senderId,
-                        );
-                      }
-                      return const SizedBox.expand(
-                        child: _ChatBlockContainer(),
+              ),
+              Expanded(
+                flex: 66,
+                child: BlocBuilder<ChatBloc, ChatState>(
+                  builder: (context, state) {
+                    if (state is ChatLoading) {
+                      return const _ChatBlockContainer(
+                        child: Center(child: CircularProgressIndicator()),
                       );
-                    },
-                  ),
+                    }
+                    if (state is ChatFetchMessagesSuccess) {
+                      return _ChatBlock(
+                        room: state.room,
+                        senderId: state.senderId,
+                      );
+                    }
+                    return const SizedBox.expand(
+                      child: _ChatBlockContainer(),
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -212,16 +207,12 @@ class _MessagesBlock extends StatelessWidget {
                 lastMessage: (room.lastMessages?.isNotEmpty ?? false)
                     ? room.lastMessages?.last
                     : null,
-                user: UserModel(
-                  id: user.id,
-                  firstName: user.firstName,
-                  lastName: user.lastName,
-                  photoUrl: user.imageUrl,
-                ),
+                user: user,
                 onTap: !isSelected
                     ? () => _initializeChat(context, roomList[index])
                     : null,
                 unreadCount: _getUnreadCount(state, user.id),
+                roomLastDate: room.updatedAt ?? room.createdAt,
               );
             },
           );

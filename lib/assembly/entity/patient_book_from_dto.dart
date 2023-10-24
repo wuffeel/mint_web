@@ -13,6 +13,7 @@ class UserModelFromOnboardingSpecialist
         bookTime: param.bookTime,
         durationMinutes: param.durationMinutes,
         endTime: param.endTime,
+        notes: param.notes,
         firstName: param.firstName,
         lastName: param.lastName,
         phoneNumber: param.phoneNumber,

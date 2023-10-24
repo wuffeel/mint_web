@@ -10,8 +10,9 @@ class PatientBook with _$PatientBook {
     required DateTime bookTime,
     required int durationMinutes,
     required DateTime endTime,
+    required String notes,
     String? phoneNumber,
     String? firstName,
     String? lastName,
-}) = _PatientBook;
+  }) = _PatientBook;
 }

@@ -8,6 +8,7 @@ import 'package:mint_core/mint_core.dart';
 import 'package:mint_core/mint_utils.dart';
 
 import '../../../backbone/consultation_status.dart';
+import '../../../domain/controller/booking_controller.dart';
 import '../../../domain/entity/patient_book/patient_book.dart';
 import '../../../domain/entity/patient_filter.dart';
 import '../../../domain/usecase/fetch_patient_book_list_use_case.dart';
@@ -22,19 +23,23 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
   PatientsBloc(
     this._fetchPatientBookListUseCase,
     this._userController,
-  ) : super(PatientsInitial()) {
+    this._bookingController,
+  ) : super(PatientsFetchBookListLoading()) {
     _subscribeToUserChange();
+    on<PatientsInitializeSubscriptionRequested>(_onInitializeSubscription);
     on<PatientsFetchBookListRequested>(_onFetchBookList);
-    on<PatientsRefreshRequested>(_onRefresh);
     on<PatientsSortRequested<dynamic>>(_onSort);
     on<PatientsFilterChanged>(_onFilter);
   }
 
   final FetchPatientBookListUseCase _fetchPatientBookListUseCase;
 
-  UserModel? _currentUser;
   final UserController _userController;
+  final BookingController _bookingController;
+
+  UserModel? _currentUser;
   late final StreamSubscription<UserModel?> _userSubscription;
+  late final StreamSubscription<List<PatientBook>> _patientsSubscription;
 
   /// Pagination query cursor
   // String? _lastPatientBookId;
@@ -45,14 +50,37 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
   void _subscribeToUserChange() {
     _userSubscription = _userController.user.listen((user) {
       _currentUser = user;
-      if (state is PatientsInitial) add(PatientsFetchBookListRequested());
+
+      if (!_bookingController.hasValue || !_bookingController.hasListener) {
+        add(PatientsFetchBookListRequested());
+      }
     });
   }
 
   @override
   Future<void> close() async {
     await _userSubscription.cancel();
+    await _patientsSubscription.cancel();
     return super.close();
+  }
+
+  Future<void> _onInitializeSubscription(
+    PatientsInitializeSubscriptionRequested event,
+    Emitter<PatientsState> emit,
+  ) {
+    return emit.forEach(
+      _bookingController.bookings,
+      onData: (bookList) {
+        // if (bookList.isNotEmpty) {
+        //   _lastPatientBookId = bookList.last.id;
+        // }
+        return PatientsFetchBookListSuccess(
+          bookList: bookList
+            ..sort((a, b) => _compareBookingTimes(a.bookTime, b.bookTime)),
+          hasReachedEnd: bookList.length < _paginationLimit,
+        );
+      },
+    );
   }
 
   Future<void> _onFetchBookList(
@@ -63,35 +91,17 @@ class PatientsBloc extends Bloc<PatientsEvent, PatientsState> {
     if (user == null) return;
     try {
       emit(PatientsFetchBookListLoading());
-      return emit.forEach(
-        await _fetchPatientBookListUseCase(
-          user.id,
-          // lastBookingId: _lastPatientBookId,
-          // limit: _paginationLimit,
-        ),
-        onData: (bookList) {
-          // if (bookList.isNotEmpty) {
-          //   _lastPatientBookId = bookList.last.id;
-          // }
-          return PatientsFetchBookListSuccess(
-            bookList: bookList
-              ..sort((a, b) => _compareBookingTimes(a.bookTime, b.bookTime)),
-            hasReachedEnd: bookList.length < _paginationLimit,
-          );
-        },
+      final bookingStream = await _fetchPatientBookListUseCase(
+        user.id,
+        // lastBookingId: _lastPatientBookId,
+        // limit: _paginationLimit,
       );
+      _patientsSubscription =
+          bookingStream.listen(_bookingController.addToBookingStream);
     } catch (error) {
       debugPrint('PatientsFetchBookListFailure: $error');
       emit(PatientsFetchBookListFailure());
     }
-  }
-
-  void _onRefresh(
-    PatientsRefreshRequested event,
-    Emitter<PatientsState> emit,
-  ) {
-    emit(PatientsBookListLoadSuccess());
-    add(PatientsFetchBookListRequested());
   }
 
   void _onSort(

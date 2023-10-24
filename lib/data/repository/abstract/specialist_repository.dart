@@ -1,5 +1,7 @@
 import 'package:mint_core/mint_core.dart';
 
+import '../../model/specialist_profile_model_dto/specialist_profile_model_dto.dart';
+
 abstract class SpecialistRepository {
   Future<List<String>> fetchAvailableSpecializations();
 
@@ -11,4 +13,6 @@ abstract class SpecialistRepository {
   );
 
   Future<SpecialistModelDto?> fetchSpecialistData(String specialistId);
+
+  Future<void> updateSpecialistData(SpecialistProfileModelDto specialist);
 }
