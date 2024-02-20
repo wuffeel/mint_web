@@ -23,6 +23,13 @@ notifications and Cloud Functions backend.
 
 # Getting Started
 
+## Download the Project
+
+Download or clone the full project repository by using link below:
+```
+https://github.com/wuffeel/mint_app
+```
+
 ## Build & Run
 
 #### Resolve Flutter dependencies:
