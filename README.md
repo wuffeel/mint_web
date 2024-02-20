@@ -44,7 +44,7 @@ flutter pub get
 
 #### To build web application for flavor:
 ```
-flutter build web --flavor=FLAVOR --dart-define=flavor=FLAVOR
+flutter build web --flavor=<FLAVOR> --dart-define=flavor=<FLAVOR>
 ```
 
 ## Firebase
@@ -53,7 +53,7 @@ flutter build web --flavor=FLAVOR --dart-define=flavor=FLAVOR
 ```
 flutterfire config \
 --project=FIREBASE_PROJECT_ID \
---out=lib/firebase_options_FLAVOR.dart
+--out=lib/firebase_options_<FLAVOR>.dart
 ```
 
 ### Deploy app to Firebase Hosting:
