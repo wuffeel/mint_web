@@ -29,6 +29,6 @@ class FirebaseBookingService implements BookingService {
       limit: limit,
     );
     return bookingsStream
-        .asyncMap((e) => e.map(_patientBookFromDto.create).toList());
+        .map((e) => e.map(_patientBookFromDto.create).toList());
   }
 }
